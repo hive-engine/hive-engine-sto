@@ -1,0 +1,261 @@
+.results {
+    margin-left: auto;
+    margin-right: auto;
+}
+
+@media screen and (min-width: 992px) {
+    .results {
+        margin-top: 45px;
+        max-width: 1200px;
+    }
+}
+
+.project-block {
+    background: rgb(255, 255, 255);
+    overflow: hidden;
+    position: relative;
+    margin: 0 auto 4rem auto;
+}
+
+.project-block > a {
+    color: rgb(30, 30, 30);
+    display: block;
+}
+
+.project-block > a:hover,
+.project-block > a:visited {
+    text-decoration: none;
+}
+
+.project-block__cover {
+    background-color: white;
+    background-position: center;
+    background-size: cover;
+    height: 195px;
+    position: relative
+}
+
+.project-block__cover:before {
+    bottom: 0;
+    content: '';
+    left: 0;
+    opacity: .5;
+    position: absolute;
+    right: 0;
+    top: 0
+}
+
+.project-block__content {
+    padding: 10px 15px 30px
+}
+
+.project-block__content h5 {
+    font-size: 15px;
+    font-weight: 600;
+    margin-bottom: 5px
+}
+
+.project-block__content .tagline {
+    font-size: 15px;
+    font-weight: 400;
+    margin-bottom: 10px;
+    color: #767676
+}
+
+.project-block__stats {
+    margin: 0;
+    position: relative
+}
+
+.project-block__stats.stats-no-stats {
+    padding-bottom: 42px
+}
+
+@media screen and (min-width: 992px) {
+    project-block__stats.stats-no-stats {
+        padding-bottom:57px
+    }
+}
+
+.project-block__stats .stat {
+    position: initial;
+    margin-bottom: 30px;
+    max-height: 32px
+}
+
+@media screen and (min-width: 768px) {
+    .project-block__stats .stat {
+        margin-bottom:10px
+    }
+}
+
+@media screen and (min-width: 992px) {
+    .project-block__stats .stat {
+        margin-bottom:25px
+    }
+}
+
+.project-block__stats .stat:not(:last-child) {
+    border-right: 1px solid #ebedef
+}
+
+@media screen and (min-width: 992px) {
+    .project-block__stats .stat {
+        padding:0px 19px
+    }
+}
+
+.project-block__stats .stat .num {
+    color: #1e1e1e;
+    font-size: 18px;
+    font-family: 'Roboto';
+    font-weight: 500;
+    line-height: 1;
+    margin: 0
+}
+
+@media only screen and (min-width: 768px) and (max-width: 991px) {
+    .project-block__stats .stat .num {
+        font-size:13px
+    }
+}
+
+.project-block__stats .stat>span {
+    color: #575757;
+    font-size: 13px
+}
+
+@media only screen and (min-width: 768px) and (max-width: 991px) {
+    .project-block__stats .stat>span {
+        font-size:9px
+    }
+}
+
+@media only screen and (max-width: 767px) {
+    .project-block__stats .stat>span {
+        font-size:14px
+    }
+}
+
+.project-block__stats .stat-separator {
+    position: absolute;
+    top: 0;
+    height: 80%;
+    border-right: 1px solid #e4e4e4
+}
+
+.project-block__progress {
+    height: 10px;
+    padding-left: 17.5px;
+    padding-right: 17.5px
+}
+
+@media only screen and (min-width: 768px) and (max-width: 991px) {
+    .project-block__progress {
+        padding-left:14px;
+        padding-right: 14px
+    }
+}
+
+@media only screen and (min-width: 992px) {
+    .project-block__progress {
+        padding-left:20px;
+        padding-right: 20px
+    }
+}
+
+.project-block .percent-wrapper {
+    height: 4px
+}
+
+.project-block .percent-progress {
+    bottom: 20px;
+    position: relative
+}
+
+@media screen and (min-width: 768px) and (max-width: 991px) {
+    .project-block .percent-progress {
+        bottom:10px
+    }
+}
+
+.tombstone .percent-progress .progress-bar-success {
+    background: #20c178;
+    box-shadow: 0 0 0
+}
+
+.percent-progress .progress {
+    box-shadow: 0 0 0;
+    background: #ebebeb;
+    border-radius: 3px;
+    height: 4px;
+    margin-bottom: 0
+}
+
+.percent-block {
+    border-right: 1px solid #e4e4e4;
+    color: #e4e4e4;
+    font-size: 12px;
+    height: 4px;
+    padding: 5px 0;
+    position: relative;
+    top: 3px
+}
+
+.percent-block.darker {
+    border-color: darkgrey;
+    color: #464646
+}
+
+.percent-block:last-child {
+    border-right: 0
+}
+
+@media only screen and (min-width: 768px) and (max-width: 991px) {
+    .project-block__content .tagline {
+        font-size:10px
+    }
+}
+
+@media only screen and (min-width: 992px) {
+    .project-block__content .tagline {
+        font-size:14px
+    }
+}
+
+@media only screen and (min-width: 768px) and (max-width: 991px) {
+    .project-block__content h5 {
+        font-size:10px;
+        line-height: 1
+    }
+}
+
+@media only screen and (min-width: 992px) {
+    .project-block__content h5 {
+        font-size:14px
+    }
+}
+
+@media screen and (min-width: 768px) and (max-width: 991px) {
+    .project-block__content {
+        padding:5px 15px 10px
+    }
+}
+
+@media screen and (min-width: 992px) {
+    .project-block__content {
+        padding:10px 20px 30px
+    }
+}
+
+@media screen and (min-width: 768px) {
+    .project-block__cover {
+        height:130px
+    }
+}
+
+@media screen and (min-width: 992px) {
+    .project-block__cover {
+        height:180px
+    }
+}

@@ -1,0 +1,16 @@
+<template>
+    <header class="row header-pull header-block">
+        <div class="group">
+            <h1 class="m-0 p-0">${'TOKENS' & t}</h1>    
+            <div class="buttons">
+                <input type="text" class="search" placeholder="Search Tokens">
+                <button class="btn btn-primary" onclick="SE.ShowBuySSC();">BUY ENG</button>
+                <button class="btn btn-secondary" onclick="SE.ShowAddToken();">CREATE</button>
+            </div>
+        </div>  
+    </header>
+
+    <div class="container">
+        <ag-grid-aurelia #agGrid style="width: 100%;" class="ag-theme-balham tokens-table" column-defs.bind="columnDefs" row-data.bind="rowData" grid-options.bind="gridOptions"></ag-grid-aurelia>
+    </div>
+</template>

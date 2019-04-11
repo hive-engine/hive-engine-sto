@@ -1,0 +1,7 @@
+<template>
+    <div class="flatpickr">
+        <input type="text" value.bind="value" ref="element" input.delegate="inputChanged($event)" id.bind="id">
+        <button type="button" class="flatpickr--clear-date" click.trigger="clear()" if.bind="allowClear && value.length">X</button>
+    </div>
+</template>
+      

@@ -1,0 +1,101 @@
+.launch-header {
+    font-size: 14px;
+    margin-bottom: 40px;
+    margin-top: 10px;
+}
+
+.launch-header h1 {
+    color: #93A3AF;
+    margin-bottom: 20px;
+    text-transform: uppercase;
+}
+
+.launcher-header p {
+    font-size: 0.875rem;
+}
+
+.pricing-package {
+    margin-bottom: 40px;
+}
+
+.padding-20 {
+    padding: 20px;
+}
+
+.pricing-package__heading {
+    background: #25455E;
+    color: #79A0BF;
+    padding: 20px;
+    text-align: center;
+    text-transform: uppercase;
+}
+.pricing-package__heading h1 {
+    font-size: 32px;
+    line-height: 1;
+    margin: 0;
+    padding: 0;
+}
+
+.pricing-package__sub-heading {
+    background: #000000;
+    color: #FFF;
+    padding: 18px 0;
+    text-align: center;
+}
+
+.pricing-package__content {
+    margin-left: 15px;
+    margin-right: 15px;
+    padding-bottom: 25px;
+}
+
+.pricing-package__description {
+    color: #25455E;
+    font-size: 12px;
+}
+
+.pricing-package ul {
+    flex: 1;
+    list-style: none;
+    margin: 0;
+    padding: 0 20px;
+}
+
+.pricing-package li {
+    background: #CBDFEF;
+    color: #25455E;
+    font-size: 14px;
+    font-weight: bold;
+    margin: 0 0 10px 0;
+    padding: 10px 20px;
+}
+
+.pricing-package__price {
+    color: #79A0BF;
+    font-size: 24px;
+    font-weight: bold;
+    margin-bottom: 20px;
+}
+
+.pricing-package .btn {
+    background-color: #582D1A;
+    border-radius: 0;
+    color: rgba(255, 255, 255, 0.6);
+    font-size: 20px;
+}
+
+.pricing-package .btn:hover {
+    background-color: #8E4A2C;
+    color: #FFF;
+}
+
+.pricing-package__state-costs {
+    font-size: 14px;
+    margin: 10px 0;
+}
+
+
+.route--launch ux-dialog-container {
+    max-height: calc(100vh - 225px);
+    padding: 0 0 25px 0;
+}

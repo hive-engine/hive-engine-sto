@@ -1,0 +1,68 @@
+<template>
+    <form class="container">
+        <h1>Enquire about STO packages and services</h1>
+
+        <div class="row">
+            <div class="col-md-6">
+                <div class="form-group">
+                    <label for="firstName">${'firstName' & t} <span class="asterisk text-danger">*</span></label>
+                    <input type="text" class="form-control" id="firstName" name="firstName" placeholder="John" value.bind="firstName">
+                </div>
+                
+                <div class="form-group">
+                    <label for="lastName">${'lastName' & t} <span class="asterisk text-danger">*</span></label>
+                    <input type="text" class="form-control" id="lastName" name="lastName" placeholder="Citizen" value.bind="lastName">
+                </div>
+
+                <div class="form-group">
+                    <label for="emailAddress">${'emailAddress' & t} <span class="asterisk text-danger">*</span></label>
+                    <input type="text" class="form-control" id="emailAddress" name="emailAddress" placeholder="johncitizen@businessco.com" value.bind="emailAddress">
+                </div>
+
+                <div class="form-group">
+                    <label for="businessName">${'businessName' & t} </label>
+                    <input type="text" class="form-control" id="businessName" name="entityName" placeholder="Eg. John" value.bind="businessName">
+                </div>
+
+                <fieldset class="form-group">
+                    <div class="row">
+                        <div class="col-sm-12">
+                            <p class="mb-1"><strong>${'contactMethod' & t}</strong></p>
+
+                            <div class="custom-control custom-radio">
+                                <input class="custom-control-input" type="radio" name="contactMethod" id="contactMethod1" value="home" checked.bind="contactMethod">
+                                <label class="custom-control-label" for="contactMethod1">${'communicationMethods.homeAddress' & t}</label>
+                            </div>
+                            <div class="custom-control custom-radio">
+                                <input class="custom-control-input" type="radio" name="contactMethod" id="contactMethod2" value="business" checked.bind="contactMethod">
+                                <label class="custom-control-label" for="contactMethod2">${'communicationMethods.businessAddress' & t}</label>
+                            </div>
+                            <div class="custom-control custom-radio">
+                                <input class="custom-control-input" type="radio" name="contactMethod" id="contactMethod3" value="email" checked.bind="contactMethod">
+                                <label class="custom-control-label" for="contactMethod3">${'communicationMethods.emailAddress' & t}</label>
+                            </div>
+                            <div class="custom-control custom-radio">
+                                <input class="custom-control-input" type="radio" name="contactMethod" id="contactMethod4" value="other" checked.bind="contactMethod">
+                                <label class="custom-control-label" for="contactMethod4">${'communicationMethods.other' & t}</label>
+                            </div>
+                            <div if.bind="contactMethod == 'other'">
+                                <input type="text" value.from-view="contactMethodAlternative">
+                            </div>
+                        </div>
+                    </div>
+                </fieldset>
+
+                <div class="form-group">
+                    <label for="servicesInterested"><strong>${'servicesInterested' & t}:</strong></label>
+                    <textarea id="servicesInterested" class="form-control" name="servicesInterested" value.bind="servicesInterested" rows="5"></textarea>
+                </div>
+
+                <div class="form-group row">
+                    <div class="col-sm-10">
+                        <button type="submit" class="btn btn-primary">Send</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </form>
+</template>

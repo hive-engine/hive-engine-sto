@@ -1,0 +1,32 @@
+<template>
+    <div class="container launch-header">
+        <div class="row">
+            <div class="col-md-12">
+                <h1>State Filing Fee Costs</h1>
+                <div class="row">
+                    <p class="col-md-9"></p>
+                </div>
+            </div>
+        </div>
+
+        <div class="table-responsive costs-table">
+            <table class="table table-striped">
+                <thead>
+                    <tr>
+                        <th scope="col" class="w-5">State</th>
+                        <th scope="col" class="w-25">When to File</th>
+                        <th scope="col" class="w-60">Registration Filing Fees</th>
+                    </tr>
+                </thead>
+    
+                <tbody>
+                    <tr repeat.for="cost of stateCosts">
+                        <td>${cost.state}</td>
+                        <td>${cost.when}</td>
+                        <td innerhtml.bind="cost.cost"></td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+</template>

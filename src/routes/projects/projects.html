@@ -1,0 +1,51 @@
+<template>
+
+    <div class="row">
+        <div class="col-sm-12">
+          <h3 class="text-center">
+            Discover <span class="text-success">12</span> <span></span> <span>Investments</span>
+          </h3>
+        </div>
+    </div>
+
+    <div class="row results">
+        <div class="col-sm-12 col-md-4" repeat.for="i of 6">
+            <div class="project-block">
+                <a href="#">
+                    <div class="project-block__cover" style="background-image: url('https://d19j0qt0x55bap.cloudfront.net/production/startups/med-x/images/startup_cover/tombstone_jenn-evelyn-ann-112980-unsplash-1.jpg');">
+                        <div class="cover-profile"></div>
+                    </div>
+
+                    <div class="project-block__content">
+                        <h5 class="desc">Steemit Inc.</h5>
+                        <p class="tagline">SOCIAL MEDIA BLOCKCHAIN JUSTICE</p>
+                    </div>
+
+                    <div class="project-block__progress">
+                        <div class="percent-progress">
+                          <div class="progress">
+                            <div class="progress-bar progress-bar-success" role="progressbar" aria-valuenow="1334896.857142857" aria-valuemin="0" aria-valuemax="100" style="width: 1334896.857142857%;"></div>
+                          </div>
+                        </div>
+                    </div>
+
+                    <div class="project-block__stats row ">
+                        <div class="col-sm-4 col-centered stat">
+                          <div class="num">$5.6<span class="abbrev-number">M</span></div>
+                          <span>Raised</span>
+                        </div>
+                        <div class="col-sm-4 col-centered stat">
+                          <div class="num">2.2<span class="abbrev-number">K</span></div>
+                          <span>Investors</span>
+                        </div>
+                        <div class="col-sm-4 col-centered stat" style="padding-right: 0;">
+                          <div class="num">$420</div>
+                          <span>Min Invest</span>
+                        </div>
+                      </div>
+                </a>
+            </div>
+        </div>
+    </div>
+
+</template>

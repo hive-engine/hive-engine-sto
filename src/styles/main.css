@@ -1,0 +1,219 @@
+body {
+    color: #27475E;
+    text-align: left;
+}
+
+body > .container-fluid {
+    margin-top: 90px;
+}
+
+.navbar-steem-engine .navbar-nav .nav-link {
+    color: #7FA8CB;
+    font-size: 16px;
+    text-transform: uppercase;
+}
+
+.asterisk {
+    font-size: 1.2rem;
+    vertical-align: middle;
+}
+
+.step-element {
+    display: block;
+}
+
+fieldset {
+    border: 1px solid rgba(158, 204, 250, 0.45);
+    margin: 30px 0;
+    padding: 25px;
+}
+
+label {
+    font-size: 1.01rem;
+}
+
+.form-control {
+    border-color: rgba(158, 204, 250, 0.45);
+}
+
+.form-control:focus {
+    border-color: #4C9BFB;
+    box-shadow: none !important;
+}
+
+.btn:focus {
+    box-shadow: none !important;
+}
+
+.header-pull {
+    margin-bottom: 30px;
+    margin-top: -30px;
+    position: relative;
+}
+
+.header-block {
+    display: block;
+}
+
+.home-1 {
+    color: #FFF;
+}
+
+.home-1 .btn-lg {
+    height: auto;
+    width: auto;
+}
+
+.form-progress {
+	position: relative;
+	display: block;
+    margin: 4rem auto;
+    padding: 0;
+	width: 100%;
+}
+
+progress { 
+	display: block;
+	position: relative;
+	top: 5px;
+	left: 5px;
+	appearance: none;
+	background: #0bcc6c;
+	width: 100%;
+	height: 5px;
+	background: none;
+	transition: 1s;
+    will-change: contents;
+}
+
+progress::-webkit-progress-bar {
+    background-color: #26455B;
+}
+	
+progress::-webkit-progress-value {
+    background-color: #FFF;
+    transition: all 0.5s ease-in-out;
+}
+
+.progress-indicator {
+	position: absolute;
+	top: -6px;
+	left: 0;
+	display: inline-block;
+	width: 25px;
+	height: 25px;
+	background: #3c516b;
+	border: 2px solid #26455B;
+	border-radius: 50%;
+	transition: all .2s ease-in-out;
+	transition-delay: .3s;
+    will-change: transform;
+}
+
+.progress-one {
+    left: 0;
+}
+
+.progress-two {
+    left: 33%;
+}
+
+.progress-three {
+    left: 66%;
+}
+.progress-four {
+    left: 100%;
+}
+
+.progress-indicator.active {
+    animation: bounce .5s forwards;
+    animation-delay: .5s;
+    background: #FFF;
+    border-color: #FFF;
+}
+
+.token-icon {
+    height: 24px;
+    width: 24px;
+}
+
+#total-wallet-value {
+    color: #FAFAFA;
+    display: block;
+    font-size: 16px;
+    margin-top: -15px;
+    text-align: left;
+}
+
+.ag-theme-balham {
+    background: transparent;
+    color: #27475E;
+    position: relative;
+}
+
+.tokens-table {
+    top: -65px;
+}
+
+.ag-theme-balham .ag-row .ag-cell {
+    display: flex;
+    align-items: center;
+  }
+
+.ag-theme-balham .ag-header {
+    background: transparent;
+}
+
+.ag-theme-balham .ag-root,
+.ag-theme-balham .ag-header,
+.ag-theme-balham .ag-header-cell, 
+.ag-theme-balham .ag-header-group-cell,
+.ag-theme-balham .ag-header-cell:after, 
+.ag-theme-balham .ag-header-group-cell:after,
+.ag-theme-balham .ag-row {
+    border: none;
+}
+
+.ag-cell {
+    font-size: 0.9rem;
+}
+
+.ag-cell[col-id="actions"] {
+    font-size: 1.32rem;
+    text-align: right;
+}
+
+.ag-cell a {
+    color: inherit;
+}
+
+.ag-theme-balham .ag-row-odd {
+    background-color: #E9EEF2;
+}
+
+.fas:hover {
+    color: #8E4A2C;
+}
+
+.cell-button-actions {
+    display: flex;
+    justify-content: flex-end;
+}
+
+.cell-button-actions a {
+    margin-right: 15px;
+}
+
+.cell-button-actions .fas {
+    pointer-events: none;
+}
+
+.cell-button-actions a:last-child {
+    margin-right: 0;
+}
+
+.tokens-table .ag-header-cell-label .ag-header-cell-text {
+    color: #FFF;
+    font-size: 1.2rem;
+    font-weight: 400;
+}

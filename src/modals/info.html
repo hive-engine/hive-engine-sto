@@ -1,0 +1,39 @@
+<template>
+    <ux-dialog>
+      <ux-dialog-body>
+        <h2>${token.symbol}</h2>
+
+        <div>
+            <h4>${'Token Name' & t}</h4>
+            <p>${token.name}</p>
+        </div>
+
+        <div>
+            <h4>${'Supply (Circulating / Total / Max)' & t}</h4>
+            <p>${token.circulatingSupply | largeNumber} / ${token.supply | largeNumber} / ${token.maxSupply | largeNumber}</p>
+        </div>
+
+        <div>
+            <h4>${'Issuer' & t}</h4>
+            <p><a href="https://steempeak.com/@${token.issuer}" target="_blank">${token.issuer} <i class="fas fa-external-link-square-alt"></i></a></p>
+        </div>
+
+        <div if.bind="token.metadata && token.metadata.url">
+            <h4>${'Website URL' & t}</h4>
+            <p><a href="${token.metadata.url}" target="_blank">${token.metadata.url} <i class="fas fa-external-link-square-alt"></i></a></p>
+        </div>
+
+        <div if.bind="token.metadata && token.metadata.desc">
+            <h4>${'Description' & t}</h4>
+            <p>${token.metadata.desc}</p>
+        </div>
+      </ux-dialog-body>
+  
+      <ux-dialog-footer>
+        <button class="btn btn-sm btn-primary" click.trigger="controller.ok()">${'Close' & t}</button>
+      </ux-dialog-footer>
+    </ux-dialog>
+  </template>
+  
+
+  

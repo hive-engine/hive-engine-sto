@@ -1,0 +1,57 @@
+<template>
+    <ux-dialog>
+      <ux-dialog-body>
+        <h2>${!formSubmitted ? 'Enquire' : 'Thank you' & t}</h2>
+        <p if.bind="!formSubmitted">${"We just need a few details from you and then we'll be in contact" & t}. You're enquiring about ${item.name & t}.</p>
+        <p if.bind="formSubmitted">${'Your details have been submitted and we will be in touch' & t}. If you have not done so already, please join our Discord <a href="https://discord.gg/QnUXGsE" target="_blank">here</a>.</p>
+        
+        <form show.bind="!formSubmitted">
+            <div class="form-group">
+                <label>${'Name' & t} <span class="asterisk text-danger">*</span></label>
+                <input type="text" class="form-control" placeholder="John Citizen" value.bind="fields.name & validate:validationController">
+            </div>
+            <div class="form-group">
+                <label>${'Email' & t} <span class="asterisk text-danger">*</span></label>
+                <input type="text" class="form-control" placeholder="johncitizen@website.com" value.bind="fields.email & validate:validationController">
+            </div>
+            <div class="form-group">
+                <label>${'Steem Username' & t}</label>
+                <input type="text" class="form-control" placeholder="@aggroed" value.bind="fields.steemHandle & validate:validationController">
+            </div>
+            <div class="form-group">
+                <label>${'Discord Handle' & t}</label>
+                <input type="text" class="form-control" placeholder="johncitizen#213" value.bind="fields.discordHandle & validate:validationController">
+            </div>
+            <div class="form-group">
+                <label>${'Telegram' & t}</label>
+                <input type="text" class="form-control" placeholder="johncitizen" value.bind="fields.telegramHandle & validate:validationController">
+            </div>
+            <div class="form-group">
+                <label>${'Skype' & t}</label>
+                <input type="text" class="form-control" placeholder="johncitizen" value.bind="fields.skypeHandle & validate:validationController">
+            </div>
+            <div class="form-group">
+                <label>${'Phone' & t}</label>
+                <input type="text" class="form-control" placeholder="5555 5555" value.bind="fields.phone & validate:validationController">
+            </div>
+            <div class="form-group">
+                <label>${'Preferred communication method' & t} <span class="asterisk text-danger">*</span></label>
+                <input type="text" class="form-control" value.bind="fields.preferredCommunication & validate:validationController">
+            </div>
+            <div class="form-group">
+                <label>${'Any other packages and services you are interested in?' & t}</label>
+                <textarea class="form-control" value.bind="fields.otherComments & validate"></textarea>
+            </div>
+        </form>
+      </ux-dialog-body>
+  
+      <ux-dialog-footer>
+        <button class="btn btn-sm btn-secondary" click.trigger="controller.cancel()" if.bind="!formSubmitted">${'Cancel' & t}</button>&nbsp;
+        <button class="btn btn-sm btn-primary" click.trigger="send()" if.bind="!formSubmitted">${'Send' & t}</button>
+        <button class="btn btn-sm btn-primary" click.trigger="controller.close(true)" if.bind="formSubmitted">${'Close' & t}</button>
+      </ux-dialog-footer>
+    </ux-dialog>
+  </template>
+  
+
+  

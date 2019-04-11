@@ -1,0 +1,156 @@
+<template>
+    <header class="row header-row header-pull header-block">
+            <div class="col-md-6">
+                    <h1>${'MARKET' & t}</h1>
+            </div>
+            <div class="col-md-6">
+                <div class="buttons">
+                    <button class="btn btn-primary" click.delegate="deposit()">${'DEPOSIT' & t}</button>
+                    <button class="btn btn-secondary" click.delegate="withdraw()">${'WITHDRAW' & t}</button>
+                    <div class="note">NOTE: There is a 1% fee on all deposits and withdrawals.</div>
+                </div>
+            </div>
+    
+        <p>Trade any Steem Engine token against STEEM on the internal DEX!</p>	
+    </header>
+
+    <div class="market container">
+        <div class="row">
+            <div class="col-md-2">
+                <ul class="list-unstyled">
+                    <li repeat.for="token of tokens"><a route-href="route: market; params.bind: { token: token.symbol }">${token.symbol}</a></li>
+                </ul>
+            </div>
+
+            <div class="col-md-10" show.bind="renderMarket">
+                <div class="mt-3">
+                        <div class="row">
+                            <div class="col-md-12 text-center stats">
+                                <h3 class="font-weight-bold mb-3">Market Depth (${urlTokenParam}) <i class="fas fa-info-circle" style="cursor:pointer" onclick="SE.ShowDialog('token_info', SE.GetToken(data.token));"></i></h3>
+                                <small class="m-1 label">Last: <span class="font-weight-bold text-dark">${lastPrice}</span></small>
+                                <small class="m-1 label">24h Vol: <span class="font-weight-bold text-dark">${twentyFourHourVolume}</span></small>
+                                <small class="m-1 label">Bid: <a id="highest-bid" class="font-weight-bold text-dark">${bid}</a></small>
+                                <small class="m-1 label">Ask: <a id="lowest-ask" class="font-weight-bold text-dark">${ask}</a></small>
+                            </div>
+                        </div>
+                        <div class="row mt-4">
+                            <div class="col-md-12 text-center">
+                                <chart if.bind="chartData" type="line" data.bind="chartData" complete.delegate="marketChartRendered()"></chart>
+                            </div>
+                        </div>
+                
+                        <div class="row" if.bind="state.user.loggedIn">
+                            <div class="col-md-6 text-left p-3 buy-form">
+                                <h4 class="font-weight-bold">${'Buy' & t} ${urlTokenParam}</h4>
+                                <div class="group">
+                                    <div class="input-group mb-1">
+                                        <label style="min-width: 90px;">${'Price' & t}</label>
+                                        <input type="number" id="buyPrice" placeholder="0.0" class="text-right" style="width: 180px;">
+                                        <div class="input-group-append">
+                                            <span class="input-group-text">Steem/${urlTokenParam}</span>
+                                        </div>
+                                        <div class="invalid-feedback">
+                                            Required field. Price must be a number greater than 0.
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="group">
+                                    <div class="input-group mb-1">
+                                        <label style="min-width: 90px;">Quantity</label>
+                                        <input type="number" id="buyQuantity" placeholder="0" class="text-right" style="width: 180px;">
+                                        <div class="input-group-append">
+                                            <span class="input-group-text">${urlTokenParam}</span>
+                                        </div>
+                                        <div class="invalid-feedback">
+                                            Required field. Price must be a number greater than 0.
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="group">
+                                    <div class="input-group mb-1">
+                                        <label style="min-width: 90px;">${'Total' & t}</label>
+                                        <input type="number" id="buyTotal" placeholder="0.0" class="text-right" style="width: 180px;" readonly disabled>
+                                        <div class="input-group-append">
+                                            <span class="input-group-text">Steem</span>
+                                        </div>
+                                        <div class="invalid-feedback">
+                                            Your balance is too low to confirm this order.
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="group mt-2 pl-5 pr-2">
+                                    <span class="small float-left">
+                                        <small class="text-info">Your Balance:
+                                            <a id="user-steemp-balance" class="font-weight-bold text-dark"><%= data.user_steemp_balance ? data.user_steemp_balance.balance + ' STEEMP' : '-' %></a>
+                                        </small>
+                                        <br>
+                                        <small class="text-info">Lowest Ask:
+                                            <% if(data.sell_orders && data.sell_orders.length > 0) { %>
+                                                <button id="lowest-ask" onclick="$('#buyPrice').val(data.sell_orders[0].price);" type="button" class="btn btn-link font-weight-bold text-dark" style="font-size: unset; padding: unset;"><%= data.sell_orders[0].price %></button>
+                                            <% } else { %>
+                                                <span class="font-weight-bold text-dark">-</span>
+                                            <% } %>
+                                        </small>
+                                    </span>
+                                    <button class="btn btn-primary btn-sm float-right" onclick="btnSubmitOrder('buy');" style="margin: auto;">${'Buy' & t} ${urlTokenParam}</button>
+                                </div>
+                            </div>
+                            <div class="col-md-6 text-left p-3 sell-form">
+                                <h4 class="font-weight-bold">Sell ${urlTokenParam}</h4>
+                                <div class="group">
+                                    <div class="input-group mb-1">
+                                        <label style="min-width: 90px;">${'Price' & t}</label>
+                                        <input type="number" id="sellPrice" placeholder="0.0" class="text-right" style="width: 180px;">
+                                        <div class="input-group-append">
+                                            <span class="input-group-text">${'Steem' & t}/${urlTokenParam}</span>
+                                        </div>
+                                        <div class="invalid-feedback">
+                                            Required field. Price must be a number greater than 0.
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="group">
+                                    <div class="input-group mb-1">
+                                        <label style="min-width: 90px;">${'Quantity' & t}</label>
+                                        <input type="number" id="sellQuantity" placeholder="0" class="text-right" style="width: 180px;">
+                                        <div class="input-group-append">
+                                            <span class="input-group-text">${urlTokenParam}</span>
+                                        </div>
+                                        <div class="invalid-feedback">
+                                            Required field. Price must be a number greater than 0.
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="group">
+                                    <div class="input-group mb-1">
+                                        <label style="min-width: 90px;">${'Total' & t}</label>
+                                        <input type="number" id="sellTotal" placeholder="0.0" class="text-right" style="width: 180px;" readonly disabled>
+                                        <div class="input-group-append">
+                                            <span class="input-group-text">${'Steem' & t}</span>
+                                        </div>
+                                        <div class="invalid-feedback">
+                                            Your balance is too low to confirm this order.
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="group mt-2 pl-5 pr-2">
+                                    <span class="small float-left">
+                                        <small class="text-info">Your Balance: <a id="user-token-balance" onclick="btnSubmitOrder('sell');" class="font-weight-bold text-dark"><%= data.user_token_balance ? data.user_token_balance.balance + ' ' + data.token : '-' %></a></small><br>
+                                        <small class="text-info">Highest Bid:
+                                            <% if(data.buy_orders && data.buy_orders.length > 0) { %>
+                                                <button id="highest-bid" onclick="$('#sellPrice').val(data.buy_orders[0].price);" type="button" class="btn btn-link font-weight-bold text-dark" style="font-size: unset; padding: unset;"><%= data.buy_orders[0].price %></button>
+                                            <% } else { %>
+                                                <span class="font-weight-bold text-dark">-</span>
+                                            <% } %>
+                                        </small>
+                                    </span>
+                                    <button class="btn btn-primary btn-sm float-right" onclick="btnSubmitOrder('sell');" style="margin: auto;">${'Sell' & t} ${urlTokenParam}</button>
+                                </div>
+                            </div>
+                        </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+</template>
