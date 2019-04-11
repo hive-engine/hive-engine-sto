@@ -38,7 +38,21 @@ export class Signin {
         }
     }
 
-    keySignIn() {
-        this.SE.login(this.username.trim().toLowerCase(), this.privateKey.trim());
+    async keySignIn() {
+        const username = await this.SE.login(this.username.trim().toLowerCase(), this.privateKey.trim());
+        
+        if (username) {
+            const toast = new ToastMessage();
+    
+            toast.message = this.i18n.tr('signinSuccess');
+
+            toast.overrideOptions.onClosing = () => {
+                this.router.navigateToRoute('home');
+            }
+
+            this.toast.success(toast);
+
+            await dispatchify(login)(username);
+        }
     }
 }
