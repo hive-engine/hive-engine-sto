@@ -8,7 +8,7 @@ import { PostRenderStep } from './resources/pipeline-steps/postrender';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import 'ag-grid-community/dist/styles/ag-grid.css';
 import 'ag-grid-community/dist/styles/ag-theme-balham.css';
-import '../../styles/main.css';
+import './styles/site-main.css';
 import './styles/main.css';
 
 import { PLATFORM } from 'aurelia-pal';

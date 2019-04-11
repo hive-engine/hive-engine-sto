@@ -1,6 +1,6 @@
-# Steem Engine Projects
+# Steem Engine STOP
 
-The Steem Engines projects and KYC handling.
+The Steem Engine STO platform.
 
 ## Run dev app
 
