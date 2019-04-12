@@ -13,12 +13,19 @@ export interface State {
       totalUsdValue: number;
       loggedIn: boolean;
   };
+  
   loading: boolean;
+
   steemPrice: number;
+
   buyBook: any[];
+
   sellBook: any[];
+
   tradesHistory: any[];
+
   token: any;
+
   tokens: any[];
 
   investorQuestionnaire: {
