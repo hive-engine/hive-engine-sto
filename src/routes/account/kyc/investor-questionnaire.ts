@@ -1,7 +1,7 @@
 import { Step4Model } from './step-4/step-4.model';
 import { Step3Model } from './step-3/step-3.model';
 import { Step2Model } from './step-2/step-2.model';
-import { BootstrapFormRenderer } from './../../resources/bootstrap-form-renderer';
+import { BootstrapFormRenderer } from 'resources/bootstrap-form-renderer';
 import { Store } from 'aurelia-store';
 import { autoinject, newInstance, computedFrom, BindingEngine, Disposable } from 'aurelia-framework';
 import { ValidationController } from 'aurelia-validation';

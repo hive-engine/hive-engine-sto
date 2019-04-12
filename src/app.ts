@@ -87,13 +87,6 @@ export class App {
                 title: 'Signin'
             },
             {
-                route: 'kyc',
-                name: 'kyc',
-                moduleId: PLATFORM.moduleName('./routes/kyc/landing'),
-                nav: false,
-                title: 'Kyc'
-            },
-            {
                 route: 'launch',
                 name: 'launch',
                 moduleId: PLATFORM.moduleName('./routes/launch/launch'),
@@ -115,9 +108,23 @@ export class App {
                 title: 'Pricing Enquire'
             },
             {
-                route: 'kyc/questionnaire',
-                name: 'questionnaire',
-                moduleId: PLATFORM.moduleName('./routes/kyc/investor-questionnaire'),
+                route: 'account/kyc',
+                name: 'accountKyc',
+                moduleId: PLATFORM.moduleName('./routes/account/kyc/landing'),
+                nav: false,
+                title: 'Kyc'
+            },
+            {
+                route: 'account/profile',
+                name: 'accountProfile',
+                moduleId: PLATFORM.moduleName('./routes/account/kyc/investor-questionnaire'),
+                nav: false,
+                title: 'Account Profile'
+            },
+            {
+                route: 'account/kyc-questionnaire',
+                name: 'accountKycQuestionnaire',
+                moduleId: PLATFORM.moduleName('./routes/account/kyc/investor-questionnaire'),
                 nav: false,
                 title: 'Investor Questionnaire'
             }

@@ -1,7 +1,7 @@
-import { Step4Model } from './../routes/kyc/step-4/step-4.model';
-import { Step3Model } from './../routes/kyc/step-3/step-3.model';
-import { Step2Model } from './../routes/kyc/step-2/step-2.model';
-import { Step1Model } from './../routes/kyc/step-1/step-1.model';
+import { Step4Model } from '../routes/account/kyc/step-4/step-4.model';
+import { Step3Model } from '../routes/account/kyc/step-3/step-3.model';
+import { Step2Model } from '../routes/account/kyc/step-2/step-2.model';
+import { Step1Model } from '../routes/account/kyc/step-1/step-1.model';
 
 export interface State {
   user: {
