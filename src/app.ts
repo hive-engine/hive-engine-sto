@@ -108,6 +108,14 @@ export class App {
                 title: 'Pricing Enquire'
             },
             {
+                route: 'account',
+                name: 'account',
+                moduleId: PLATFORM.moduleName('./routes/account/account'),
+                nav: true,
+                auth: true,
+                title: 'Account'
+            },
+            {
                 route: 'account/kyc',
                 name: 'accountKyc',
                 moduleId: PLATFORM.moduleName('./routes/account/kyc/landing'),
