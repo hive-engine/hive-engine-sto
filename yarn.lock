@@ -1776,10 +1776,10 @@ aurelia-hot-module-reload@^0.2.0:
   resolved "https://registry.yarnpkg.com/aurelia-hot-module-reload/-/aurelia-hot-module-reload-0.2.1.tgz#f8d58bb966649250d36058b39a6fc19b041ef41b"
   integrity sha1-+NWLuWZkklDTYFizmm/BmwQe9Bs=
 
-aurelia-i18n@3.0.0-beta.5:
-  version "3.0.0-beta.5"
-  resolved "https://registry.yarnpkg.com/aurelia-i18n/-/aurelia-i18n-3.0.0-beta.5.tgz#e283f73be0dc41fed593631f1efac614f13ab427"
-  integrity sha512-nnUA31z6q2C2WKj6Q1aXNd7sgDEvnwOIUKgSpP1/+GZhxLJXQIc42M02i2NStGYNYmQtxoxNq5R8tekraL29KA==
+aurelia-i18n@^3.0.0-beta.7:
+  version "3.0.0-beta.7"
+  resolved "https://registry.yarnpkg.com/aurelia-i18n/-/aurelia-i18n-3.0.0-beta.7.tgz#f9b4a5439ef21e1d6b962454f6a8414157498898"
+  integrity sha512-0Ztt7i6dV5kfjJNz2Dujb/ST44Pu46dzaNS+izxsI1G6T0TOekbdj1q2kKSeYruuCzpKei2gcrizAlQubeaExQ==
   dependencies:
     aurelia-binding "^2.0.0"
     aurelia-dependency-injection "^1.4.1"
@@ -1790,7 +1790,7 @@ aurelia-i18n@3.0.0-beta.5:
     aurelia-pal "^1.3.0"
     aurelia-templating "^1.8.2"
     aurelia-templating-resources "^1.7.1"
-    i18next "^11.6.0"
+    i18next "^14.0.1"
 
 aurelia-loader-default@^1.0.0:
   version "1.2.1"
@@ -1879,10 +1879,10 @@ aurelia-router@^1.5.0:
     aurelia-path "^1.0.0"
     aurelia-route-recognizer "^1.2.0"
 
-aurelia-store@^1.3.3:
-  version "1.3.3"
-  resolved "https://registry.yarnpkg.com/aurelia-store/-/aurelia-store-1.3.3.tgz#39d4c7dcace76b69e49cee74aea3018991172d76"
-  integrity sha512-bmcU8c07UDsarhxCMppSY8un4VAhSKnm1rwkwEQ27/ak+r4IY30WjpGgjiUyQeDXZaS6w6+df4sF/D/c0XaSxQ==
+aurelia-store@^1.3.4:
+  version "1.3.4"
+  resolved "https://registry.yarnpkg.com/aurelia-store/-/aurelia-store-1.3.4.tgz#ae0eb65b31138de15edd797f443e8ac465c6bf61"
+  integrity sha512-aZdigOmvUZ9sIh2XQFsVg9RdMCngmERfP8LPzuKuaNOpMC76kPRR52vwAE3m0/eFTFKs+9N6N3NWcjfEAdd8/g==
   dependencies:
     aurelia-dependency-injection "^1.4.1"
     aurelia-logging "^1.5.0"
@@ -5369,10 +5369,10 @@ i18next-xhr-backend@*, i18next-xhr-backend@^2.0.1:
   resolved "https://registry.yarnpkg.com/i18next-xhr-backend/-/i18next-xhr-backend-2.0.1.tgz#7af735ee1b0c6d4ce49fa5756591040a0fba6db7"
   integrity sha512-CP0XPjJsTE4hY1rM1KXFYo63Ib61EBLEcTvMDyJwr0vs9p/UTuA3ENCmzSs9+ghZgWSjdOigc0oUERHaxctbsQ==
 
-i18next@^11.6.0:
-  version "11.10.2"
-  resolved "https://registry.yarnpkg.com/i18next/-/i18next-11.10.2.tgz#e5f10346f6320ecf15595419926c25255381a56c"
-  integrity sha512-1rowdX8PqrvsdFhYb3v0A/LlIHLQL1HTa4ia29IzhvNAg2fesNV7R1jXibWLmLQdz3FfTB8RuqSqDEjIawXruA==
+i18next@^14.0.1:
+  version "14.1.1"
+  resolved "https://registry.yarnpkg.com/i18next/-/i18next-14.1.1.tgz#d569aff68c088151f09fcb0cb6f44b36d62731d3"
+  integrity sha512-HItn9RHLyrDqe6pw6qXMYHGPHNc3y1FZndJfBlD6k4sRS0FAlYLvqCDVIWFc1XultBgsv348TtvL/lleG6JgBg==
 
 i18next@^15.0.8:
   version "15.0.9"
@@ -6427,10 +6427,10 @@ jest-worker@^24.6.0:
     merge-stream "^1.0.1"
     supports-color "^6.1.0"
 
-jquery@^3.3.1:
-  version "3.3.1"
-  resolved "https://registry.yarnpkg.com/jquery/-/jquery-3.3.1.tgz#958ce29e81c9790f31be7792df5d4d95fc57fbca"
-  integrity sha512-Ubldcmxp5np52/ENotGxlLe6aGMvmF4R8S6tZjsP6Knsaxd/xp3Zrh50cG93lR6nPXyUFwzN3ZSOQI0wRJNdGg==
+jquery@^3.4.0:
+  version "3.4.0"
+  resolved "https://registry.yarnpkg.com/jquery/-/jquery-3.4.0.tgz#8de513fa0fa4b2c7d2e48a530e26f0596936efdf"
+  integrity sha512-ggRCXln9zEqv6OqAGXFEcshF5dSBvCkzj6Gm2gzuR5fWawaX8t7cxKVkkygKODrDAzKdoYw3l/e3pm3vlT4IbQ==
 
 js-levenshtein@^1.1.3:
   version "1.1.6"
