@@ -1,3 +1,4 @@
+import { AuthorizeStep } from './resources/pipeline-steps/authorize';
 import { MaintenanceStep } from './resources/pipeline-steps/maintenance';
 import { State } from 'store/state';
 import { Store, connectTo, } from 'aurelia-store';
@@ -15,8 +16,6 @@ import { PLATFORM } from 'aurelia-pal';
 import { autoinject } from 'aurelia-framework';
 import { Router, RouterConfiguration, activationStrategy } from 'aurelia-router';
 
-import { pluck } from 'rxjs/operators';
-
 import environment from 'environment';
 
 import 'store/store';
@@ -28,11 +27,18 @@ import { Subscription } from 'rxjs';
 export class App {
     public router: Router;
     private year = new Date().getFullYear();
-    private stateSubscription: Subscription;
+    private state: State;
+    private subscription: Subscription;
 
     constructor(private store: Store<State>) {
-
-    }
+        this.subscription = this.store.state.subscribe((state) => {
+          if (state) {
+            this.state = state;
+    
+            AuthorizeStep.loggedIn = state.user.loggedIn;
+          }
+        });
+      }
 
     // bind() {
     //     this.stateSubscription = this.store.state.pipe(pluck('steemPrice')).subscribe(price => {
@@ -52,6 +58,7 @@ export class App {
         config.title = environment.siteName;
 
         config.addPipelineStep('authorize', MaintenanceStep);
+        config.addPipelineStep('authorize', AuthorizeStep);
         config.addPipelineStep('preRender', PreRenderStep);
         config.addPipelineStep('postRender', PostRenderStep);
 
