@@ -7,10 +7,17 @@ body > .container-fluid {
     margin-top: 90px;
 }
 
-.navbar-steem-engine .navbar-nav .nav-link {
+.navbar-steem-engine .navbar-nav .nav-link,
+.navbar-steem-engine .navbar-nav .nav-link:visited,
+.navbar-steem-engine .navbar-nav .nav-link:active {
     color: #7FA8CB;
     font-size: 16px;
     text-transform: uppercase;
+}
+
+.navbar-steem-engine .navbar-nav .nav-link.active {
+    color: #FFF;
+    font-weight: bold;
 }
 
 .navbar-brand span {
