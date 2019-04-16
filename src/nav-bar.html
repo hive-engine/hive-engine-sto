@@ -7,6 +7,7 @@
     
         <div class="collapse navbar-collapse" id="navbarSupportedContent">
             <div class="navbar-nav w-100 justify-content-end align-items-center">
+                <a class="nav-item nav-link" href="https://steem-engine.com">${'Dex' & t}</a>
                 <a class="nav-item nav-link ${row.isActive ? 'active' : ''}" repeat.for="row of router.navigation" href.bind="row.href">${row.title & t}</a>
                 
                 <button id="btnSignIn" class="btn" if.bind="!user.loggedIn" click.delegate="login()" style="margin-left: 50px;">${'SIGN IN' & t}</button>
