@@ -1,14 +1,10 @@
-import { autoinject, lazy } from 'aurelia-framework';
+import { autoinject, newInstance } from 'aurelia-framework';
 import { HttpClient, json } from 'aurelia-fetch-client';
 import environment from 'environment';
 
 @autoinject()
 export class StoService {
-    private http: HttpClient;
-
-    constructor(@lazy(HttpClient) private getHttpClient: () => HttpClient) {
-        this.http = getHttpClient();
-
+    constructor(@newInstance() private http: HttpClient) {
         this.http.configure(config => {
             config
                 .useStandardConfiguration()
@@ -16,10 +12,41 @@ export class StoService {
         });
     }
 
-    async uploadRequest(username: string) {
-        const res = await this.http.fetch(`uploadRequestToken/${username}`);
+    async getUserAuthMemo(username: string) {
+        const res = await this.http.fetch(`getUserAuthMemo/${username}`);
+        const obj = await res.json();
 
-        return await res.json();
+        return obj.memo;
+    }
+
+    async verifyUserAuthMemo(username, signedKey) {
+        const res = await this.http.fetch('verifyUserAuthMemo', {
+            method: 'POST',
+            body: json({
+                username,
+                signedKey
+            })
+        });
+
+        const obj = await res.json();
+
+        return obj.access_token;
+    }
+
+    async verifyAuthToken(username, accessToken) {
+        const res = await this.http.fetch('verifyAuthToken', {
+            method: 'POST',
+            body: json({
+                username,
+                accessToken
+            })
+        });
+
+        const obj = await res.json();
+
+        console.log(obj);
+
+        return obj;
     }
 
     /**

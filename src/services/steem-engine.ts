@@ -1,8 +1,9 @@
+import { StoService } from './sto-service';
 import { Subscription } from 'rxjs';
 import { I18N } from 'aurelia-i18n';
 import { State } from 'store/state';
 import { HttpClient } from 'aurelia-fetch-client';
-import { lazy } from 'aurelia-framework';
+import { newInstance } from 'aurelia-framework';
 import environment from 'environment';
 import SSC from 'sscjs';
 import { connectTo, dispatchify, Store } from 'aurelia-store';
@@ -14,19 +15,17 @@ import { queryParam, popupCenter, tryParse } from 'common/functions';
 
 @connectTo()
 export class SteemEngine {
-    private http: HttpClient;
-    private http2: HttpClient;
     private ssc;
     private state: State;
     private subscription: Subscription;
 
     constructor(
-        @lazy(HttpClient) private getHttpClient: () => HttpClient,
+        @newInstance() private http: HttpClient,
+        @newInstance() private http2: HttpClient,
         private i18n: I18N,
         private store: Store<State>,
+        private stoService: StoService,
         private toast: ToastService) {
-        this.http = getHttpClient();
-        this.http2 = getHttpClient();
 
         this.ssc = new SSC(environment.RPC_URL);
 
@@ -69,7 +68,9 @@ export class SteemEngine {
     async login(username: string, key?: string) {
         return new Promise(async (resolve, reject) => {
             if (window.steem_keychain && !key) {
-                steem_keychain.requestSignBuffer(username, 'Log In', 'Posting', function(response) {
+                const encryptedMemo = await this.stoService.getUserAuthMemo(username);
+
+                steem_keychain.requestVerifyKey(username, encryptedMemo, 'Posting', async (response) => {
                     if (response.error) {
                         const toast = new ToastMessage();
     
@@ -80,7 +81,12 @@ export class SteemEngine {
     
                         this.toast.error(toast);
                     } else {
-                        localStorage.setItem('username', username);
+                        const signedKey = (response.result as unknown as string).substring(1);
+                        const accessToken = await this.stoService.verifyUserAuthMemo(response.data.username, signedKey);
+
+                        localStorage.setItem('username', response.data.username);
+                        localStorage.setItem('se_access_token', accessToken);
+                        
                         resolve(username);
                     }
                 });
