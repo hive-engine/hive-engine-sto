@@ -86,7 +86,7 @@ export class SteemEngine {
 
                         localStorage.setItem('username', response.data.username);
                         localStorage.setItem('se_access_token', accessToken);
-                        
+
                         resolve(username);
                     }
                 });
@@ -112,8 +112,13 @@ export class SteemEngine {
                     if (user && user.length > 0) {
                         try {
                             if (steem.auth.wifToPublic(key) == user[0].memo_key || steem.auth.wifToPublic(key) === user[0].posting.key_auths[0][0]) {
+                                const encryptedMemo = await this.stoService.getUserAuthMemo(username);
+                                const signedKey = steem.memo.decode(key, encryptedMemo).substring(1);
+                                const accessToken = await this.stoService.verifyUserAuthMemo(username, signedKey);
+
                                 localStorage.setItem('username', username);
                                 localStorage.setItem('key', key);
+                                localStorage.setItem('se_access_token', accessToken);
 
                                 resolve(username);
                             } else {
