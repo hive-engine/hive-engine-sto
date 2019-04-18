@@ -30,7 +30,10 @@ export class StoService {
 
         const obj = await res.json();
 
-        return obj.access_token;
+        return {
+            accessToken: obj.access_token,
+            refreshToken: obj.refresh_token
+        };
     }
 
     async verifyAuthToken(username, accessToken) {
@@ -47,6 +50,22 @@ export class StoService {
         console.log(obj);
 
         return obj;
+    }
+
+    async newAuthToken(username, refreshToken) {
+        const res = await this.http.fetch('newAuthToken', {
+            method: 'POST',
+            body: json({
+                username,
+                refreshToken
+            })
+        });
+
+        const obj = await res.json();
+
+        console.log(obj);
+
+        return obj.access_token;
     }
 
     /**
