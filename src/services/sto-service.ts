@@ -8,7 +8,13 @@ export class StoService {
         this.http.configure(config => {
             config
                 .useStandardConfiguration()
-                .withBaseUrl(environment.NODE_API_URL);
+                .withBaseUrl(environment.NODE_API_URL)
+                .withDefaults({
+                    headers: {
+                        'Authorization': `Bearer ${localStorage.getItem('se_access_token')}`,
+                        'Content-Type': 'application/json'
+                    }
+                })
         });
     }
 
