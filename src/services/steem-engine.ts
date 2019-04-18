@@ -68,8 +68,10 @@ export class SteemEngine {
     async login(username: string, key?: string) {
         return new Promise(async (resolve, reject) => {
             if (window.steem_keychain && !key) {
+                // Get an encrypted memo only the user can decrypt with their private key
                 const encryptedMemo = await this.stoService.getUserAuthMemo(username);
 
+                // Tell Keychain to ask the end user to allow the memo to be decrypted using their posting key
                 steem_keychain.requestVerifyKey(username, encryptedMemo, 'Posting', async (response) => {
                     if (response.error) {
                         const toast = new ToastMessage();
@@ -81,9 +83,13 @@ export class SteemEngine {
     
                         this.toast.error(toast);
                     } else {
+                        // Get the return memo and remove the "#" at the start of the private memo
                         const signedKey = (response.result as unknown as string).substring(1);
+
+                        // The decrypted memo is an encrypted string, so pass this to the server to get back refresh and access tokens
                         const tokens = await this.stoService.verifyUserAuthMemo(response.data.username, signedKey);
 
+                        // Store the username, access token and refresh token
                         localStorage.setItem('username', response.data.username);
                         localStorage.setItem('se_access_token', tokens.accessToken);
                         localStorage.setItem('se_refresh_token', tokens.refreshToken);
@@ -113,10 +119,16 @@ export class SteemEngine {
                     if (user && user.length > 0) {
                         try {
                             if (steem.auth.wifToPublic(key) == user[0].memo_key || steem.auth.wifToPublic(key) === user[0].posting.key_auths[0][0]) {
+                                // Get an encrypted memo only the user can decrypt with their private key
                                 const encryptedMemo = await this.stoService.getUserAuthMemo(username);
+
+                                // Decrypt the private memo to get the encrypted string
                                 const signedKey = steem.memo.decode(key, encryptedMemo).substring(1);
+
+                                // The decrypted memo is an encrypted string, so pass this to the server to get back refresh and access tokens
                                 const tokens = await this.stoService.verifyUserAuthMemo(username, signedKey);
 
+                                // Store the username, private key, access token and refresh token
                                 localStorage.setItem('username', username);
                                 localStorage.setItem('key', key);
                                 localStorage.setItem('se_access_token', tokens.accessToken);
