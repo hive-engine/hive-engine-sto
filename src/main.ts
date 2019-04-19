@@ -91,10 +91,16 @@ export async function configure(aurelia: Aurelia) {
     await store.dispatch(loading, false);
 
     if (PLATFORM.global.localStorage) {
-        if (PLATFORM.global.localStorage.getItem('username')) {
+        if (PLATFORM.global.localStorage.getItem('se_access_token')) {
             const username = PLATFORM.global.localStorage.getItem('username');
+            const accessToken = PLATFORM.global.localStorage.getItem('se_access_token');
+            const refreshToken = PLATFORM.global.localStorage.getItem('se_refresh_token');
 
-            await store.dispatch(login, username);
+            await store.dispatch(login, {
+                username,
+                accessToken,
+                refreshToken
+            });
         }
     }
     

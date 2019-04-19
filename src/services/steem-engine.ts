@@ -94,7 +94,7 @@ export class SteemEngine {
                         localStorage.setItem('se_access_token', tokens.accessToken);
                         localStorage.setItem('se_refresh_token', tokens.refreshToken);
 
-                        resolve(username);
+                        resolve({username, accessToken: tokens.accessToken, refreshToken: tokens.refreshToken});
                     }
                 });
             } else {
@@ -134,7 +134,7 @@ export class SteemEngine {
                                 localStorage.setItem('se_access_token', tokens.accessToken);
                                 localStorage.setItem('se_refresh_token', tokens.refreshToken);
 
-                                resolve(username);
+                                resolve({username, accessToken: tokens.accessToken, refreshToken: tokens.refreshToken});
                             } else {
                                 const toast = new ToastMessage();
     

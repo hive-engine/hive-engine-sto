@@ -13,10 +13,12 @@ export function loading(state: State, boolean: boolean) {
     return newState;
 }
 
-export async function login(state: State, user: any): Promise<State> {
+export async function login(state: State, user: { username: string, accessToken: string, refreshToken: string }): Promise<State> {
     let newState = { ...state };
 
-    newState.user.name = user;
+    newState.user.name = user.username;
+    newState.user.accessToken = user.accessToken;
+    newState.user.refreshToken = user.refreshToken;
     newState.user.loggedIn = true;
 
     return newState;
@@ -27,6 +29,8 @@ export async function logout(state: State): Promise<State> {
 
     newState.user = {
         name: '',
+        accessToken: '',
+        refreshToken: '',
         balances: [],
         buyBook: [],
         sellBook: [],

@@ -21,7 +21,7 @@ export class Signin {
     }
 
     async keychainSignIn() {
-        const username = await this.SE.login(this.username.trim().toLowerCase());
+        const { username, accessToken, refreshToken } = await this.SE.login(this.username.trim().toLowerCase()) as any;
 
         if (username) {
             const toast = new ToastMessage();
@@ -34,12 +34,12 @@ export class Signin {
 
             this.toast.success(toast);
 
-            await dispatchify(login)(username);
+            await dispatchify(login)({username, accessToken, refreshToken});
         }
     }
 
     async keySignIn() {
-        const username = await this.SE.login(this.username.trim().toLowerCase(), this.privateKey.trim());
+        const { username, accessToken, refreshToken } = await this.SE.login(this.username.trim().toLowerCase(), this.privateKey.trim()) as any;
         
         if (username) {
             const toast = new ToastMessage();
@@ -52,7 +52,7 @@ export class Signin {
 
             this.toast.success(toast);
 
-            await dispatchify(login)(username);
+            await dispatchify(login)({username, accessToken, refreshToken});
         }
     }
 }

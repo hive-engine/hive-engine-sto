@@ -9,10 +9,13 @@ export class StoService {
             config
                 .useStandardConfiguration()
                 .withBaseUrl(environment.NODE_API_URL)
-                .withDefaults({
-                    headers: {
-                        'Authorization': `Bearer ${localStorage.getItem('se_access_token')}`,
-                        'Content-Type': 'application/json'
+                .withInterceptor({
+                    request(message) {
+                        let token = localStorage.getItem('se_access_token') || null;
+
+                        message.headers.set('Authorization', `Bearer ${token}`);
+                        
+                        return message;
                     }
                 })
         });

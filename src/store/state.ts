@@ -6,6 +6,8 @@ import { Step1Model } from '../routes/account/kyc/step-1/step-1.model';
 export interface State {
   user: {
       name: string;
+      accessToken: string;
+      refreshToken: string;
       balances: any[];
       buyBook: any[];
       sellBook: any[];
@@ -41,6 +43,8 @@ export interface State {
 export const initialState: State = {
   user: {
       name: '',
+      accessToken: '',
+      refreshToken: '',
       balances: [],
       buyBook: [],
       sellBook: [],
