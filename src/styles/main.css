@@ -10,13 +10,13 @@ body > .container-fluid {
 .navbar-steem-engine .navbar-nav .nav-link,
 .navbar-steem-engine .navbar-nav .nav-link:visited,
 .navbar-steem-engine .navbar-nav .nav-link:active {
-    color: #7FA8CB;
-    font-size: 16px;
+    color: #FFF;
+    font-size: 20px;
     text-transform: uppercase;
 }
 
 .navbar-steem-engine .navbar-nav .nav-link.active {
-    color: #FFF;
+    color: #7FA8CB;
     font-weight: bold;
 }
 
