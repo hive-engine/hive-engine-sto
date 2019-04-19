@@ -17,7 +17,6 @@ body > .container-fluid {
 
 .navbar-steem-engine .navbar-nav .nav-link.active {
     color: #7FA8CB;
-    font-weight: bold;
 }
 
 .navbar-brand span {
