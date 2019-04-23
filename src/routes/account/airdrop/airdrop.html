@@ -1,3 +1,98 @@
 <template>
-    
+    <div class="container">
+        <div class="col-md-12">
+            <h2>${'Airdrop' & t}</h2>
+            <p if.bind="step == 1">Airdrop your Steem Engine token to other Steem users.</p>
+
+            <fieldset if.bind="step == 1">
+                <legend>Upload your CSV file</legend>
+
+                <template if.bind="!usersNotExisting.length">
+                    <div class="form-row mb-3">
+                        <input type="file" ref="fileInput" class="form-control">
+                    </div>
+            
+                    <div class="form-row">
+                        <button type="button" class="btn btn-primary" click.delegate="uploadCsv()" disabled.bind="!fileInput.files.length || userConfirmationInProgress">Upload CSV</button>
+                    </div>
+                </template>
+
+                <template if.bind="usersNotExisting.length">
+                    <h4>Some of the users in your provided CSV file do not exist.</h4>
+                    <p>We automatically removed the following users from your CSV file. If you're happy to proceed, please click the "Proceed" button below.</p>
+                    <ul>
+                        <li repeat.for="user of usersNotExisting">${user}</li>
+                    </ul>
+                    <div class="form-row">
+                        <button type="button" class="btn btn-primary" click.delegate="step = 2">${'Proceed' & t}</button>
+                    </div>
+                </template>
+            </fieldset>
+
+            <fieldset if.bind="step == 2">
+                <legend>Almost there...</legend>
+
+                <div class="form-row mb-3">
+                    <label>Enter a memo everyone will see in their wallet</label>
+                    <input type="text" value.bind="memoText" class="form-control">
+                </div>
+
+                <div class="form-row mb-3">
+                    <label>What is the symbol of the token being airdropped?</label>
+                    <input type="text" value.bind="tokenSymbol" class="form-control" placeholder="Eg. ENG">
+                </div>
+
+                <div class="form-row mb-3">
+                    <label>Please enter your token symbol precision</label>
+                    <input type="text" value.bind="symbolPrecision" class="form-control" placeholder="Eg. 3">
+                </div>
+
+                <div class="form-row">
+                    <button type="button" class="btn btn-primary" click.delegate="step = 3">${'Continue' & t}</button>
+                </div>
+            </fieldset>
+
+            <fieldset if.bind="step == 3">
+                <legend>Fees</legend>
+                <p>You will be asked to pay a fee of <strong>20 ENG</strong> before proceeding.</p>
+
+                <div class="form-row">
+                    <button type="button" click.delegate="payFee()" class="btn btn-primary">Pay 20 ENG</button>
+                </div>
+            </fieldset>
+
+            <fieldset if.bind="step == 4 && !airdropInProgress && !airdropComplete">
+                <legend>You're ready</legend>
+                <p>This is an irreversible process. All sales are final, this cannot be undone. Please double and triple everything in your CSV file is correct before proceeding.</p>
+
+                <div class="form-row mb-3">
+                    <label>Please enter your active key</label>
+                    <input type="text" value.bind="activeKey" class="form-control">
+                </div>
+
+                <div class="form-row mb-3">
+                    <label>Please type: AIRDROP into the field below to proceed</label>
+                    <input type="text" value.bind="confirmationText" class="form-control">
+                </div>
+
+                <div class="form-row">
+                    <button type="button" disabled.bind="confirmationText != 'AIRDROP'" click.delegate="runAirdrop()">${'Run Airdrop' & t}</button>
+                </div>
+            </fieldset>
+
+            <div if.bind="step == 4 && airdropInProgress || airdropComplete">
+                <template if.bind="airdropInProgress">
+                    <h4>Please wait...</h4>
+                    <p>Do not refresh this page or close the tab while the airdrop runs.</p>
+                </template>
+
+                <div class="progress-bar-container mb-5 mt-3">
+                    <progress min="0" max="${usersToAirDrop.length}" value="${completed}" class="mb-5 mt-3"></progress>
+                    <span class="progress-bar-container-value">${airdropPercentage}%</span>
+                </div>
+
+                <p if.bind="airdropComplete">Airdrop is complete. You can now close your browser and/or tab.</p>
+            </div>
+        </div>
+    </div>
 </template>
