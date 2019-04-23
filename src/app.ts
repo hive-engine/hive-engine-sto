@@ -142,6 +142,14 @@ export class App {
                 moduleId: PLATFORM.moduleName('./routes/account/kyc/investor-questionnaire'),
                 nav: false,
                 title: 'Investor Questionnaire'
+            },
+            {
+                route: 'account/airdrop',
+                name: 'accountAirdrop',
+                moduleId: PLATFORM.moduleName('./routes/account/airdrop/airdrop'),
+                nav: false,
+                auth: true,
+                title: 'Airdrop'
             }
         ]);
 
