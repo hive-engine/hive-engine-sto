@@ -4,7 +4,9 @@
     "module": "esnext",
     "skipLibCheck": true,
     "types": [
-      "jasmine"
+      "jasmine",
+      "jquery",
+      "papaparse"
     ],
     "removeComments": true,
     "downlevelIteration": true,
