@@ -20,8 +20,7 @@ export class Airdrop {
     private fileInput: HTMLInputElement;
     private memoText: string;
     private tokenSymbol: string;
-    private symbolPrecision: string;
-    private activeKey: string = '5K6K3Sy39Psr79bGXcxYQMuzXVn6nbYLonXvHLX5PepLEkUDMau';
+    private activeKey: string = '';
     private step = 1;
     private payloads = [[]];
         
