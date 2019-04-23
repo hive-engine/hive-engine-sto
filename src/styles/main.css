@@ -4,8 +4,17 @@ body {
 }
 
 body > .container-fluid {
-    margin-top: 90px;
+    min-height: calc(100vh - 216px);
+    padding-top: 90px;
 }
+
+html {
+    height: 100%;
+ }
+ 
+ body {
+    min-height: 100%;
+ }
 
 .navbar-steem-engine .navbar-nav .nav-link,
 .navbar-steem-engine .navbar-nav .nav-link:visited,

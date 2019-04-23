@@ -112,11 +112,12 @@ export class Airdrop {
             this.completed++;
             this.airdropPercentage = Math.round((this.completed / this.usersToAirDrop.length) * 100);
 
-            if (this.completed !== (this.usersToAirDrop.length - 1) && this.completed !== 0) {
-                await sleep(3200);
+            if (this.completed !== (this.usersToAirDrop.length) && this.completed !== 0) {
+                await sleep(3000);
             } else {
                 this.airdropInProgress = false;
                 this.airdropComplete = true;
+                this.airdropPercentage = 100;
             }
         }
     }
