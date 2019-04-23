@@ -23,6 +23,7 @@ export class Airdrop {
     private symbolPrecision: string;
     private activeKey: string = '5K6K3Sy39Psr79bGXcxYQMuzXVn6nbYLonXvHLX5PepLEkUDMau';
     private step = 1;
+    private payloads = [[]];
         
     private currentUser: string;
     private currentAmount: number;
@@ -90,29 +91,37 @@ export class Airdrop {
             const username = user[0].replace('@', '');
             const quantity = parseFloat(user[1].replace(',', '.'));
 
-            this.currentUser = username;
-            this.currentAmount = quantity;
-
             const payload = {
-                'contractName':'tokens',
-                'contractAction':'issue',
-                'contractPayload': {
-                    'symbol': `${this.tokenSymbol.toUpperCase()}`,
-                    'to': `${username}`,
-                    'quantity': `${quantity}`,
-                    'memo': this.memoText
+                contractName:'tokens',
+                contractAction:'issue',
+                contractPayload: {
+                    symbol: `${this.tokenSymbol.toUpperCase()}`,
+                    to: `${username}`,
+                    quantity: `${quantity}`,
+                    memo: this.memoText
                 }
             };
 
+            const lastPayloadSize = memorySizeOf(this.payloads[this.payloads.length - 1]);
+            const payloadSize = memorySizeOf(payload);
+
+            if (payloadSize + lastPayloadSize > MAX_PAYLOAD_SIZE) {
+                this.payloads.push([payload]);
+            } else {
+                this.payloads[this.payloads.length - 1].push(payload);
+            }        
+        }
+
+        for (let payload of this.payloads) {
             const required_auths = [localStorage.getItem('username')];
             const required_posting_auths = [];
 
             await steem.broadcast.customJsonAsync(this.activeKey, required_auths, required_posting_auths, STEEM_ENGINE_OP_ID, JSON.stringify(payload));
             
             this.completed++;
-            this.airdropPercentage = Math.round((this.completed / this.usersToAirDrop.length) * 100);
+            this.airdropPercentage = Math.round((this.completed / this.payloads.length) * 100);
 
-            if (this.completed !== (this.usersToAirDrop.length) && this.completed !== 0) {
+            if (this.completed !== (this.payloads.length) && this.completed !== 0) {
                 await sleep(3000);
             } else {
                 this.airdropInProgress = false;
@@ -145,3 +154,36 @@ async function parseCsv(file) {
 function sleep(milliseconds) {
     return new Promise(resolve => setTimeout(resolve, milliseconds));
 }
+
+// https://stackoverflow.com/questions/23318037/size-of-json-object-in-kbs-mbs
+function memorySizeOf(obj) {
+    var bytes = 0;
+
+    function sizeOf(obj) {
+        if(obj !== null && obj !== undefined) {
+            switch(typeof obj) {
+            case 'number':
+                bytes += 8;
+                break;
+            case 'string':
+                bytes += obj.length * 2;
+                break;
+            case 'boolean':
+                bytes += 4;
+                break;
+            case 'object':
+                var objClass = Object.prototype.toString.call(obj).slice(8, -1);
+                if(objClass === 'Object' || objClass === 'Array') {
+                    for(var key in obj) {
+                        if(!obj.hasOwnProperty(key)) continue;
+                        sizeOf(obj[key]);
+                    }
+                } else bytes += obj.toString().length * 2;
+                break;
+            }
+        }
+        return bytes;
+    };
+
+    return sizeOf(obj);
+};
