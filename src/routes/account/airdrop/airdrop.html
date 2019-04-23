@@ -49,7 +49,7 @@
 
             <fieldset if.bind="step == 3">
                 <legend>Fees</legend>
-                <p>You will be asked to pay a fee of <strong>20 ENG</strong> before proceeding.</p>
+                <p>This is an irreversible process. All sales are final, this cannot be undone. Please double and triple everything in your CSV file is correct before proceeding. The fee for issuing an airdrop is: <strong>20 ENG</strong>.</p>
 
                 <div class="form-row">
                     <button type="button" click.delegate="payFee()" class="btn btn-primary">Pay 20 ENG</button>
@@ -58,7 +58,6 @@
 
             <fieldset if.bind="step == 4 && !airdropInProgress && !airdropComplete">
                 <legend>You're ready</legend>
-                <p>This is an irreversible process. All sales are final, this cannot be undone. Please double and triple everything in your CSV file is correct before proceeding.</p>
 
                 <div class="form-row mb-3">
                     <label>Please enter your active key</label>
@@ -78,7 +77,7 @@
             <div if.bind="step == 4 && airdropInProgress || airdropComplete">
                 <template if.bind="airdropInProgress">
                     <h4>Please wait...</h4>
-                    <p>Do not refresh this page or close the tab while the airdrop runs.</p>
+                    <p>Do not refresh this page or close the tab while the airdrop runs. Total amount being distributed: <strong>${totalInPayload} ${tokenSymbol}</strong></p>
                 </template>
 
                 <div class="progress-bar-container mb-2 mt-3">

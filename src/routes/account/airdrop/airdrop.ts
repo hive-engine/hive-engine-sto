@@ -23,6 +23,7 @@ export class Airdrop {
     private activeKey: string = '';
     private step = 1;
     private payloads = [[]];
+    private totalInPayload = 0.0;
         
     private currentUser: string;
     private currentAmount: number;
@@ -110,6 +111,15 @@ export class Airdrop {
                 this.payloads[this.payloads.length - 1].push(payload);
             }        
         }
+
+        const accountsInPayload = [];
+
+        this.payloads.forEach(payload => {
+            payload.forEach(data => {
+                accountsInPayload.push(data.contractPayload.to);
+                this.totalInPayload += parseFloat(data.contractPayload.quantity);
+            });
+        });
 
         for (let payload of this.payloads) {
             const required_auths = [localStorage.getItem('username')];
