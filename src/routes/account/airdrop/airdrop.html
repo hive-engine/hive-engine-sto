@@ -70,7 +70,7 @@
                 </div>
 
                 <div class="form-row">
-                    <button type="button" disabled.bind="confirmationText != 'AIRDROP'" click.delegate="runAirdrop()">${'Run Airdrop' & t}</button>
+                    <button type="button" class="btn btn-primary" disabled.bind="confirmationText != 'AIRDROP'" click.delegate="runAirdrop()">${'Run Airdrop' & t}</button>
                 </div>
             </fieldset>
 
@@ -85,7 +85,7 @@
                     <span class="progress-bar-container-value">${airdropPercentage}%</span>
                 </div>
 
-                <p if.bind="airdropComplete">Airdrop is complete. You can now close your browser and/or tab.</p>
+                <p if.bind="airdropComplete">Airdrop is complete. You can now close your browser and/or tab.  Total amount distributed: <strong>${totalInPayload} ${tokenSymbol}</strong></p>
             </div>
         </div>
     </div>
