@@ -1,38 +1,53 @@
+import { BootstrapFormRenderer } from 'resources/bootstrap-form-renderer';
 import { SteemEngine } from 'services/steem-engine';
-import { autoinject } from 'aurelia-framework';
+import { autoinject, newInstance, computedFrom } from 'aurelia-framework';
 
 import steem from 'steem';
 
 import Papa from 'papaparse';
+import { ValidationController, ValidationControllerFactory, ValidationRules } from 'aurelia-validation';
 
 const STEEM_ENGINE_OP_ID = 'ssc-mainnet1';
 const MAX_PAYLOAD_SIZE = 8192;
 
 @autoinject()
 export class Airdrop {
-    private hasPaidEngFee = false;
-    private usersToAirDrop = [];
-    private usersNotExisting = [];
-    private userConfirmationInProgress = false;
-    private airdropInProgress = false;
-    private airdropComplete = false;
-    private completed: number = 0;
-    private fileInput: HTMLInputElement;
-    private memoText: string;
-    private tokenSymbol: string;
-    private activeKey: string = '';
-    private step = 1;
-    private payloads = [[]];
-    private totalInPayload = 0.0;
+    public hasPaidEngFee = false;
+    public usersToAirDrop = [];
+    public usersNotExisting = [];
+    public userConfirmationInProgress = false;
+    public airdropInProgress = false;
+    public airdropComplete = false;
+    public completed: number = 0;
+    public fileInput: HTMLInputElement;
+    public memoText: string;
+    public tokenSymbol: string;
+    public activeKey: string = '';
+    public step = 1;
+    public payloads = [[]];
+    public totalInPayload = 0.0;
         
-    private currentUser: string;
-    private currentAmount: number;
+    public currentUser: string;
+    public currentAmount: number;
 
-    private airdropPercentage = 0;
+    public airdropPercentage = 0;
+    public controller: ValidationController;
+    public renderer;
 
+    constructor(private controllerFactory: ValidationControllerFactory) {
+        this.controller = controllerFactory.createForCurrentScope();
 
-    constructor(private se: SteemEngine) {
+        this.renderer = new BootstrapFormRenderer();
 
+        this.controller.addRenderer(this.renderer);
+    }
+
+    async goToStep(step: number) {
+        const result = await this.controller.validate();
+
+        if (result.valid) {
+            this.step = step;
+        }
     }
 
     async uploadCsv() {
@@ -83,9 +98,27 @@ export class Airdrop {
         }
     }
 
+    @computedFrom('usersToAirDrop.length')
+    get usersBeingAirdropped() {
+        let finalAmount = 0.0;
+
+        this.usersToAirDrop.forEach(user => {
+            finalAmount += parseFloat(user[1].replace(',', '.'));
+        });
+
+        return finalAmount;
+    }
+
     async runAirdrop() {
         this.completed = 0;
         this.airdropInProgress = true;
+
+        const validation = await this.controller.validate();
+
+        if (!validation.valid) {
+            console.error('One or more required fields were not filled out');
+            return;
+        }
 
         for (const user of this.usersToAirDrop) {
             const username = user[0].replace('@', '');
@@ -159,6 +192,15 @@ async function parseCsv(file) {
         });
     });
 }
+
+ValidationRules
+    .ensure('memoText').required().withMessageKey('memoText')
+    .ensure('tokenSymbol').required().withMessageKey('tokenSymbol')
+    .when((obj: Airdrop) => obj.step === 2)
+    .ensure('activeKey').required().withMessageKey('activeKey')
+    .ensure('confirmationText').equals('AIRDROP').withMessageKey('confirmationText')
+    .when((obj: Airdrop) => obj.step === 4)
+    .on(Airdrop);
 
 function sleep(milliseconds) {
     return new Promise(resolve => setTimeout(resolve, milliseconds));

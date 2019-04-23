@@ -20,5 +20,9 @@
     "errorLoading": "There was an error loading the @{username} account.",
     "invalidPrivateKeyOrPassword": "Invalid private key or master password.",
     "errorSubmittedTransfer": "An error occurred submitting the transfer: {error}",
-    "name": "Please enter your name"
+    "name": "Please enter your name",
+    "memoText": "Please enter a memo",
+    "tokenSymbol": "Please enter the token symbol",
+    "activeKey": "Please enter your Steem active key",
+    "confirmationText": "Please enter AIRDROP to proceed"
 }

@@ -5,71 +5,82 @@
             <p if.bind="step == 1">Airdrop your Steem Engine token to other Steem users.</p>
 
             <fieldset if.bind="step == 1">
-                <legend>Upload your CSV file</legend>
+                <h6 class="mb-3" if.bind="!usersNotExisting.length">Upload your CSV file</h6>
+                <h6 class="mb-3" if.bind="usersNotExisting.length">Some of the users in your provided CSV file do not exist.</h6>
 
                 <template if.bind="!usersNotExisting.length">
-                    <div class="form-row mb-3">
-                        <input type="file" ref="fileInput" class="form-control">
+                    <div class="form-group mb-3">
+                        <input type="file" ref="fileInput" lass="form-control-file">
                     </div>
             
-                    <div class="form-row">
+                    <div class="form-group">
                         <button type="button" class="btn btn-primary" click.delegate="uploadCsv()" disabled.bind="!fileInput.files.length || userConfirmationInProgress">Upload CSV</button>
                     </div>
                 </template>
 
                 <template if.bind="usersNotExisting.length">
-                    <h4>Some of the users in your provided CSV file do not exist.</h4>
-                    <p>We automatically removed the following users from your CSV file. If you're happy to proceed, please click the "Proceed" button below.</p>
+                    <p>We automatically removed the following users from your CSV file because they are not valid Steem accounts. If you're happy to proceed, please click the "Proceed" button below.</p>
                     <ul>
                         <li repeat.for="user of usersNotExisting">${user}</li>
                     </ul>
-                    <div class="form-row">
-                        <button type="button" class="btn btn-primary" click.delegate="step = 2">${'Proceed' & t}</button>
+                    <div class="form-group">
+                        <button type="button" class="btn btn-primary" click.delegate="goToStep(2)">${'Proceed' & t}</button>
                     </div>
                 </template>
             </fieldset>
 
             <fieldset if.bind="step == 2">
-                <legend>Almost there...</legend>
+                <h6 class="mb-3">Almost there...</h6>
 
-                <div class="form-row mb-3">
+                <div class="form-group mb-3">
                     <label>Enter a memo everyone will see in their wallet</label>
-                    <input type="text" value.bind="memoText" class="form-control">
+                    <input type="text" value.bind="memoText & validate" class="form-control">
                 </div>
 
-                <div class="form-row mb-3">
+                <div class="form-group mb-3">
                     <label>What is the symbol of the token being airdropped?</label>
-                    <input type="text" value.bind="tokenSymbol" class="form-control" placeholder="Eg. ENG">
+                    <input type="text" value.bind="tokenSymbol & validate" class="form-control" placeholder="Eg. ENG">
                 </div>
 
-                <div class="form-row">
-                    <button type="button" class="btn btn-primary" click.delegate="step = 3">${'Continue' & t}</button>
+                <div class="form-group">
+                    <button type="button" class="btn btn-primary" click.delegate="goToStep(3)">${'Continue' & t}</button>
                 </div>
             </fieldset>
 
             <fieldset if.bind="step == 3">
-                <legend>Fees</legend>
+                <h6 class="mb-3">Fees</h6>
                 <p>This is an irreversible process. All sales are final, this cannot be undone. Please double and triple everything in your CSV file is correct before proceeding. The fee for issuing an airdrop is: <strong>20 ENG</strong>.</p>
 
-                <div class="form-row">
+                <h6>Are these details correct?</h6>
+
+                <ul>
+                    <li>Token Symbol: ${tokenSymbol}</li>
+                    <li>Accounts being airdropped: ${usersToAirDrop.length}</li>
+                    <li>Total amount being distributed: ${usersBeingAirdropped} ${tokenSymbol}</li>
+                </ul>
+
+                <p>If these details are correct, please proceed to paying the 20 ENG fee. You will need to have the Steem Keychain extension installed to do this.</p>
+
+                <div class="form-group">
                     <button type="button" click.delegate="payFee()" class="btn btn-primary">Pay 20 ENG</button>
                 </div>
             </fieldset>
 
             <fieldset if.bind="step == 4 && !airdropInProgress && !airdropComplete">
-                <legend>You're ready</legend>
+                <h6 class="mb-3">You're ready</h6>
+                <p>Filling out the active key and entering "AIRDROP" will initiate the airdrop process.</p>
 
-                <div class="form-row mb-3">
+                <div class="form-group mb-3">
                     <label>Please enter your active key</label>
-                    <input type="text" value.bind="activeKey" class="form-control">
+                    <input type="text" value.bind="activeKey & validate" class="form-control">
                 </div>
 
-                <div class="form-row mb-3">
+                <div class="form-group mb-3">
                     <label>Please type: AIRDROP into the field below to proceed</label>
-                    <input type="text" value.bind="confirmationText" class="form-control">
+                    <input type="text" value.bind="confirmationText & validate" class="form-control">
                 </div>
 
-                <div class="form-row">
+                <div class="form-group">
                     <button type="button" class="btn btn-primary" disabled.bind="confirmationText != 'AIRDROP'" click.delegate="runAirdrop()">${'Run Airdrop' & t}</button>
                 </div>
             </fieldset>
