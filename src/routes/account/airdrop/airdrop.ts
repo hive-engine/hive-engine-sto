@@ -59,14 +59,32 @@ export class Airdrop {
 
                 this.userConfirmationInProgress = true;
 
-                await forEach(this.usersToAirDrop, async (user, index) => {
+                let users = [[]];
+
+                this.usersToAirDrop.forEach(user => {
                     const username = user[0].replace('@', '');
 
-                    const res = await steem.api.getAccountsAsync([username]);
+                    const lastUserLength = users[users.length - 1].length;
 
-                    // User doesn't exist
-                    if (!res.length) {
-                        this.usersNotExisting.push(username);
+                    if (lastUserLength > MAX_ACCOUNTS_CHECK) {
+                        users.push([username]);
+                    } else {
+                        users[users.length - 1].push(username);
+                    }        
+                });
+
+                let checkedUsers = [];
+                await forEach(users, async (users, index) => {
+                    const res = await steem.api.getAccountsAsync(users);
+
+                    for (let user of res) {
+                        checkedUsers.push(user.name);
+                    }
+                });
+
+                this.usersToAirDrop.forEach((user, index) => {
+                    if (!checkedUsers.includes(user[0].replace('@', ''))) {
+                        this.usersNotExisting.push(user[0]);
                         this.usersToAirDrop.splice(index, 1);
                     }
                 });
