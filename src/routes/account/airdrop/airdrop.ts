@@ -186,9 +186,11 @@ export class Airdrop {
         this.payloads.forEach(payload => {
             payload.forEach(data => {
                 accountsInPayload.push(data.contractPayload.to);
-                this.totalInPayload += parseFloat(data.contractPayload.quantity);
+                this.totalInPayload += parseFloat(data.contractPayload.quantity) as any;
             });
         });
+
+        this.totalInPayload = this.totalInPayload.toFixed(this.currentToken.precision);
 
         for (let payload of this.payloads) {
             const required_auths = [localStorage.getItem('username')];
