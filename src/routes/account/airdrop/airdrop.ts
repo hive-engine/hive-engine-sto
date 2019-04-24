@@ -125,23 +125,24 @@ export class Airdrop {
                 steem_keychain.requestSendToken(localStorage.getItem('username'), 'steem-eng', '0.001', 'airdrop-fee', 'ENG', response => {
                     if (response.success) {
                         this.hasPaidEngFee = true;
-                    this.step = 4;
-
-                    localStorage.setItem('airdrop_transaction_id', response.result.id);
-                }
-            });
+                        this.step = 4;
+    
+                        localStorage.setItem('airdrop_transaction_id', response.result.id);
+                    }
+                });
+            }
         }
     }
 
     @computedFrom('usersToAirDrop.length')
-    get usersBeingAirdropped() {
-        let finalAmount = 0.0;
+    get totalAmountBeingAirdropped() {
+        let finalAmount = 0.000;
 
         this.usersToAirDrop.forEach(user => {
             finalAmount += parseFloat(user[1].replace(',', '.'));
         });
 
-        return finalAmount;
+        return finalAmount.toFixed(this.currentToken.precision);
     }
 
     async runAirdrop() {
