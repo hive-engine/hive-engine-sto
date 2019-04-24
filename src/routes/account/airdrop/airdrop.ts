@@ -155,7 +155,9 @@ export class Airdrop {
         let finalAmount = 0.000;
 
         this.usersToAirDrop.forEach(user => {
-            finalAmount += parseFloat(user[1].replace(',', '.'));
+            if (user[1]) {
+                finalAmount += parseFloat(user[1].replace(',', '.'));
+            }
         });
 
         return finalAmount.toFixed(this.currentToken.precision);
@@ -173,28 +175,30 @@ export class Airdrop {
         }
 
         for (const user of this.usersToAirDrop) {
-            const username = user[0].replace('@', '');
-            const quantity = parseFloat(user[1].replace(',', '.'));
-
-            const payload = {
-                contractName:'tokens',
-                contractAction:'issue',
-                contractPayload: {
-                    symbol: `${this.tokenSymbol.toUpperCase()}`,
-                    to: `${username}`,
-                    quantity: `${quantity}`,
-                    memo: this.memoText
-                }
-            };
-
-            const lastPayloadSize = memorySizeOf(this.payloads[this.payloads.length - 1]);
-            const payloadSize = memorySizeOf(payload);
-
-            if (payloadSize + lastPayloadSize > MAX_PAYLOAD_SIZE) {
-                this.payloads.push([payload]);
-            } else {
-                this.payloads[this.payloads.length - 1].push(payload);
-            }        
+            if (user[1]) {
+                const username = user[0].replace('@', '');
+                const quantity = parseFloat(user[1].replace(',', '.'));
+    
+                const payload = {
+                    contractName:'tokens',
+                    contractAction:'issue',
+                    contractPayload: {
+                        symbol: `${this.tokenSymbol.toUpperCase()}`,
+                        to: `${username}`,
+                        quantity: `${quantity}`,
+                        memo: this.memoText
+                    }
+                };
+    
+                const lastPayloadSize = memorySizeOf(this.payloads[this.payloads.length - 1]);
+                const payloadSize = memorySizeOf(payload);
+    
+                if (payloadSize + lastPayloadSize > MAX_PAYLOAD_SIZE) {
+                    this.payloads.push([payload]);
+                } else {
+                    this.payloads[this.payloads.length - 1].push(payload);
+                }    
+            }    
         }
 
         const accountsInPayload = [];
