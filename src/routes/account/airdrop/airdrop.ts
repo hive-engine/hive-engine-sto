@@ -1,6 +1,6 @@
 import { BootstrapFormRenderer } from 'resources/bootstrap-form-renderer';
 import { SteemEngine } from 'services/steem-engine';
-import { autoinject, newInstance, computedFrom } from 'aurelia-framework';
+import { autoinject, computedFrom } from 'aurelia-framework';
 
 import steem from 'steem';
 
@@ -9,6 +9,7 @@ import { ValidationController, ValidationControllerFactory, ValidationRules } fr
 
 const STEEM_ENGINE_OP_ID = 'ssc-mainnet1';
 const MAX_PAYLOAD_SIZE = 8192;
+const MAX_ACCOUNTS_CHECK = 999;
 
 @autoinject()
 export class Airdrop {
@@ -30,11 +31,14 @@ export class Airdrop {
     public currentUser: string;
     public currentAmount: number;
 
+    public tokenExists = true;
+    public currentToken;
+
     public airdropPercentage = 0;
     public controller: ValidationController;
     public renderer;
 
-    constructor(private controllerFactory: ValidationControllerFactory) {
+    constructor(private controllerFactory: ValidationControllerFactory, private se: SteemEngine) {
         this.controller = controllerFactory.createForCurrentScope();
 
         this.renderer = new BootstrapFormRenderer();
@@ -46,6 +50,18 @@ export class Airdrop {
         const result = await this.controller.validate();
 
         if (result.valid) {
+            if (step === 3) {
+                const token = await this.se.findToken(this.tokenSymbol);
+
+                if (token) {
+                    this.tokenExists = true;
+                    this.currentToken = token;
+                } else {
+                    this.tokenExists = false;
+                    return;
+                }
+            }
+
             this.step = step;
         }
     }
@@ -105,9 +121,10 @@ export class Airdrop {
     payFee() {
         // User hasn't already paid a fee
         if (!this.hasPaidEngFee) {
-            steem_keychain.requestSendToken(localStorage.getItem('username'), 'steem-eng', '0.001', 'airdrop-fee', 'ENG', response => {
-                if (response.success) {
-                    this.hasPaidEngFee = true;
+            if (this.currentToken) {
+                steem_keychain.requestSendToken(localStorage.getItem('username'), 'steem-eng', '0.001', 'airdrop-fee', 'ENG', response => {
+                    if (response.success) {
+                        this.hasPaidEngFee = true;
                     this.step = 4;
 
                     localStorage.setItem('airdrop_transaction_id', response.result.id);
