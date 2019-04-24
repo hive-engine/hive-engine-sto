@@ -26,7 +26,7 @@ export class Airdrop {
     public activeKey: string = '';
     public step = 1;
     public payloads = [[]];
-    public totalInPayload: string | number = 0.00;
+    public totalInPayload: any = 0.00;
         
     public currentUser: string;
     public currentAmount: number;
@@ -193,10 +193,10 @@ export class Airdrop {
         this.payloads.forEach(payload => {
             payload.forEach(data => {
                 accountsInPayload.push(data.contractPayload.to);
-                this.totalInPayload += parseFloat(data.contractPayload.quantity) as any;
+                this.totalInPayload += parseFloat(data.contractPayload.quantity);
             });
         });
-
+        
         this.totalInPayload = this.totalInPayload.toFixed(this.currentToken.precision);
 
         for (let payload of this.payloads) {

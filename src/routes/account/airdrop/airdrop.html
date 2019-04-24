@@ -8,6 +8,8 @@
                 <h6 class="mb-3" if.bind="!usersNotExisting.length">Upload your CSV file</h6>
                 <h6 class="mb-3" if.bind="usersNotExisting.length">Some of the users in your provided CSV file do not exist.</h6>
 
+                <p if.bind="!usersNotExisting.length">Your CSV file must have each account being airdropped on a new line in the following format: <code>@username,1234</code>. An example CSV file can be found <a href="https://raw.githubusercontent.com/Vheissu/steem-engine-sto/master/airdrop-example.csv" target="_blank">here</a>.</p>
+
                 <template if.bind="!usersNotExisting.length">
                     <div class="form-group mb-3">
                         <input type="file" ref="fileInput" lass="form-control-file">
