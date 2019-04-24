@@ -129,7 +129,7 @@ export class Airdrop {
         // User hasn't already paid a fee
         if (!this.hasPaidEngFee) {
             if (this.currentToken) {
-                steem_keychain.requestSendToken(localStorage.getItem('username'), 'steem-eng', '0.001', 'airdrop-fee', 'ENG', response => {
+                steem_keychain.requestSendToken(localStorage.getItem('username'), 'steem-eng', '1.000', 'airdrop-fee', 'ENG', response => {
                     if (response.success) {
                         this.hasPaidEngFee = true;
                         this.step = 4;
