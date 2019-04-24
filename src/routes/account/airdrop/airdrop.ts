@@ -26,12 +26,13 @@ export class Airdrop {
     public activeKey: string = '';
     public step = 1;
     public payloads = [[]];
-    public totalInPayload = 0.0;
+    public totalInPayload: string | number = 0.00;
         
     public currentUser: string;
     public currentAmount: number;
 
     public tokenExists = true;
+    public tokenValidationInProgress = false;
     public currentToken;
 
     public airdropPercentage = 0;
@@ -51,14 +52,20 @@ export class Airdrop {
 
         if (result.valid) {
             if (step === 3) {
-                const token = await this.se.findToken(this.tokenSymbol);
+                try {
+                    this.tokenValidationInProgress = true;
+                    
+                    const token = await this.se.findToken(this.tokenSymbol);
 
-                if (token) {
-                    this.tokenExists = true;
-                    this.currentToken = token;
-                } else {
-                    this.tokenExists = false;
-                    return;
+                    if (token) {
+                        this.tokenExists = true;
+                        this.currentToken = token;
+                    } else {
+                        this.tokenExists = false;
+                        return;
+                    }
+                } finally {
+                    this.tokenValidationInProgress = false;
                 }
             }
 
