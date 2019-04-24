@@ -5,14 +5,17 @@
             <p if.bind="step == 1">Airdrop your Steem Engine token to other Steem users.</p>
 
             <fieldset if.bind="step == 1">
-                <h6 class="mb-3" if.bind="!usersNotExisting.length">Upload your CSV file</h6>
-                <h6 class="mb-3" if.bind="usersNotExisting.length">Some of the users in your provided CSV file do not exist.</h6>
+                <h6 class="mb-3" if.bind="!usersNotExisting.length">Add Users</h6>
+                <h6 class="mb-3" if.bind="usersNotExisting.length">Some of the users you provided do not exist.</h6>
 
-                <p if.bind="!usersNotExisting.length">Your CSV file must have each account being airdropped on a new line in the following format: <code>@username,1234</code>. An example CSV file can be found <a href="https://raw.githubusercontent.com/Vheissu/steem-engine-sto/master/airdrop-example.csv" target="_blank">here</a>.</p>
+                <p if.bind="!usersNotExisting.length && uploadMode == 'file'">Your CSV file must have each account being airdropped on a new line in the following format: <code>@username,1234</code>. An example CSV file can be found <a href="https://raw.githubusercontent.com/Vheissu/steem-engine-sto/master/airdrop-example.csv" target="_blank">here</a>.</p>
+                
+                <p if.bind="!usersNotExisting.length && uploadMode != 'manual'"><strong>Want to manually copy/paste your users in?</strong> <a href="javascript:void(0);" click.delegate="uploadMode = 'manual'">click here</a></p>
+                <p if.bind="!usersNotExisting.length && uploadMode != 'file'"><strong>Want to upload a CSV file instead?</strong> <a href="javascript:void(0);" click.delegate="uploadMode = 'file'">click here</a></p>
 
-                <template if.bind="!usersNotExisting.length">
+                <template if.bind="!usersNotExisting.length && uploadMode == 'file'">
                     <div class="form-group mb-3">
-                        <input type="file" ref="fileInput" lass="form-control-file">
+                        <input type="file" ref="fileInput" class="form-control-file">
                     </div>
             
                     <div class="form-group">
@@ -23,8 +26,21 @@
                     </div>
                 </template>
 
+                <template if.bind="!usersNotExisting.length && uploadMode == 'manual'">
+                    <p>Please paste your users in the following CSV format a new line per user: <code>@username,1234</code></p>
+                    <div class="form-group mb-3">
+                        <textarea class="form-control" value.bind="manualCsv" rows="6" placeholder.bind="csvExample"></textarea>
+                    </div>
+                    <div class="form-group">
+                        <button type="button" class="btn btn-primary" click.delegate="uploadCsv()" disabled.bind="!manualCsv.length || userConfirmationInProgress">
+                            <span if.bind="!userConfirmationInProgress">${'Verify Users' & t}</span>
+                            <span class="spinner-border spinner-border-sm" role="status" aria-hidden="true" else></span>
+                        </button>
+                    </div>
+                </template>
+
                 <template if.bind="usersNotExisting.length">
-                    <p>We automatically removed the following users from your CSV file because they are not valid Steem accounts. If you're happy to proceed, please click the "Proceed" button below.</p>
+                    <p>We automatically removed the following users you provided because they are not valid Steem accounts. If you're happy to proceed, please click the "Proceed" button below.</p>
                     <ul>
                         <li repeat.for="user of usersNotExisting">${user}</li>
                     </ul>

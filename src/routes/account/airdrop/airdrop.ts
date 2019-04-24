@@ -39,6 +39,15 @@ export class Airdrop {
     public controller: ValidationController;
     public renderer;
 
+    public uploadMode = 'file';
+    public manualCsv;
+
+    private csvExample = `@inertia,56
+@aggroed,21
+@yabapmatt,69
+@beggars,100
+@fdskjflk,232`;
+
     constructor(private controllerFactory: ValidationControllerFactory, private se: SteemEngine) {
         this.controller = controllerFactory.createForCurrentScope();
 
@@ -75,7 +84,7 @@ export class Airdrop {
 
     async uploadCsv() {
         try {
-            const results = await parseCsv(this.fileInput.files[0]) as any;
+            const results = this.uploadMode === 'file' ? await parseCsv(this.fileInput.files[0]) as any : await parseCsv(this.manualCsv) as any;
 
             if (results.data) {
                 this.usersToAirDrop = results.data;
