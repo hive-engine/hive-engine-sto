@@ -14,7 +14,10 @@
                     </div>
             
                     <div class="form-group">
-                        <button type="button" class="btn btn-primary" click.delegate="uploadCsv()" disabled.bind="!fileInput.files.length || userConfirmationInProgress">Upload CSV</button>
+                        <button type="button" class="btn btn-primary" click.delegate="uploadCsv()" disabled.bind="!fileInput.files.length || userConfirmationInProgress">
+                            <span if.bind="!userConfirmationInProgress">${'Upload CSV' & t}</span>
+                            <span class="spinner-border spinner-border-sm" role="status" aria-hidden="true" else></span>
+                        </button>
                     </div>
                 </template>
 
@@ -24,7 +27,9 @@
                         <li repeat.for="user of usersNotExisting">${user}</li>
                     </ul>
                     <div class="form-group">
-                        <button type="button" class="btn btn-primary" click.delegate="goToStep(2)">${'Proceed' & t}</button>
+                        <button type="button" class="btn btn-primary" click.delegate="goToStep(2)">
+                            ${'Proceed' & t}
+                        </button>
                     </div>
                 </template>
             </fieldset>
@@ -45,7 +50,10 @@
                 <div class="alert alert-danger" if.bind="!tokenExists">The token you entered doesn't not exist. Please check the symbol provide is valid and contains no spaces or missing characters.</div>
 
                 <div class="form-group">
-                    <button type="button" class="btn btn-primary" click.delegate="goToStep(3)">${'Continue' & t}</button>
+                    <button type="button" class="btn btn-primary" click.delegate="goToStep(3)">
+                        <span if.bind="!tokenValidationInProgress">${'Validate & Continue' & t}</span>
+                        <span class="spinner-border spinner-border-sm" role="status" aria-hidden="true" else></span>
+                    </button>
                 </div>
             </fieldset>
 
@@ -64,7 +72,7 @@
                 <p>If these details are correct, please proceed to paying the 20 ENG fee. You will need to have the Steem Keychain extension installed to do this.</p>
 
                 <div class="form-group">
-                    <button type="button" click.delegate="payFee()" class="btn btn-primary">Pay 20 ENG</button>
+                    <button type="button" click.delegate="payFee()" class="btn btn-primary">${'Pay 20 ENG' & t}</button>
                 </div>
             </fieldset>
 
@@ -98,7 +106,8 @@
                     <span class="progress-bar-container-value">${airdropPercentage}%</span>
                 </div>
 
-                <p if.bind="airdropComplete">Airdrop is complete. You can now close your browser and/or tab.  Total amount distributed: <strong>${totalInPayload} ${tokenSymbol}</strong></p>
+                <p if.bind="airdropComplete">Airdrop is complete. You can now close your browser and/or tab.</p>
+                <p if.bind="airdropComplete">Total amount distributed: <strong>${totalInPayload} ${tokenSymbol}</strong></p>
             </div>
         </div>
     </div>
