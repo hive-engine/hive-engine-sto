@@ -1,5 +1,5 @@
 import { PLATFORM } from 'aurelia-pal';
-import { BootstrapFormRenderer } from './../../../resources/bootstrap-form-renderer';
+import { BootstrapFormRenderer } from 'resources/bootstrap-form-renderer';
 import { DialogController } from 'aurelia-dialog';
 import { autoinject, lazy, newInstance, useView } from 'aurelia-framework';
 import { HttpClient, json } from 'aurelia-fetch-client';
