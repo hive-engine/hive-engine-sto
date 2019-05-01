@@ -216,6 +216,10 @@ body {
     font-size: 20px;
     font-family: 'Open Sans', sans-serif;
   }
+
+  .dropdown-menu .dropdown-item {
+      color: inherit;
+  }
   
   .btn {
     font-family: 'Nunito', sans-serif;

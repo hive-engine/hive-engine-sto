@@ -38,7 +38,7 @@ export class App {
             AuthorizeStep.loggedIn = state.user.loggedIn;
           }
         });
-      }
+    }
 
     // bind() {
     //     this.stateSubscription = this.store.state.pipe(pluck('steemPrice')).subscribe(price => {
@@ -96,16 +96,9 @@ export class App {
             {
                 route: 'launch',
                 name: 'launch',
-                moduleId: PLATFORM.moduleName('./routes/launch/launch'),
+                moduleId: PLATFORM.moduleName('./routes/launch/index'),
                 nav: true,
                 title: 'Launch'
-            },
-            {
-                route: 'state-costs',
-                name: 'stateCosts',
-                moduleId: PLATFORM.moduleName('./routes/launch/state-costs'),
-                nav: false,
-                title: 'State Costs'
             },
             {
                 route: 'pricing-enquire',
@@ -114,42 +107,13 @@ export class App {
                 nav: false,
                 title: 'Pricing Enquire'
             },
-            // {
-            //     route: 'account',
-            //     name: 'account',
-            //     moduleId: PLATFORM.moduleName('./routes/account/account'),
-            //     nav: true,
-            //     auth: true,
-            //     title: 'Account'
-            // },
             {
-                route: 'account/kyc',
-                name: 'accountKyc',
-                moduleId: PLATFORM.moduleName('./routes/account/kyc/landing'),
-                nav: false,
-                title: 'Kyc'
-            },
-            {
-                route: 'account/profile',
-                name: 'accountProfile',
-                moduleId: PLATFORM.moduleName('./routes/account/kyc/investor-questionnaire'),
-                nav: false,
-                title: 'Account Profile'
-            },
-            {
-                route: 'account/kyc-questionnaire',
-                name: 'accountKycQuestionnaire',
-                moduleId: PLATFORM.moduleName('./routes/account/kyc/investor-questionnaire'),
-                nav: false,
-                title: 'Investor Questionnaire'
-            },
-            {
-                route: 'account/airdrop',
-                name: 'accountAirdrop',
-                moduleId: PLATFORM.moduleName('./routes/account/airdrop/airdrop'),
-                nav: false,
+                route: 'account',
+                name: 'account',
+                moduleId: PLATFORM.moduleName('./routes/account/index'),
+                nav: true,
                 auth: true,
-                title: 'Airdrop'
+                title: 'Account'
             }
         ]);
 

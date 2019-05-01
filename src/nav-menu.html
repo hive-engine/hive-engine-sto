@@ -1,0 +1,4 @@
+<template bindable="navigation, user">
+    <a class="nav-item nav-link ${row.isActive ? 'active' : ''}" repeat.for="row of navigation  | authFilter: user.loggedIn" href.bind="row.href">${row.title & t}</a>
+    <nav-menu if.bind="navigation.navigation" navigation.bind="navigation.navigation"></nav-menu>
+</template>

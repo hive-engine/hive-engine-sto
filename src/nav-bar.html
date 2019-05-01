@@ -1,4 +1,5 @@
 <template>
+    <require from="./nav-menu.html"></require>
     <nav class="navbar navbar-dark navbar-expand-lg navbar-steem-engine fixed-top">
         <a class="navbar-brand" route-href="route: home;"><img src="images/steem-engine_logo-horizontal.svg"> <span>STO</span></a>
         <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
@@ -11,7 +12,9 @@
                 <a class="nav-item nav-link" href="https://steem-engine.com/?p=tokens">${'Tokens' & t}</a>
                 <a class="nav-item nav-link" href="https://steem-engine.com/?p=market&t=ENG">${'Market' & t}</a>
                 <a class="nav-item nav-link" href="https://steem-engine.com/?p=faq">${'FAQ' & t}</a>
-                <a class="nav-item nav-link ${row.isActive ? 'active' : ''}" repeat.for="row of router.navigation  | authFilter: user.loggedIn" href.bind="row.href">${row.title & t}</a>
+
+                <nav-menu containerless navigation.bind="router.navigation" user.bind="user"></nav-menu>
+                
                 <a class="nav-item nav-link" href="https://bloks.xyz/" target="_blank">${'Explorer' & t}</a>
 
                 <button id="btnSignIn" class="btn" if.bind="!user.loggedIn" click.delegate="login()" style="margin-left: 50px;">${'SIGN IN' & t}</button>
