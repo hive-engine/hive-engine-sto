@@ -45,12 +45,12 @@ export class ScotBot {
             if (this.router.parent) {
                 const routes = this.router.navigation.map(n => n);
                 
-                (this.router.parent.navigation as any).navigation = [  ...routes ];
+                (this.router.parent.navigation as any).navigation = routes;
             }
         });
     }
 
-    canDeactivate() {
+    deactivate() {
         (this.router.parent.navigation as any).navigation = null;
         this.subscription.dispose();
     }
