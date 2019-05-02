@@ -13,12 +13,28 @@ export class ScotBot {
     }
 
     public configureRouter(config: RouterConfiguration, router: Router) {
-        config.title = 'Launch';
-
         config.map([
-            { route: ['', 'initialize'], name: 'initialize', moduleId: PLATFORM.moduleName('./routes/initialize'), nav: true, title: 'Initialize' },
-            { route: 'settings', name: 'settings', moduleId: PLATFORM.moduleName('./routes/settings'), nav: true, title: 'Settings' },
-            { route: 'custom-website', name: 'customWebsite', moduleId: PLATFORM.moduleName('./routes/custom-website'), nav: true, title: 'Custom Website' },
+            { 
+                route: ['', 'initialize'], 
+                name: 'initialize', 
+                moduleId: PLATFORM.moduleName('./routes/initialize'), 
+                nav: true, 
+                title: 'Initialize' 
+            },
+            { 
+                route: 'settings', 
+                name: 'settings', 
+                moduleId: PLATFORM.moduleName('./routes/settings'), 
+                nav: true, 
+                title: 'Settings' 
+            },
+            { 
+                route: 'custom-website', 
+                name: 'customWebsite', 
+                moduleId: PLATFORM.moduleName('./routes/custom-website'), 
+                nav: true, 
+                title: 'Custom Website' 
+            },
         ]);
 
         this.router = router;
