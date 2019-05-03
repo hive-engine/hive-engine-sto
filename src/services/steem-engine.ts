@@ -202,8 +202,8 @@ export class SteemEngine {
         }
     }
 
-    async loadBalances(account: string) {
-        return await this.ssc.find('tokens', 'balances', { account: account }, 1000, 0, '', false);
+    async loadBalances(account: string, symbol?: string) {
+        return await this.ssc.find('tokens', 'balances', { account: account, symbol }, 1000, 0, '', false);
     }
 
     async loadUserTokens(account: string) {

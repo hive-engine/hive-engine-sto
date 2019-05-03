@@ -7,12 +7,16 @@ const FEE_ACCOUNT = 'steemsc';
 const FEE_ACCOUNT_PUBLIC_KEY = 'STM68QuR591BeretgKsf93Cjcr3nzSJejjoGsYNaTZZUoPAgyzWAZ';
 
 import steem from 'steem';
+import environment from 'environment';
 
 @autoinject()
 export class Initialize {
     private userActiveKey: string;
     private steemUsername = 'beggars';
     private tokenSymbol;
+    private environment = environment;
+
+    private balance;
     private tokens = [];
 
     private controller: ValidationController;
@@ -29,6 +33,14 @@ export class Initialize {
     async activate() {
         const user = localStorage.getItem('username');
 
+        try {
+            const balance = await this.se.loadBalances(user, environment.NATIVE_TOKEN);
+
+            if (balance[0]) {
+                this.balance = parseFloat(balance[0].balance).toFixed(3);
+            }
+        } catch { /* none */ }
+        
         this.tokens = await this.se.loadUserTokens(user);
     }
 
