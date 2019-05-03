@@ -135,18 +135,15 @@ export class Airdrop {
     }
 
     payFee() {
-        // User hasn't already paid a fee
-        if (!this.hasPaidEngFee) {
-            if (this.currentToken) {
-                steem_keychain.requestSendToken(localStorage.getItem('username'), 'steem-eng', '1.000', 'airdrop-fee', 'ENG', response => {
-                    if (response.success) {
-                        this.hasPaidEngFee = true;
-                        this.step = 4;
-    
-                        localStorage.setItem('airdrop_transaction_id', response.result.id);
-                    }
-                });
-            }
+        if (this.currentToken) {
+            steem_keychain.requestSendToken(localStorage.getItem('username'), 'steem-eng', '20.000', 'airdrop-fee', 'ENG', response => {
+                if (response.success) {
+                    this.hasPaidEngFee = true;
+                    this.step = 4;
+
+                    localStorage.setItem('airdrop_transaction_id', response.result.id);
+                }
+            });
         }
     }
 
