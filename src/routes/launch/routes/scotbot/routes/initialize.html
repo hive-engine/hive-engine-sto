@@ -1,3 +1,27 @@
 <template>
-    
+    <div class="container launch-header">
+        <div class="row">
+            <div class="col-md-12">
+                <h1>Scotbot Initialization</h1>
+                <div class="row">
+                    <p class="col-md-9">Want to enable SCOT functionality on your Steem Engine token? Begin the process here.</p>
+                </div>
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col-md-10">
+                <p>The total cost for setting up Scotbot is <strong>1000 ENG</strong>. Ongoing monthly costs will be <strong>1 ENG</strong> per active account per month.</p>
+                <p>This is step one of the initialisation process. We will require your active key and a payment of <strong>500 ENG</strong>. You will pay the other <strong>500 ENG</strong> when you first configure the Scotbot.</p>
+                <form>
+                    <div class="form-group">
+                        <label>${'Active Key' & t}</label>
+                        <input type="text" class="form-control" value.bind="userActiveKey">
+                    </div>
+
+                    <button type="button" class="btn btn-primary btn-sm" click.delegate="sendInitialEngFeeWithKey()">Pay 500 ENG</button>
+                </form>
+            </div>
+        </div>
+    </div>
 </template>
