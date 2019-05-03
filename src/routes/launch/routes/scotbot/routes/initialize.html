@@ -16,10 +16,20 @@
                 <form>
                     <div class="form-group">
                         <label>${'Active Key' & t}</label>
-                        <input type="text" class="form-control" value.bind="userActiveKey">
+                        <input type="text" class="form-control" value.bind="userActiveKey & validate:controller">
                     </div>
 
-                    <button type="button" class="btn btn-primary btn-sm" click.delegate="sendInitialEngFeeWithKey()">Pay 500 ENG</button>
+                    <div class="form-group mb-3">
+                        <label>${'Choose your token' & t}</label>
+                        <select class="form-control" value.bind="tokenSymbol & validate:controller">
+                            <option value="">Please select a token</option>
+                            <option repeat.for="token of tokens">${token.symbol & oneTime}</option>
+                        </select>
+                    </div>
+
+                    <div class="mb-3">
+                        <button type="button" class="btn btn-primary btn-sm" click.delegate="sendInitialEngFeeWithKey()">Pay 500 ENG</button>
+                    </div>
                 </form>
             </div>
         </div>
