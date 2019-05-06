@@ -1,3 +1,40 @@
 <template>
-    
+    <div class="container launch-header">
+        <div class="row">
+            <div class="col-md-12">
+                <h1>Scotbot Settings</h1>
+                <div class="row">
+                    <p class="col-md-9">Complete the setup of your ScotBot or change settings for an already created Scotbot here.</p>
+                </div>
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col-md-10">
+                <p>If this is the first time you're setting up your Scotbot, you will be asked to pay the remaining 500 ENG fee.</p>
+                <p><strong>Your balance:</strong> ${balance & oneTime} ${environment.NATIVE_TOKEN & oneTime}</p>
+
+                <div class="alert alert-danger" role="alert" if.bind="balance < 1000">You do not have 1000 ENG tokens required to setup the Scotbot.</div>
+
+                <form>
+                    <div class="form-group">
+                        <label>${'Active Key' & t}</label>
+                        <input type="text" class="form-control" value.bind="userActiveKey & validate:controller" disabled.bind="balance < 1000">
+                    </div>
+
+                    <div class="form-group mb-3">
+                        <label>${'Choose your token' & t}</label>
+                        <select class="form-control" value.bind="tokenSymbol & validate:controller" disabled.bind="balance < 1000">
+                            <option value="">Please select a token</option>
+                            <option repeat.for="token of tokens">${token.symbol & oneTime}</option>
+                        </select>
+                    </div>
+
+                    <div class="mb-5">
+                        <button type="button" class="btn btn-primary btn-sm" click.delegate="sendInitialEngFeeWithKey()" disabled.bind="balance < 1000">Pay 500 ENG</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
 </template>
