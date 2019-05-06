@@ -217,7 +217,7 @@ export class SteemEngine {
     async loadTokens() {
         return new Promise((resolve, reject) => {
             this.ssc.find('tokens', 'tokens', { }, 1000, 0, [], (err, result) => {
-                let tokens = result;
+                let tokens = result.filter(t => !environment.DISABLED_TOKENS.includes(t.symbol));
     
                 this.ssc.find('market', 'metrics', { }, 1000, 0, '', false).then(async (metrics) => {
                     tokens.forEach(token => {
