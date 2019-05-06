@@ -12,7 +12,7 @@ export default {
     NODE_API_URL: 'http://localhost:3000/v1/',
     SCOT_API_URL: 'http://54.91.228.37/api/',
 	NATIVE_TOKEN: 'SSC',
-	STEEMP_ACCOUNT: 'steemsc',
+    STEEMP_ACCOUNT: 'steemsc',
 	PEGGED_TOKEN: 'STEEMP',
 	PEGGED_TOKENS: [
 		{
@@ -35,5 +35,10 @@ export default {
 			symbol: 'DOGE',
 			pegged_token_symbol: 'DOGEP'
 		}
-	]
+    ],
+    SCOTBOT: {
+        FEE_ACCOUNT: 'steemsc',
+        FEE_AMOUNT: '0.001',
+        PUBLIC_KEY: 'STM68QuR591BeretgKsf93Cjcr3nzSJejjoGsYNaTZZUoPAgyzWAZ'
+    }
 } as any;

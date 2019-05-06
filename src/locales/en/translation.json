@@ -75,5 +75,6 @@
         "priorInvestmentExperienceOption6": " Other types of investments not mentioned in any of the previous categories (please describe)"
     },
     "signinSuccess": "You have been successfully signed in",
-    "tokensSent": "{quantity} {symbol} Tokens sent to @{to}"
+    "tokensSent": "{quantity} {symbol} Tokens sent to @{to}",
+    "initializeSuccess": "Scotbot successfully initialized and 500 ENG fee paid."
 }
