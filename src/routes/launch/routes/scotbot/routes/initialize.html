@@ -10,7 +10,7 @@
         </div>
 
         <div class="row">
-            <div class="col-md-10">
+            <div class="col-md-10" if.bind="showForm">
                 <p>The total cost for setting up Scotbot is <strong>1000 ENG</strong>. Ongoing monthly costs will be <strong>1 ENG</strong> per active account per month.</p>
                 <p>This is step one of the initialisation process. We will require your active key and a payment of <strong>500 ENG</strong>. You will pay the other <strong>500 ENG</strong> when you first configure the Scotbot.</p>
                 <p><strong>Your balance:</strong> ${balance & oneTime} ${environment.NATIVE_TOKEN & oneTime}</p>
@@ -35,6 +35,9 @@
                         <button type="button" class="btn btn-primary btn-sm" click.delegate="sendInitialEngFeeWithKey()" disabled.bind="balance < 1000">Pay 500 ENG</button>
                     </div>
                 </form>
+            </div>
+            <div class="col-md-10" else>
+                <h2>Please proceed to the settings screen to complete your Scotbot setup and pay the reamining 500 ENG fee.</h2>
             </div>
         </div>
     </div>
