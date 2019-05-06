@@ -12,26 +12,103 @@
         <div class="row">
             <div class="col-md-10">
                 <p>If this is the first time you're setting up your Scotbot, you will be asked to pay the remaining 500 ENG fee.</p>
-                <p><strong>Your balance:</strong> ${balance & oneTime} ${environment.NATIVE_TOKEN & oneTime}</p>
-
-                <div class="alert alert-danger" role="alert" if.bind="balance < 1000">You do not have 1000 ENG tokens required to setup the Scotbot.</div>
+                <p if.bind="balance"><strong>Your balance:</strong> ${balance & oneTime} ${environment.NATIVE_TOKEN & oneTime}</p>
 
                 <form>
-                    <div class="form-group">
-                        <label>${'Active Key' & t}</label>
-                        <input type="text" class="form-control" value.bind="userActiveKey & validate:controller" disabled.bind="balance < 1000">
-                    </div>
-
                     <div class="form-group mb-3">
                         <label>${'Choose your token' & t}</label>
-                        <select class="form-control" value.bind="tokenSymbol & validate:controller" disabled.bind="balance < 1000">
+                        <select class="form-control" value.bind="settings.token & validate:controller" disabled.bind="balance < 1000">
                             <option value="">Please select a token</option>
                             <option repeat.for="token of tokens">${token.symbol & oneTime}</option>
                         </select>
                     </div>
 
+                    <div class="form-group">
+                        <label>${'Author Curve Exponent' & t}</label>
+                        <input class="form-control" type="number" value.bind="settings.author_curve_exponent">
+                    </div>
+
+                    <div class="form-group">
+                        <label>${'Token Account' & t}</label>
+                        <input class="form-control" type="number" value.bind="settings.token_account">
+                    </div>
+
+                    <div class="form-group">
+                        <label>${'Author Reward Percentage' & t}</label>
+                        <input class="form-control" type="number" value.bind="settings.author_reward_percentage" min="0" step="0.5" max="100">
+                    </div>
+
+                    <div class="form-group">
+                        <label>${'Cashout Window Days' & t}</label>
+                        <input class="form-control" type="number" value.bind="settings.cashout_window_days">
+                    </div>
+
+                    <div class="form-group">
+                        <label>${'Curation Curve Exponent' & t}</label>
+                        <input class="form-control" type="number" value.bind="settings.curation_curve_exponent">
+                    </div>
+
+                    <div class="form-group">
+                        <label>${'Downvote Power Consumption' & t}</label>
+                        <input class="form-control" type="number" value.bind="settings.downvote_power_consumption" min="1" max="10000">
+                    </div>
+
+                    <div class="form-group">
+                        <label>${'Downvote Regeneration Seconds' & t}</label>
+                        <input class="form-control" type="number" value.bind="settings.downvote_regeneration_seconds">
+                    </div>
+
+                    <div class="form-group">
+                        <label>${'Issue Token?' & t}</label>
+                        <select class="form-control" value.bind="settings.issue_token">
+                            <option value="">Please select</option>
+                            <option value="true">True</option>
+                            <option value="false">False</option>
+                        </select>
+                    </div>
+
+                    <div class="form-group">
+                        <label>${'JSON Metadata Key' & t}</label>
+                        <input class="form-control" type="text" value.bind="settings.json_metadata_key">
+                    </div>
+
+                    <div class="form-group">
+                        <label>${'JSON Metadata Value' & t}</label>
+                        <input class="form-control" type="text" value.bind="settings.json_metadata_value">
+                    </div>
+
+                    <div class="form-group">
+                        <label>${'Reduction Every N Block' & t}</label>
+                        <input class="form-control" type="number" value.bind="settings.reduction_every_n_block">
+                    </div>
+
+                    <div class="form-group">
+                        <label>${'Reduction Percentage' & t}</label>
+                        <input class="form-control" type="number" value.bind="settings.reduction_percentage">
+                    </div>
+
+                    <div class="form-group">
+                        <label>${'Rewards Token' & t}</label>
+                        <input class="form-control" type="number" value.bind="settings.rewards_token">
+                    </div>
+
+                    <div class="form-group">
+                        <label>${'Rewards Token Every N Block' & t}</label>
+                        <input class="form-control" type="number" value.bind="settings.rewards_token_every_n_block">
+                    </div>
+
+                    <div class="form-group">
+                        <label>${'Voter Power Consumption' & t}</label>
+                        <input class="form-control" type="number" value.bind="settings.vote_power_consumption">
+                    </div>
+
+                    <div class="form-group">
+                        <label>${'Vote Regeneration Seconds' & t}</label>
+                        <input class="form-control" type="number" value.bind="settings.vote_regeneration_seconds">
+                    </div>
+
                     <div class="mb-5">
-                        <button type="button" class="btn btn-primary btn-sm" click.delegate="sendInitialEngFeeWithKey()" disabled.bind="balance < 1000">Pay 500 ENG</button>
+                        <button type="button" class="btn btn-primary btn-sm" click.delegate="saveSettings()">Save Settings</button>
                     </div>
                 </form>
             </div>

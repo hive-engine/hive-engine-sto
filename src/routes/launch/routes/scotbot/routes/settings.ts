@@ -8,6 +8,8 @@ export class Settings {
     private controller: ValidationController;
     private renderer: BootstrapFormRenderer;
 
+    settings: ScotConfig;
+
     private environment = environment;
 
     private balance;
@@ -33,5 +35,9 @@ export class Settings {
         } catch { /* none */ }
         
         this.tokens = await this.se.loadUserTokens(user);
+    }
+
+    saveSettings() {
+        
     }
 }
