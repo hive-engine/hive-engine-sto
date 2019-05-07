@@ -2,14 +2,18 @@
     <ux-dialog>
       <ux-dialog-body>
         <h2>${'Does this look right?' & t}</h2>
-        <p>Do these settings for your Scotbot look right?</p>
+        <p>Do these settings for your Scotbot look right? In this final step you will pay the remaining 250 ENG fee.</p>
 
-        
+        <ul>
+            <li repeat.for="val of item | objectKeys">
+                <strong>${key}</strong>: ${val}
+            </li>
+        </ul>
       </ux-dialog-body>
   
       <ux-dialog-footer>
-        <button class="btn btn-sm btn-secondary" click.trigger="controller.cancel()" if.bind="!formSubmitted">${'Cancel' & t}</button>&nbsp;
-        <button class="btn btn-sm btn-primary" click.trigger="promptKeychain()">${'Looks good' & t}</button>
+        <button class="btn btn-sm btn-secondary" click.trigger="controller.cancel()">${'No' & t & oneTime}</button>&nbsp;
+        <button class="btn btn-sm btn-primary" click.trigger="promptKeychain()">${'Looks good!' & t & oneTime}</button>
       </ux-dialog-footer>
     </ux-dialog>
   </template>
