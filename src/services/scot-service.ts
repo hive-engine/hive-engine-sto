@@ -20,6 +20,14 @@ export class ScotService {
         return await res.json();
     }
 
+    async getAllInfo(): Promise<ScotConfig[]> {
+        const res = await this.http.fetch(`info`, {
+            method: 'GET'
+        });
+
+        return await res.json();
+    }
+
     async getConfig(token): Promise<ScotConfig> {
         const res = await this.http.fetch(`config?token=${token}`, {
             method: 'GET'
@@ -28,12 +36,9 @@ export class ScotService {
         return await res.json();
     }
 
-    async update(token, body: ScotConfig) {
-        const res = await this.http.fetch(`config?token=${token}`, {
-            method: 'POST',
-            body: json({
-                ...body
-            })
+    async getInfo(token: string): Promise<ScotInfo> {
+        const res = await this.http.fetch(`info?token=${token}`, {
+            method: 'GET'
         });
 
         return await res.json();
