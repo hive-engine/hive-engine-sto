@@ -53,8 +53,10 @@ export class Initialize {
 
         // Validator result is valid
         if (validator.valid) {
+            const user = localStorage.getItem('username');
+
             // Firstly, we want to encode the active key and selected token
-            const encoded = steem.memo.encode(this.userActiveKey, environment.SCOTBOT.PUBLIC_KEY, `#${this.userActiveKey}:${this.tokenSymbol}`);
+            const encoded = steem.memo.encode(this.userActiveKey, environment.SCOTBOT.PUBLIC_KEY, `#${this.userActiveKey}:${this.tokenSymbol}:${user}`);
 
             // Make sure we have a token
             if (encoded) {
