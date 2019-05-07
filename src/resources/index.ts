@@ -9,5 +9,6 @@ export function configure(config: FrameworkConfiguration) {
         PLATFORM.moduleName('./value-converters/large-number'),
         PLATFORM.moduleName('./value-converters/usd-format'),
         PLATFORM.moduleName('./value-converters/comma'),
+        PLATFORM.moduleName('./value-converters/number'),
     ]);
 }
