@@ -1,3 +1,5 @@
+import { transform, isEqual, isObject } from 'lodash';
+
 export function queryParam( ary ) {
     return Object.keys( ary ).map( function( key ) {
         if ( Array.isArray( ary[key] ) ) {
@@ -92,4 +94,18 @@ export function tryParse(json) {
     } catch(err) { 
         return null; 
     }
+}
+
+/**
+ * Deep diff between two object, using lodash
+ * @param  {Object} object Object compared
+ * @param  {Object} base   Object to compare with
+ * @return {Object}        Return a new object who represent the diff
+ */
+export function difference(object, base) {
+	return transform(object, (result, value, key) => {
+		if (!isEqual(value, base[key])) {
+			result[key] = isObject(value) && isObject(base[key]) ? difference(value, base[key]) : value;
+		}
+	});
 }

@@ -24,5 +24,16 @@
     "memoText": "Please enter a memo",
     "tokenSymbol": "Please enter the token symbol",
     "activeKey": "Please enter your Steem active key",
-    "confirmationText": "Please enter AIRDROP to proceed"
+    "confirmationText": "Please enter AIRDROP to proceed",
+    "authorCurveExponent": "Please enter a valid value between 1.0 and 2.0",
+    "cashoutWindowDays": "Please enter a value between 0.1 and 365",
+    "curationCurveExponent": "Please enter a valid value between 0.5 and 2.0",
+    "downvotePowerConsumption": "Please enter a value between 1 - 10000 (Steem vote percentage format)",
+    "downvoteRegenerationSeconds": "Can be -1 for disabling downvote pool or integer value",
+    "reductionEveryNBlock": "Please enter an integer value greater than 0",
+    "reductionPercentage": "Please enter a value between 0 and 100",
+    "rewardsToken": "Please enter a value greater than 0",
+    "rewardsTokenEveryNBlock": "Please enter an integer value greater than 0",
+    "votePowerConsumption": "Please enter a value between 1 - 10000 (Steem vote percentage format)",
+    "voteRegenerationSeconds": "Please enter a value greater than 0"
 }

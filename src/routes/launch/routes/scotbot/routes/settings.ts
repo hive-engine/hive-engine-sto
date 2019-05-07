@@ -1,21 +1,112 @@
-import { ValidationController, ValidationControllerFactory } from "aurelia-validation";
+import { ScotService } from './../../../../../services/scot-service';
+import { ValidationController, ValidationControllerFactory, ValidationRules, ControllerValidateResult } from "aurelia-validation";
 import { BootstrapFormRenderer } from "resources/bootstrap-form-renderer";
 import { SteemEngine } from "services/steem-engine";
 import { autoinject } from "aurelia-framework";
 import environment from "environment";
+import { difference } from 'common/functions';
+
+class SettingsModel implements ScotConfig {
+    author_curve_exponent;
+    author_reward_percentage;
+    cashout_window_days;
+    curation_curve_exponent;
+    downvote_power_consumption;
+    downvote_regeneration_seconds;
+    issue_token;
+    json_metadata_key;
+    json_metadata_value;
+    reduction_every_n_block;
+    reduction_percentage;
+    rewards_token;
+    rewards_token_every_n_block;
+    token;
+    token_account;
+    vote_power_consumption;
+    vote_regeneration_seconds;
+}
+
+ValidationRules
+    .ensure('author_curve_exponent')
+        .required()
+        .then()
+        .satisfies((value: any, object: any) => (value >= 1 && value <= 2))
+        .withMessageKey('authorCurveExponent')
+    .ensure('author_reward_percentage')
+        .required()
+        .then()
+        .satisfies((value: any, object: any) => (value >= 0 && value <= 100))
+        .withMessageKey('authorRewardPercentage')
+    .ensure('cashout_window_days')
+        .required()
+        .then()
+        .satisfies((value: any, object: any) => (value >= 0.1 && value <= 365))
+        .withMessageKey('cashoutWindowDays')
+    .ensure('curation_curve_exponent')
+        .required()
+        .then()
+        .satisfies((value: any, object: any) => (value >= 0.5 && value <= 2))
+        .withMessageKey('curationCurveExponent')
+    .ensure('downvote_power_consumption')
+        .required()
+        .then()
+        .satisfies((value: any, object: any) => (value >= 1 && value <= 10000))
+        .withMessageKey('downvotePowerConsumption')
+    .ensure('downvote_regeneration_seconds')
+        .required()
+        .then()
+        .satisfies((value: any, object: any) => (value >= -1))
+        .withMessageKey('downvoteRegenerationSeconds')
+    .ensure('reduction_every_n_block')
+        .required()
+        .then()
+        .satisfies((value: any, object: any) => (value > 0))
+        .withMessageKey('reductionEveryNBlock')
+    .ensure('reduction_percentage')
+        .required()
+        .then()
+        .satisfies((value: any, object: any) => (value >= 1 && value <= 100))
+        .withMessageKey('reductionPercentage')
+    .ensure('rewards_token')
+        .required()
+        .then()
+        .satisfies((value: any, object: any) => (value > 0))
+        .withMessageKey('rewardsToken')
+    .ensure('rewards_token_every_n_block')
+        .required()
+        .then()
+        .satisfies((value: any, object: any) => (value > 0))
+        .withMessageKey('rewardsTokenEveryNBlock')
+    .ensure('vote_power_consumption')
+        .required()
+        .then()
+        .satisfies((value: any, object: any) => (value >= 1 && value <= 10000))
+        .withMessageKey('votePowerConsumption')
+    .ensure('vote_regeneration_seconds')
+        .required()
+        .then()
+        .satisfies((value: any, object: any) => (value > 0))
+        .withMessageKey('voteRegenerationSeconds')
+    .on(SettingsModel);
+
 @autoinject()
 export class Settings {
     private controller: ValidationController;
     private renderer: BootstrapFormRenderer;
 
-    settings: ScotConfig;
+    loadedSettings: ScotConfig = new SettingsModel();
+    settings: ScotConfig = new SettingsModel();
 
     private environment = environment;
 
     private balance;
     private tokens = [];
+    private config;
 
-    constructor(private controllerFactory: ValidationControllerFactory, private se: SteemEngine) {
+    constructor(
+        private controllerFactory: ValidationControllerFactory, 
+        private se: SteemEngine, 
+        private scot: ScotService) {
         this.controller = controllerFactory.createForCurrentScope();
 
         this.renderer = new BootstrapFormRenderer();
@@ -37,7 +128,23 @@ export class Settings {
         this.tokens = await this.se.loadUserTokens(user);
     }
 
-    saveSettings() {
+    async tokenChanged() {
+        const config = await this.scot.getConfig('SCOTT');
+
+        this.loadedSettings = { ...config };
+        this.settings = { ...config };
+    }
+
+    async saveSettings() {
+        const validator: ControllerValidateResult = await this.controller.validate();
+
+        console.log(validator);
         
+        if (validator.valid) {
+            console.log(this.settings);
+            console.log(this.loadedSettings);
+            const settings = difference(this.settings, this.loadedSettings);
+            console.log(settings);
+        }
     }
 }
