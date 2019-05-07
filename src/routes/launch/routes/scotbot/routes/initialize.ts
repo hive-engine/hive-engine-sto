@@ -60,7 +60,7 @@ export class Initialize {
 
             // Make sure we have a token
             if (encoded) {
-                steem_keychain.requestSendToken(this.steemUsername, environment.SCOTBOT.FEE_ACCOUNT, environment.SCOTBOT.FEE_AMOUNT, encoded, 'ENG', (response) => {
+                steem_keychain.requestSendToken(this.steemUsername, environment.SCOTBOT.FEE_ACCOUNT, environment.SCOTBOT.FEES.INITIAL, encoded, 'ENG', (response) => {
                     if (response.success) {
                         this.showForm = false;
 

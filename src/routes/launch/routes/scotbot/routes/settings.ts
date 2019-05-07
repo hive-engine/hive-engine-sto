@@ -5,6 +5,8 @@ import { SteemEngine } from "services/steem-engine";
 import { autoinject } from "aurelia-framework";
 import environment from "environment";
 import { difference } from 'common/functions';
+import { DialogService } from 'aurelia-dialog';
+import { ConfirmModal } from './confirm-modal';
 
 class SettingsModel implements ScotConfig {
     author_curve_exponent;
@@ -105,7 +107,8 @@ export class Settings {
 
     constructor(
         private controllerFactory: ValidationControllerFactory, 
-        private se: SteemEngine, 
+        private se: SteemEngine,
+        private dialogService: DialogService,
         private scot: ScotService) {
         this.controller = controllerFactory.createForCurrentScope();
 
@@ -136,15 +139,24 @@ export class Settings {
     }
 
     async saveSettings() {
+        const user = localStorage.getItem('username');
+        
         const validator: ControllerValidateResult = await this.controller.validate();
-
-        console.log(validator);
         
         if (validator.valid) {
-            console.log(this.settings);
-            console.log(this.loadedSettings);
             const settings = difference(this.settings, this.loadedSettings);
-            console.log(settings);
+
+            // Request the first part to be sent to Holger
+            steem_keychain.requestSendToken(
+                user, 
+                environment.SCOTBOT.FEE_ACCOUNT_1, 
+                environment.SCOTBOT.FEES.SETUP_1, 
+                JSON.stringify(settings), 
+                'ENG', (response) => {
+                    if (response.success) {
+                        this.dialogService.open({ viewModel: ConfirmModal, model: {difference, settings: this.settings} });
+                    }
+                });
         }
     }
 }

@@ -38,7 +38,13 @@ export default {
     ],
     SCOTBOT: {
         FEE_ACCOUNT: 'steemsc',
-        FEE_AMOUNT: '0.001',
-        PUBLIC_KEY: 'STM68QuR591BeretgKsf93Cjcr3nzSJejjoGsYNaTZZUoPAgyzWAZ'
+        FEES: {
+            INITIAL: '0.001',
+            SETUP_1: '0.001',
+            SETUP_2: '0.001'
+        },
+        PUBLIC_KEY: 'STM68QuR591BeretgKsf93Cjcr3nzSJejjoGsYNaTZZUoPAgyzWAZ',
+        FEE_ACCOUNT_1: 'holger80',
+        FEE_ACCOUNT_2: 'beggars'
     }
 } as any;
