@@ -28,7 +28,9 @@ export class ConfirmModal {
             environment.SCOTBOT.FEES.SETUP_2,
             `{"token": "${this.item.token}"}`,
             'ENG', (response) => {
-
+                if (response.success) {
+                    this.controller.close(true);
+                }
             });
     }
 }
