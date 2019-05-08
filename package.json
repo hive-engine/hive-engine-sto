@@ -21,6 +21,7 @@
     "aurelia-validation": "^1.4.0",
     "bootstrap": "^4.3.1",
     "chart.js": "^2.8.0",
+    "dompurify": "^1.0.10",
     "dotenv": "^7.0.0",
     "flatpickr": "^4.5.7",
     "graphql": "^14.2.1",
