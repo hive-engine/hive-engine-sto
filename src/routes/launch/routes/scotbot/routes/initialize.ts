@@ -12,10 +12,10 @@ import { I18N } from 'aurelia-i18n';
 @autoinject()
 export class Initialize {
     private userActiveKey: string;
-    private steemUsername = 'beggars';
     private tokenSymbol;
     private environment = environment;
     private showForm = true;
+    private info;
 
     private balance;
     private tokens = [];
@@ -53,6 +53,8 @@ export class Initialize {
     async tokenSelected() {
         const info = await this.scot.getInfo(this.tokenSymbol);
 
+        this.info = info;
+
         // Do we have a info object and is the setup completed
         if (Object.keys(info).length && info.setup_complete !== -1) {
             this.showForm = false;
@@ -67,11 +69,13 @@ export class Initialize {
             const user = localStorage.getItem('username');
 
             // Firstly, we want to encode the active key and selected token
-            const encoded = steem.memo.encode(this.userActiveKey, environment.SCOTBOT.PUBLIC_KEY, `#${this.userActiveKey}:${this.tokenSymbol}:${user}`);
+            const encoded = steem.memo.encode(this.userActiveKey, 
+                environment.SCOTBOT.PUBLIC_KEY, `#${this.userActiveKey}:${this.tokenSymbol}:${user}`);
 
             // Make sure we have a token
             if (encoded) {
-                steem_keychain.requestSendToken(this.steemUsername, environment.SCOTBOT.FEE_ACCOUNT, environment.SCOTBOT.FEES.INITIAL, encoded, 'ENG', (response) => {
+                steem_keychain.requestSendToken(user, environment.SCOTBOT.FEE_ACCOUNT, 
+                    environment.SCOTBOT.FEES.INITIAL, encoded, 'ENG', (response) => {
                     if (response.success) {
                         this.showForm = false;
 

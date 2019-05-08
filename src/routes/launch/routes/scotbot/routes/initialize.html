@@ -37,7 +37,12 @@
                 </form>
             </div>
             <div class="col-md-10" else>
-                <h2>Please proceed to the settings screen to complete your Scotbot setup and pay the reamining 500 ENG fee.</h2>
+                <template if.bind="info.setup_complete < 2 && info.setup_complete >= 0">
+                    <h2>Please proceed to the settings screen to complete your Scotbot setup and pay the reamining 500 ENG fee.</h2>
+                </template>
+                <template else>
+                    <p>You have already initialized your ScotBot, please proceed to the settings screen.</p>
+                </template>
             </div>
         </div>
     </div>
