@@ -1,3 +1,4 @@
+import { ScotService } from './../../../../../services/scot-service';
 import { BootstrapFormRenderer } from 'resources/bootstrap-form-renderer';
 import { SteemEngine } from 'services/steem-engine';
 import { autoinject } from 'aurelia-dependency-injection';
@@ -25,6 +26,7 @@ export class Initialize {
     constructor(
         private controllerFactory: ValidationControllerFactory, 
         private se: SteemEngine,
+        private scot: ScotService,
         private i18n: I18N,
         private toast: ToastService) {
         this.controller = controllerFactory.createForCurrentScope();
@@ -46,6 +48,15 @@ export class Initialize {
         } catch { /* none */ }
         
         this.tokens = await this.se.loadUserTokens(user);
+    }
+
+    async tokenSelected() {
+        const info = await this.scot.getInfo(this.tokenSymbol);
+
+        // Do we have a info object and is the setup completed
+        if (Object.keys(info).length && info.setup_complete !== -1) {
+            this.showForm = false;
+        }
     }
 
     async sendInitialEngFeeWithKey() {
