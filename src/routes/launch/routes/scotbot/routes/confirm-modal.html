@@ -5,8 +5,8 @@
         <p>Do these settings for your Scotbot look right? In this final step you will pay the remaining 250 ENG fee.</p>
 
         <ul>
-            <li repeat.for="val of item | objectKeys">
-                <strong>${key}</strong>: ${val}
+            <li repeat.for="val of item | keys">
+                <strong>${key}</strong>: ${item[key]}
             </li>
         </ul>
       </ux-dialog-body>

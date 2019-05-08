@@ -7,6 +7,7 @@ import environment from 'environment';
 @autoinject()
 export class ConfirmModal {
     private item;
+    private parent;
     private difference;
 
     constructor(private controller: DialogController) {
@@ -17,6 +18,7 @@ export class ConfirmModal {
     async activate(model) {
         this.item = model.settings;
         this.difference = model.difference;
+        this.parent = model.vm;
     }
 
     async promptKeychain() {
@@ -29,7 +31,10 @@ export class ConfirmModal {
             `{"token": "${this.item.token}"}`,
             'ENG', (response) => {
                 if (response.success) {
+                    this.parent.feeTwoPaid = true;
                     this.controller.close(true);
+                } else {
+                    this.parent.feeTwoPaid = false;
                 }
             });
     }
