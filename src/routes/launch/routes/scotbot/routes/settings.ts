@@ -1,12 +1,15 @@
+import { ToastMessage } from './../../../../../services/toast-service';
+import { I18N } from 'aurelia-i18n';
 import { ScotService } from './../../../../../services/scot-service';
 import { ValidationController, ValidationControllerFactory, ValidationRules, ControllerValidateResult } from "aurelia-validation";
 import { BootstrapFormRenderer } from "resources/bootstrap-form-renderer";
 import { SteemEngine } from "services/steem-engine";
 import { autoinject } from "aurelia-framework";
 import environment from "environment";
-import { difference } from 'common/functions';
+import { difference, sleep } from 'common/functions';
 import { DialogService } from 'aurelia-dialog';
 import { ConfirmModal } from './confirm-modal';
+import { ToastService } from 'services/toast-service';
 
 class SettingsModel implements ScotConfig {
     author_curve_exponent;
@@ -115,7 +118,9 @@ export class Settings {
         private controllerFactory: ValidationControllerFactory, 
         private se: SteemEngine,
         private dialogService: DialogService,
-        private scot: ScotService) {
+        private scot: ScotService,
+        private i18n: I18N,
+        private toast: ToastService) {
         this.controller = controllerFactory.createForCurrentScope();
 
         this.renderer = new BootstrapFormRenderer();
@@ -138,8 +143,8 @@ export class Settings {
     }
 
     async tokenChanged() {
-        const config = await this.scot.getConfig('SCOTT');
-        const info = await this.scot.getInfo('SCOTT');
+        const config = await this.scot.getConfig(this.settings.token);
+        const info = await this.scot.getInfo(this.settings.token);
 
         this.info = info;
 
@@ -155,44 +160,61 @@ export class Settings {
         if (validator.valid) {
             const settings = difference(this.settings, this.loadedSettings) as ScotConfig;
 
-            // No changes, we just want to send the token
-            if (!Object.keys(settings).length) {
-                settings.token = this.settings.token;
-            }
+            settings.token = this.settings.token;
 
-            // If we haven't paid the first fee, prompt the user
-            if (!this.feeOnePaid) {
-                // Request the first part to be sent to Holger
+            // If token hasn't been completely setup
+            if (this.info.setup_complete !== 2) {
+                // If we haven't paid the first fee, prompt the user
+                if (!this.feeOnePaid && this.info.setup_complete !== 1) {
+                    // Request the first part to be sent to Holger
+                    steem_keychain.requestSendToken(
+                        user, 
+                        environment.SCOTBOT.FEE_ACCOUNT_1, 
+                        environment.SCOTBOT.FEES.SETUP_1, 
+                        JSON.stringify(settings), 
+                        'ENG', async (response) => {
+                            if (response.success && !this.feeTwoPaid) {
+                                this.feeOnePaid = true;
+                                
+                                this.info = await this.scot.getInfo(this.settings.token);
+                                
+                                this.dialogService.open({ 
+                                    viewModel: ConfirmModal, 
+                                    model: {
+                                        difference: settings, 
+                                        settings: this.settings, 
+                                        vm: this
+                                    } 
+                                });
+                            }
+                        });
+                } 
+                // We've paid the first user, now pay the last fee
+                else {
+                    this.dialogService.open({ 
+                        viewModel: ConfirmModal, 
+                        model: {
+                            difference: settings, 
+                            settings: this.settings, 
+                            vm: this
+                        } 
+                    });
+                }
+            } else {
                 steem_keychain.requestSendToken(
                     user, 
-                    environment.SCOTBOT.FEE_ACCOUNT_1, 
-                    environment.SCOTBOT.FEES.SETUP_1, 
+                    environment.SCOTBOT.CHANGE_ACCOUNT, 
+                    environment.SCOTBOT.FEES.CHANGE, 
                     JSON.stringify(settings), 
                     'ENG', (response) => {
-                        if (response.success && !this.feeTwoPaid) {
-                            this.feeOnePaid = true;
-                            
-                            this.dialogService.open({ 
-                                viewModel: ConfirmModal, 
-                                model: {
-                                    difference, 
-                                    settings: this.settings, 
-                                    vm: this
-                                } 
-                            });
+                        if (response.success) {
+                            const toast = new ToastMessage();
+
+                            toast.message = this.i18n.tr('settingsSaved');
+                
+                            this.toast.success(toast);   
                         }
                     });
-            } 
-            // We've paid the first user, now pay the last fee
-            else {
-                this.dialogService.open({ 
-                    viewModel: ConfirmModal, 
-                    model: {
-                        difference, 
-                        settings: this.settings, 
-                        vm: this
-                    } 
-                });
             }
         }
     }
