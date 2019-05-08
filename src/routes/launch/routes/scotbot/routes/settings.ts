@@ -93,6 +93,8 @@ ValidationRules
 
 @autoinject()
 export class Settings {
+    public isReady = false;
+
     private controller: ValidationController;
     private renderer: BootstrapFormRenderer;
 
@@ -104,6 +106,10 @@ export class Settings {
     private balance;
     private tokens = [];
     private config;
+    private info;
+
+    private feeOnePaid = false;
+    private feeTwoPaid = false;
 
     constructor(
         private controllerFactory: ValidationControllerFactory, 
@@ -133,6 +139,9 @@ export class Settings {
 
     async tokenChanged() {
         const config = await this.scot.getConfig('SCOTT');
+        const info = await this.scot.getInfo('SCOTT');
+
+        this.info = info;
 
         this.loadedSettings = { ...config };
         this.settings = { ...config };
@@ -144,19 +153,47 @@ export class Settings {
         const validator: ControllerValidateResult = await this.controller.validate();
         
         if (validator.valid) {
-            const settings = difference(this.settings, this.loadedSettings);
+            const settings = difference(this.settings, this.loadedSettings) as ScotConfig;
 
-            // Request the first part to be sent to Holger
-            steem_keychain.requestSendToken(
-                user, 
-                environment.SCOTBOT.FEE_ACCOUNT_1, 
-                environment.SCOTBOT.FEES.SETUP_1, 
-                JSON.stringify(settings), 
-                'ENG', (response) => {
-                    if (response.success) {
-                        this.dialogService.open({ viewModel: ConfirmModal, model: {difference, settings: this.settings} });
-                    }
+            // No changes, we just want to send the token
+            if (!Object.keys(settings).length) {
+                settings.token = this.settings.token;
+            }
+
+            // If we haven't paid the first fee, prompt the user
+            if (!this.feeOnePaid) {
+                // Request the first part to be sent to Holger
+                steem_keychain.requestSendToken(
+                    user, 
+                    environment.SCOTBOT.FEE_ACCOUNT_1, 
+                    environment.SCOTBOT.FEES.SETUP_1, 
+                    JSON.stringify(settings), 
+                    'ENG', (response) => {
+                        if (response.success && !this.feeTwoPaid) {
+                            this.feeOnePaid = true;
+                            
+                            this.dialogService.open({ 
+                                viewModel: ConfirmModal, 
+                                model: {
+                                    difference, 
+                                    settings: this.settings, 
+                                    vm: this
+                                } 
+                            });
+                        }
+                    });
+            } 
+            // We've paid the first user, now pay the last fee
+            else {
+                this.dialogService.open({ 
+                    viewModel: ConfirmModal, 
+                    model: {
+                        difference, 
+                        settings: this.settings, 
+                        vm: this
+                    } 
                 });
+            }
         }
     }
 }
