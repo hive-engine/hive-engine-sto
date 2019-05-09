@@ -17,6 +17,10 @@ import modalCss from './styles/modal.css';
 import environment from './environment';
 
 LogManager.addAppender(new ConsoleAppender());
+
+import { disableConnectQueue } from 'aurelia-binding';
+disableConnectQueue();
+
 export async function configure(aurelia: Aurelia) {
     aurelia.use
         .standardConfiguration()
