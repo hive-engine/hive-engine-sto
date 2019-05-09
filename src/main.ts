@@ -4,9 +4,11 @@ import 'bootstrap/dist/js/bootstrap.bundle';
 import { Aurelia, LogManager } from 'aurelia-framework';
 import { ConsoleAppender } from 'aurelia-logging-console';
 import { PLATFORM } from 'aurelia-pal';
-
+import { ValidationMessageProvider } from 'aurelia-validation';
 import { I18N, TCustomAttribute } from 'aurelia-i18n';
 import Backend from 'i18next-xhr-backend';
+
+import Mousetrap from 'mousetrap';
 
 import { initialState } from './store/state';
 import { login, loading } from 'store/actions';
@@ -20,6 +22,11 @@ LogManager.addAppender(new ConsoleAppender());
 
 import { disableConnectQueue } from 'aurelia-binding';
 disableConnectQueue();
+
+Mousetrap.bind('ctrl+shift+f10', () => {
+    console.debug('Enabling debug mode');
+    LogManager.setLevel(LogManager.logLevel.debug);
+});
 
 export async function configure(aurelia: Aurelia) {
     aurelia.use
