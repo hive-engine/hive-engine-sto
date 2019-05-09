@@ -1,27 +1,31 @@
-import { loadTokens, login, loading } from 'store/actions';
 import '@babel/polyfill';
 import 'bootstrap/dist/js/bootstrap.bundle';
 
-import { Aurelia } from 'aurelia-framework';
-import environment from './environment';
+import { Aurelia, LogManager } from 'aurelia-framework';
+import { ConsoleAppender } from 'aurelia-logging-console';
 import { PLATFORM } from 'aurelia-pal';
 
 import { I18N, TCustomAttribute } from 'aurelia-i18n';
 import Backend from 'i18next-xhr-backend';
 
 import { initialState } from './store/state';
-import { ValidationMessageProvider } from 'aurelia-validation';
+import { login, loading } from 'store/actions';
 import store from 'store/store';
 
 import modalCss from './styles/modal.css';
 
+import environment from './environment';
+
+LogManager.addAppender(new ConsoleAppender());
 export async function configure(aurelia: Aurelia) {
     aurelia.use
         .standardConfiguration()
         .feature(PLATFORM.moduleName('components/index'))
         .feature(PLATFORM.moduleName('resources/index'));
 
-    aurelia.use.developmentLogging(environment.debug ? 'debug' : 'warn');
+    if (environment.debug) {
+        LogManager.setLevel(LogManager.logLevel.debug);
+    }
 
     if (environment.testing) {
         aurelia.use.plugin(PLATFORM.moduleName('aurelia-testing'));
