@@ -40,10 +40,10 @@ export default {
         FEE_ACCOUNT: 'steemsc',
         CHANGE_ACCOUNT: 'null',
         FEES: {
-            INITIAL: '0.001',
-            SETUP_1: '0.002',
-            SETUP_2: '0.003',
-            CHANGE: '0.001'
+            INITIAL: '500.000',
+            SETUP_1: '250.000',
+            SETUP_2: '250.000',
+            CHANGE: '100.000'
         },
         PUBLIC_KEY: 'STM8YqKpQijsqjkkS2widNTsmNM3SrQe3xipEm2sfC4xMryvwhdBE',
         FEE_ACCOUNT_1: 'holger80',
