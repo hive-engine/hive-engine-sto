@@ -91,11 +91,14 @@ export class Initialize {
                         this.showForm = false;
 
                         const toast = new ToastMessage();
-    
                         toast.message = this.i18n.tr('initializeSuccess');
-                        log.error(`${response.message}`);
-            
                         this.toast.success(toast);
+                    } else {
+                        log.error(`${response.message}`);
+
+                        const toast = new ToastMessage();
+                        toast.message = this.i18n.tr('initializeError');
+                        this.toast.error(toast);
                     }
                 })
             }

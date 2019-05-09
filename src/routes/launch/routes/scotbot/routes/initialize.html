@@ -27,7 +27,7 @@
                         <label>${'Choose your token' & t}</label>
                         <select class="form-control" value.bind="tokenSymbol & validate:controller" disabled.bind="balance < 1000" change.delegate="tokenSelected()">
                             <option value="">Please select a token</option>
-                            <option repeat.for="token of tokens">${token.symbol & oneTime}</option>
+                            <option repeat.for="token of tokens" value.bind="token.symbol">${token.symbol & oneTime}</option>
                         </select>
                     </div>
 
