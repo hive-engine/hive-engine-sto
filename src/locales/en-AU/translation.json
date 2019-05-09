@@ -1,3 +1,5 @@
 {
-    "cellPhone": "Mobile Phone"
+    "cellPhone": "Mobile Phone",
+    "initialization": "initialisation",
+    "initializeSuccess": "Scotbot successfully initialised and 500 ENG fee paid."
 }

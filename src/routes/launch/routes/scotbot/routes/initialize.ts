@@ -1,6 +1,7 @@
+import { log } from 'services/log-service';
 import { SecurityModal } from './security-modal';
 import { DialogService } from 'aurelia-dialog';
-import { ScotService } from './../../../../../services/scot-service';
+import { ScotService } from 'services/scot-service';
 import { BootstrapFormRenderer } from 'resources/bootstrap-form-renderer';
 import { SteemEngine } from 'services/steem-engine';
 import { autoinject } from 'aurelia-dependency-injection';
@@ -65,28 +66,42 @@ export class Initialize {
     }
 
     async sendInitialEngFeeWithKey() {
+        log.debug(`Send initial ENG fee of ${environment.SCOTBOT.FEES.INITIAL} ENG`);
+
         const validator: ControllerValidateResult = await this.controller.validate();
 
         // Validator result is valid
         if (validator.valid) {
             const user = localStorage.getItem('username');
 
+            log.debug(`Validator valid and current user: ${user}`);
+
             // Firstly, we want to encode the active key and selected token
             const encoded = steem.memo.encode(this.userActiveKey, 
                 environment.SCOTBOT.PUBLIC_KEY, `#${this.userActiveKey}:${this.tokenSymbol}:${user}`);
 
+            log.debug(`Encoded memo method run with public key: ${encoded}`);
+
             // Make sure we have a token
             if (encoded) {
+                log.debug(`We have an encoded memo`);
+
                 steem_keychain.requestSendToken(user, environment.SCOTBOT.FEE_ACCOUNT, 
                     environment.SCOTBOT.FEES.INITIAL, encoded, 'ENG', (response) => {
                     if (response.success) {
+                        log.debug(`User has paid first 500 ENG fee`);
+
                         this.showForm = false;
 
                         const toast = new ToastMessage();
-    
                         toast.message = this.i18n.tr('initializeSuccess');
-            
                         this.toast.success(toast);
+                    } else {
+                        log.error(`${response.message}`);
+
+                        const toast = new ToastMessage();
+                        toast.message = this.i18n.tr('initializeError');
+                        this.toast.error(toast);
                     }
                 })
             }

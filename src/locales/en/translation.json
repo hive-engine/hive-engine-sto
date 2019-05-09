@@ -74,9 +74,11 @@
         "priorInvestmentExperienceOption5": "Partnerships, limited liability companies, corporations which invest in real estate or real estate investment trusts (REITs).",
         "priorInvestmentExperienceOption6": " Other types of investments not mentioned in any of the previous categories (please describe)"
     },
+    "initialization": "initialization",
     "signinSuccess": "You have been successfully signed in",
     "tokensSent": "{quantity} {symbol} Tokens sent to @{to}",
     "initializeSuccess": "Scotbot successfully initialized and 500 ENG fee paid.",
+    "initializeError": "There was an error broadcasting your transaction",
     "settingsSaved": "Your ScotBot settings have been successfully saved.",
     "settingsSavedError": "Your settings were not saved. There was an error broadcasting your transaction"
 }
