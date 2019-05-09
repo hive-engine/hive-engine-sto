@@ -1,0 +1,25 @@
+<template>
+    <ux-dialog>
+      <ux-dialog-body>
+        <h2>${'Active Key Security' & t}</h2>
+        <p>It is important that you understand the reasons for asking for your private active key.</p>
+        
+        <h3>Is my private active key secure?</h3>
+        <p>When you enter your private active key and pay the initial ENG fee, it is enrypted and securely transmitted to our server. We encrypt your private key as well as your token and account name, we do this using Steem's in-built encrypted memo feature.</p>
+        <p>We encrypt this memo which resembles a long string of gibberish text with a "#" infront of it, and only the steemsc account is allowed to decrypt this memo using its own private memo key. This creates an end-to-end encrypted chat message basically, only readable by both parties.</p>
+        <p>Your active key is NEVER stored as plaintext, so only the Scotbot server can see your key when the memo is decrypted and the Steem Engine team takes security very seriously.</p>
+
+        <h3>Why do you need my private active key?</h3>
+        <p>The Scotbot requires permission to control your token on your behalf and because this is done server-side, we cannot use SteemConnect or the Steem Keychain extension to perform these actions.</p>
+        <p>Your token is controlled via custom JSON calls which can only be sent using your private active key.</p>
+
+        </ux-dialog-body>
+  
+      <ux-dialog-footer>
+        <button class="btn btn-sm btn-primary" click.trigger="controller.close(true)">${'Thanks!' & t & oneTime}</button>
+      </ux-dialog-footer>
+    </ux-dialog>
+  </template>
+  
+
+  

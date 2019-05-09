@@ -1,3 +1,5 @@
+import { SecurityModal } from './security-modal';
+import { DialogService } from 'aurelia-dialog';
 import { ScotService } from './../../../../../services/scot-service';
 import { BootstrapFormRenderer } from 'resources/bootstrap-form-renderer';
 import { SteemEngine } from 'services/steem-engine';
@@ -28,7 +30,8 @@ export class Initialize {
         private se: SteemEngine,
         private scot: ScotService,
         private i18n: I18N,
-        private toast: ToastService) {
+        private toast: ToastService,
+        private dialogService: DialogService) {
         this.controller = controllerFactory.createForCurrentScope();
 
         this.renderer = new BootstrapFormRenderer();
@@ -88,6 +91,12 @@ export class Initialize {
                 })
             }
         }
+    }
+
+    showSecurityModal() {
+        this.dialogService.open({ 
+            viewModel: SecurityModal
+        });
     }
 }
 
