@@ -8,7 +8,7 @@ export default {
 	CHAIN_ID: 'ssc-mainnet1',
     RPC_URL: 'https://api.steem-engine.com/rpc',
     NODE_API_URL: 'https://node-api.steem-engine.com/v1/',
-    SCOT_API_URL: 'http://54.91.228.37/api/',
+    SCOT_API_URL: 'https://scot-api.steem-engine.com/',
 	ACCOUNTS_API_URL: 'https://api.steem-engine.com/accounts',
 	CONVERTER_API: 'https://converter-api.steem-engine.com/api',
 	NATIVE_TOKEN: 'ENG',

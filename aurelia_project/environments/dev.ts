@@ -10,7 +10,7 @@ export default {
 	ACCOUNTS_API_URL: 'https://testaccounts.steem-engine.com',
     CONVERTER_API: 'https://converter-api.steem-engine.com/api',
     NODE_API_URL: 'http://localhost:3000/v1/',
-    SCOT_API_URL: 'http://54.91.228.37/api/',
+    SCOT_API_URL: 'https://scot-api.steem-engine.com/',
 	NATIVE_TOKEN: 'SSC',
     STEEMP_ACCOUNT: 'steemsc',
 	PEGGED_TOKEN: 'STEEMP',
