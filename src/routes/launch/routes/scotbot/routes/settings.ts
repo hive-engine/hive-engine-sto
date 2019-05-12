@@ -35,63 +35,68 @@ ValidationRules
     .ensure('author_curve_exponent')
         .required()
         .then()
-        .satisfies((value: any, object: any) => (value >= 1 && value <= 2))
+        .satisfies((value: any, object: any) => (parseFloat(value) >= 1 && parseFloat(value) <= 2))
         .withMessageKey('authorCurveExponent')
     .ensure('author_reward_percentage')
         .required()
         .then()
-        .satisfies((value: any, object: any) => (value >= 0 && value <= 100))
+        .satisfies((value: any, object: any) => (parseInt(value) >= 0 && parseInt(value) <= 100))
         .withMessageKey('authorRewardPercentage')
     .ensure('cashout_window_days')
         .required()
         .then()
-        .satisfies((value: any, object: any) => (value >= 0.1 && value <= 365))
+        .satisfies((value: any, object: any) => (parseFloat(value) >= 0.1 && parseFloat(value) <= 365))
         .withMessageKey('cashoutWindowDays')
     .ensure('curation_curve_exponent')
         .required()
         .then()
-        .satisfies((value: any, object: any) => (value >= 0.5 && value <= 2))
+        .satisfies((value: any, object: any) => (parseFloat(value) >= 0.5 && parseFloat(value) <= 2))
         .withMessageKey('curationCurveExponent')
     .ensure('downvote_power_consumption')
         .required()
         .then()
-        .satisfies((value: any, object: any) => (value >= 1 && value <= 10000))
+        .satisfies((value: any, object: any) => (parseInt(value) >= 1 && parseInt(value) <= 10000))
         .withMessageKey('downvotePowerConsumption')
     .ensure('downvote_regeneration_seconds')
         .required()
         .then()
-        .satisfies((value: any, object: any) => (value >= -1))
+        .satisfies((value: any, object: any) => (parseInt(value) >= -1))
         .withMessageKey('downvoteRegenerationSeconds')
     .ensure('reduction_every_n_block')
         .required()
         .then()
-        .satisfies((value: any, object: any) => (value > 0))
+        .satisfies((value: any, object: any) => (parseFloat(value) > 0))
         .withMessageKey('reductionEveryNBlock')
     .ensure('reduction_percentage')
         .required()
         .then()
-        .satisfies((value: any, object: any) => (value >= 1 && value <= 100))
+        .satisfies((value: any, object: any) => (parseFloat(value) >= 1 && parseFloat(value) <= 100))
         .withMessageKey('reductionPercentage')
     .ensure('rewards_token')
         .required()
         .then()
-        .satisfies((value: any, object: any) => (value > 0))
+        .satisfies((value: any, object: any) => (parseFloat(value) > 0))
         .withMessageKey('rewardsToken')
     .ensure('rewards_token_every_n_block')
         .required()
         .then()
-        .satisfies((value: any, object: any) => (value > 0))
+        .satisfies((value: any, object: any) => (parseFloat(value) > 0))
         .withMessageKey('rewardsTokenEveryNBlock')
     .ensure('vote_power_consumption')
         .required()
         .then()
-        .satisfies((value: any, object: any) => (value >= 1 && value <= 10000))
+        .satisfies((value: any, object: any) => (parseFloat(value) >= 1 && parseFloat(value) <= 10000))
         .withMessageKey('votePowerConsumption')
     .ensure('vote_regeneration_seconds')
         .required()
         .then()
-        .satisfies((value: any, object: any) => (value > 0))
+        .satisfies((value: any, object: any) => (parseInt(value) > 0))
         .withMessageKey('voteRegenerationSeconds')
+    .ensure('json_metadata_value')
+        .required()
+        .then()
+        .satisfies((value: any, object: any) => value !== 'scottest')
+        .withMessageKey('jsonMetadataValue')
     .on(SettingsModel);
 
 @autoinject()
@@ -147,9 +152,7 @@ export class Settings {
         const info = await this.scot.getInfo(this.settings.token);
 
         this.info = info;
-
-        this.loadedSettings = { ...config };
-        this.settings = { ...config };
+        this.settings = config;
     }
 
     async saveSettings() {
@@ -158,10 +161,6 @@ export class Settings {
         const validator: ControllerValidateResult = await this.controller.validate();
         
         if (validator.valid) {
-            const settings = difference(this.settings, this.loadedSettings) as ScotConfig;
-
-            settings.token = this.settings.token;
-
             // If token hasn't been completely setup
             if (this.info.setup_complete !== 2) {
                 // If we haven't paid the first fee, prompt the user
@@ -171,7 +170,7 @@ export class Settings {
                         user, 
                         environment.SCOTBOT.FEE_ACCOUNT_1, 
                         environment.SCOTBOT.FEES.SETUP_1, 
-                        JSON.stringify(settings), 
+                        JSON.stringify(this.settings), 
                         'ENG', async (response) => {
                             if (response.success && !this.feeTwoPaid) {
                                 this.feeOnePaid = true;
@@ -181,7 +180,6 @@ export class Settings {
                                 this.dialogService.open({ 
                                     viewModel: ConfirmModal, 
                                     model: {
-                                        difference: settings, 
                                         settings: this.settings, 
                                         vm: this
                                     } 
@@ -193,8 +191,7 @@ export class Settings {
                 else {
                     this.dialogService.open({ 
                         viewModel: ConfirmModal, 
-                        model: {
-                            difference: settings, 
+                        model: { 
                             settings: this.settings, 
                             vm: this
                         } 
@@ -205,7 +202,7 @@ export class Settings {
                     user, 
                     environment.SCOTBOT.CHANGE_ACCOUNT, 
                     environment.SCOTBOT.FEES.CHANGE, 
-                    JSON.stringify(settings), 
+                    JSON.stringify(this.settings), 
                     'ENG', (response) => {
                         if (response.success) {
                             const toast = new ToastMessage();
