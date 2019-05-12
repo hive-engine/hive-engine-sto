@@ -68,6 +68,12 @@ export class Initialize {
     async sendInitialEngFeeWithKey() {
         log.debug(`Send initial ENG fee of ${environment.SCOTBOT.FEES.INITIAL} ENG`);
 
+        if (typeof steem_keychain === 'undefined') {
+            log.error(`Steem Keychain extension not detected`);
+            window.alert('Please install the Steem Keychain to enable Scotbot (or use a desktop computer if you are on a mobile device)');
+            return;
+        }
+
         const validator: ControllerValidateResult = await this.controller.validate();
 
         // Validator result is valid
