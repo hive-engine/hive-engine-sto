@@ -35,5 +35,6 @@
     "rewardsToken": "Please enter a value greater than 0",
     "rewardsTokenEveryNBlock": "Please enter an integer value greater than 0",
     "votePowerConsumption": "Please enter a value between 1 - 10000 (Steem vote percentage format)",
-    "voteRegenerationSeconds": "Please enter a value greater than 0"
+    "voteRegenerationSeconds": "Please enter a value greater than 0",
+    "jsonMetadataValue": "Please enter a value for this other than the default"
 }
