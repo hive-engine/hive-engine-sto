@@ -10,7 +10,6 @@ import environment from 'environment';
 export class ConfirmModal {
     private item;
     private parent;
-    private difference;
     private settingsMap: Map<string, string>;
 
     constructor(private controller: DialogController, private i18n: I18N,
@@ -21,7 +20,6 @@ export class ConfirmModal {
 
     async activate(model) {
         this.item = model.settings;
-        this.difference = model.difference;
         this.parent = model.vm;
 
         this.settingsMap = new Map(Object.entries(this.item));
@@ -30,13 +28,11 @@ export class ConfirmModal {
     async promptKeychain() {
         const user = localStorage.getItem('username');
 
-        this.difference.token = this.item.token;
-
         steem_keychain.requestSendToken(
             user,
             environment.SCOTBOT.FEE_ACCOUNT_2,
             environment.SCOTBOT.FEES.SETUP_2,
-            JSON.stringify(this.difference),
+            JSON.stringify(this.item),
             'ENG', (response) => {
                 if (response.success) {
                     this.parent.feeTwoPaid = true;
