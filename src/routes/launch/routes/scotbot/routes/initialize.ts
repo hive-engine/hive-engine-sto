@@ -15,7 +15,9 @@ import { I18N } from 'aurelia-i18n';
 @autoinject()
 export class Initialize {
     private userActiveKey: string;
-    private tokenSymbol;
+    private tokenSymbol: string;
+    private email: string;
+    
     private environment = environment;
     private showForm = true;
     private info;
@@ -81,6 +83,15 @@ export class Initialize {
             const user = localStorage.getItem('username');
 
             log.debug(`Validator valid and current user: ${user}`);
+
+            const memoSettings = {
+                activeKey: this.userActiveKey,
+                symbol: this.tokenSymbol,
+                account: user,
+                email: this.email
+            };
+
+            log.debug(`About to encode memo with: `, memoSettings);
 
             // Firstly, we want to encode the active key and selected token
             const encoded = steem.memo.encode(this.userActiveKey, 
