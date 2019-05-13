@@ -7,6 +7,7 @@ import { PLATFORM } from 'aurelia-pal';
 import { ValidationMessageProvider } from 'aurelia-validation';
 import { I18N, TCustomAttribute } from 'aurelia-i18n';
 import Backend from 'i18next-xhr-backend';
+import LngDetector from 'i18next-browser-languagedetector';
 
 import Mousetrap from 'mousetrap';
 
@@ -63,11 +64,19 @@ export async function configure(aurelia: Aurelia) {
         let aliases = ['t', 'i18n'];
         TCustomAttribute.configureAliases(aliases);
 
-        instance.i18next.use(Backend);
+        instance.i18next
+            .use(Backend)
+            .use(LngDetector);
 
         return instance.setup({
             backend: {
                 loadPath: 'locales/{{lng}}/{{ns}}.json'
+            },
+            detection: {
+                order: ['localStorage', 'cookie', 'navigator'],
+                lookupCookie: 'i18next',
+                lookupLocalStorage: 'i18nextLng',
+                caches: ['localStorage', 'cookie']
             },
             attributes: aliases,
             lng: environment.defaultLocale,
