@@ -79,7 +79,6 @@ export async function configure(aurelia: Aurelia) {
                 caches: ['localStorage', 'cookie']
             },
             attributes: aliases,
-            lng: environment.defaultLocale,
             ns: ['translation', 'buttons', 'errors'],
             defaultNS: 'translation',
             fallbackLng: 'en',
