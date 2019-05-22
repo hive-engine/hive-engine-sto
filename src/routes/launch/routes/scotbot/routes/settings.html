@@ -71,6 +71,11 @@
                         </div>
     
                         <div class="form-group">
+                            <label>${'JSON App Value' & t}</label>
+                            <input class="form-control" type="text" value.bind="settings.json_metadata_app_value & validate:controller">
+                        </div>
+    
+                        <div class="form-group">
                             <label>${'JSON Metadata Key' & t}</label>
                             <input class="form-control" type="text" value.bind="settings.json_metadata_key & validate:controller">
                         </div>

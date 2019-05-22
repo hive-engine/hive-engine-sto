@@ -6,6 +6,7 @@ interface ScotConfig {
     downvote_power_consumption?: number;
     downvote_regeneration_seconds?: number;
     issue_token?: boolean;
+    json_metadata_app_value?: string;
     json_metadata_key?: string;
     json_metadata_value?: string;
     reduction_every_n_block?: number;
