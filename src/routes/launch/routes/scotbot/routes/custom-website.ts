@@ -28,25 +28,31 @@ export class CustomWebsite {
         });
     }
 
+    async activate() {
+        await this.getPrice();
+    }
+
     async bind() {
-        this.interval = setInterval(async () => {
-            try {
-                const req = await this.http.fetch(environment.PRICE_API);
-                const price = await req.json();
-                
-                const fee = Math.round(environment.NITROUS.FEE / parseFloat(price.steem_price));
-
-                if (fee > 0) {
-                    this.ENG_FEE = fee.toFixed(3)
-                }
-            } catch {
-
-            }
-        }, 60 * 1000)
+        this.interval = setInterval(this.getPrice, 60 * 1000)
     }
 
     unbind() {
         clearInterval(this.interval);
+    }
+    
+    async getPrice() {
+        try {
+            const req = await this.http.fetch(environment.PRICE_API);
+            const price = await req.json();
+            
+            const fee = Math.round(environment.NITROUS.FEE / parseFloat(price.steem_price));
+
+            if (fee > 0) {
+                this.ENG_FEE = fee.toFixed(3)
+            }
+        } catch {
+
+        }
     }
 
     async sendFee() {
