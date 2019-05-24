@@ -4,9 +4,12 @@
             <div class="col-md-12">
                 <h1>Custom Website</h1>
                 
-                <div class="row">
-                    <p class="col-md-9">Coming soon.</p>
+                <div class="form-group">
+                    <label>${'Author Curve Exponent' & t}</label>
+                    <input class="form-control" type="text" value.bind="settings.author_curve_exponent | number:1 & validate:controller">
                 </div>
+
+                <button type="button">Pay ${ENG_FEE} ENG</button>
             </div>
         </div>
     </div>
