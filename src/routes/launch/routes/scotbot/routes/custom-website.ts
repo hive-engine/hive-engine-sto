@@ -12,6 +12,11 @@ export class CustomWebsite {
     private renderer: BootstrapFormRenderer;
     private interval;
 
+    private url: string;
+    private logo: string;
+    private email: string;
+    private discordUsername: string;
+
     // Fallback if the API cannot return a price
     private ENG_FEE = '650.000';
 
@@ -57,5 +62,9 @@ export class CustomWebsite {
 
     async sendFee() {
         const validator: ControllerValidateResult = await this.controller.validate();
+
+        if (validator.valid) {
+            
+        }
     }
 }
