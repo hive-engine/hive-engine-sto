@@ -1,6 +1,6 @@
-import { HttpClient } from 'aurelia-fetch-client';
+import { HttpClient, json } from 'aurelia-fetch-client';
 import { BootstrapFormRenderer } from 'resources/bootstrap-form-renderer';
-import { autoinject, newInstance } from 'aurelia-framework';
+import { autoinject, newInstance, lazy } from 'aurelia-framework';
 import { ValidationControllerFactory, ValidationController, ControllerValidateResult } from 'aurelia-validation';
 import { SteemEngine } from 'services/steem-engine';
 import environment from 'environment';
@@ -11,6 +11,10 @@ export class CustomWebsite {
     private controller: ValidationController;
     private renderer: BootstrapFormRenderer;
     private interval;
+    private formSubmitted = false;
+
+    private http: HttpClient;
+    private api: HttpClient;
 
     private url: string;
     private logo: string;
@@ -20,16 +24,26 @@ export class CustomWebsite {
     // Fallback if the API cannot return a price
     private ENG_FEE = '650.000';
 
-    constructor(private controllerFactory: ValidationControllerFactory, private se: SteemEngine, @newInstance() private http: HttpClient) {
+    constructor(private controllerFactory: ValidationControllerFactory, private se: SteemEngine, 
+        @lazy(HttpClient) private getHttpClient: () => HttpClient) {
         this.controller = controllerFactory.createForCurrentScope();
 
         this.renderer = new BootstrapFormRenderer();
 
         this.controller.addRenderer(this.renderer);
 
+        this.http = getHttpClient();
+        this.api = getHttpClient();
+
         this.http.configure(config => {
             config
                 .useStandardConfiguration();
+        });
+
+        this.api.configure(config => {
+            config
+                .useStandardConfiguration()
+                .withBaseUrl(environment.NODE_API_URL);
         });
     }
 
@@ -64,7 +78,21 @@ export class CustomWebsite {
         const validator: ControllerValidateResult = await this.controller.validate();
 
         if (validator.valid) {
-            
+            try {
+                await this.api.fetch('customWebsite', {
+                    method: 'POST',
+                    body: json({
+                        url: this.url,
+                        logo: this.logo,
+                        email: this.email,
+                        discordUsername: this.discordUsername
+                    })
+                });
+    
+                this.formSubmitted = true;
+            } catch (e) {
+                return;
+            }
         }
     }
 }
