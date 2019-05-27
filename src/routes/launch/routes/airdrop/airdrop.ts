@@ -8,7 +8,7 @@ import Papa from 'papaparse';
 import { ValidationController, ValidationControllerFactory, ValidationRules } from 'aurelia-validation';
 
 const STEEM_ENGINE_OP_ID = 'ssc-mainnet1';
-const MAX_PAYLOAD_SIZE = 8192;
+const MAX_PAYLOAD_SIZE = 2000;
 const MAX_ACCOUNTS_CHECK = 999;
 
 @autoinject()
@@ -187,8 +187,8 @@ export class Airdrop {
                     }
                 };
     
-                const lastPayloadSize = memorySizeOf(this.payloads[this.payloads.length - 1]);
-                const payloadSize = memorySizeOf(payload);
+                const lastPayloadSize = JSON.stringify(this.payloads[this.payloads.length - 1]).length;
+                const payloadSize = JSON.stringify(payload).length;
     
                 if (payloadSize + lastPayloadSize > MAX_PAYLOAD_SIZE) {
                     this.payloads.push([payload]);
@@ -260,36 +260,3 @@ ValidationRules
 function sleep(milliseconds) {
     return new Promise(resolve => setTimeout(resolve, milliseconds));
 }
-
-// https://stackoverflow.com/questions/23318037/size-of-json-object-in-kbs-mbs
-function memorySizeOf(obj) {
-    var bytes = 0;
-
-    function sizeOf(obj) {
-        if(obj !== null && obj !== undefined) {
-            switch(typeof obj) {
-            case 'number':
-                bytes += 8;
-                break;
-            case 'string':
-                bytes += obj.length * 2;
-                break;
-            case 'boolean':
-                bytes += 4;
-                break;
-            case 'object':
-                var objClass = Object.prototype.toString.call(obj).slice(8, -1);
-                if(objClass === 'Object' || objClass === 'Array') {
-                    for(var key in obj) {
-                        if(!obj.hasOwnProperty(key)) continue;
-                        sizeOf(obj[key]);
-                    }
-                } else bytes += obj.toString().length * 2;
-                break;
-            }
-        }
-        return bytes;
-    };
-
-    return sizeOf(obj);
-};
