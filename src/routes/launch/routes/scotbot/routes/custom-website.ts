@@ -1,7 +1,7 @@
 import { HttpClient, json } from 'aurelia-fetch-client';
 import { BootstrapFormRenderer } from 'resources/bootstrap-form-renderer';
 import { autoinject, newInstance, lazy } from 'aurelia-framework';
-import { ValidationControllerFactory, ValidationController, ControllerValidateResult } from 'aurelia-validation';
+import { ValidationControllerFactory, ValidationController, ControllerValidateResult, ValidationRules } from 'aurelia-validation';
 import { SteemEngine } from 'services/steem-engine';
 import environment from 'environment';
 
@@ -78,21 +78,32 @@ export class CustomWebsite {
         const validator: ControllerValidateResult = await this.controller.validate();
 
         if (validator.valid) {
-            try {
-                await this.api.fetch('customWebsite', {
-                    method: 'POST',
-                    body: json({
-                        url: this.url,
-                        logo: this.logo,
-                        email: this.email,
-                        discordUsername: this.discordUsername
-                    })
-                });
-    
-                this.formSubmitted = true;
-            } catch (e) {
-                return;
-            }
+            window.steem_keychain.requestSendToken(localStorage.getItem('username'), environment.NITROUS.FEE_ACCOUNT, this.ENG_FEE, 'Nitrous fee', 'ENG', async response => {
+                if (response.success) {
+                    try {
+                        await this.api.fetch('customWebsite', {
+                            method: 'POST',
+                            body: json({
+                                url: this.url,
+                                logo: this.logo,
+                                email: this.email,
+                                discordUsername: this.discordUsername
+                            })
+                        });
+            
+                        this.formSubmitted = true;
+                    } catch (e) {
+                        return;
+                    }
+                }
+            });
         }
     }
 }
+
+ValidationRules
+    .ensure('url').required().withMessageKey('cwUrl')
+    .ensure('logo').required().withMessageKey('cwLogo')
+    .ensure('email').required().withMessageKey('emailAddress')
+    .ensure('discordUsername').required().withMessageKey('discordUsername')
+    .on(CustomWebsite);

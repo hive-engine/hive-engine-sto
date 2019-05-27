@@ -49,5 +49,9 @@ export default {
         PUBLIC_KEY: 'STM8YqKpQijsqjkkS2widNTsmNM3SrQe3xipEm2sfC4xMryvwhdBE',
         FEE_ACCOUNT_1: 'holger80',
         FEE_ACCOUNT_2: 'beggars'
+    },
+    NITROUS: {
+        FEE_ACCOUNT: 'steem-eng',
+        FEE: 200
     }
 } as any;

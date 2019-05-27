@@ -36,5 +36,8 @@
     "rewardsTokenEveryNBlock": "Please enter an integer value greater than 0",
     "votePowerConsumption": "Please enter a value between 1 - 10000 (Steem vote percentage format)",
     "voteRegenerationSeconds": "Please enter a value greater than 0",
-    "jsonMetadataValue": "Please enter a value for this other than the default"
+    "jsonMetadataValue": "Please enter a value for this other than the default",
+    "cwUrl": "Please enter a valid URL",
+    "cwLogo": "Please enter a URL to a logo image",
+    "discordUsername": "Please enter your Discord handle"
 }
