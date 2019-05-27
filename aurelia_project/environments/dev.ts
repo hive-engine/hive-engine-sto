@@ -11,6 +11,7 @@ export default {
     CONVERTER_API: 'https://converter-api.steem-engine.com/api',
     NODE_API_URL: 'http://localhost:3000/v1/',
     SCOT_API_URL: 'https://scot-api.steem-engine.com/',
+    PRICE_API: 'https://postpromoter.net/api/prices',
 	NATIVE_TOKEN: 'SSC',
     STEEMP_ACCOUNT: 'steemsc',
 	PEGGED_TOKEN: 'STEEMP',
@@ -48,5 +49,9 @@ export default {
         PUBLIC_KEY: 'STM8YqKpQijsqjkkS2widNTsmNM3SrQe3xipEm2sfC4xMryvwhdBE',
         FEE_ACCOUNT_1: 'holger80',
         FEE_ACCOUNT_2: 'beggars'
+    },
+    NITROUS: {
+        FEE_ACCOUNT: '',
+        FEE: 200
     }
 } as any;
