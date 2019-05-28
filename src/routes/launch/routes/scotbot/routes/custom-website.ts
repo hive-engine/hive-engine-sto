@@ -1,9 +1,11 @@
+import { I18N } from 'aurelia-i18n';
 import { HttpClient, json } from 'aurelia-fetch-client';
 import { BootstrapFormRenderer } from 'resources/bootstrap-form-renderer';
 import { autoinject, newInstance, lazy } from 'aurelia-framework';
 import { ValidationControllerFactory, ValidationController, ControllerValidateResult, ValidationRules } from 'aurelia-validation';
 import { SteemEngine } from 'services/steem-engine';
 import environment from 'environment';
+import { ToastService, ToastMessage } from 'services/toast-service';
 
 @autoinject()
 export class CustomWebsite {
@@ -24,7 +26,11 @@ export class CustomWebsite {
     // Fallback if the API cannot return a price
     private ENG_FEE = '650.000';
 
-    constructor(private controllerFactory: ValidationControllerFactory, private se: SteemEngine, 
+    constructor(
+        private controllerFactory: ValidationControllerFactory, 
+        private se: SteemEngine,
+        private toast: ToastService,
+        private i18n: I18N, 
         @lazy(HttpClient) private getHttpClient: () => HttpClient) {
         this.controller = controllerFactory.createForCurrentScope();
 
@@ -78,7 +84,7 @@ export class CustomWebsite {
         const validator: ControllerValidateResult = await this.controller.validate();
 
         if (validator.valid) {
-            window.steem_keychain.requestSendToken(localStorage.getItem('username'), environment.NITROUS.FEE_ACCOUNT, this.ENG_FEE, 'Nitrous fee', 'ENG', async response => {
+            window.steem_keychain.requestSendToken(localStorage.getItem('username'), environment.NITROUS.FEE_ACCOUNT, this.ENG_FEE, 'Nitrous fee', environment.NITROUS.FEE_SYMBOL, async response => {
                 if (response.success) {
                     try {
                         await this.api.fetch('customWebsite', {
@@ -90,9 +96,16 @@ export class CustomWebsite {
                                 discordUsername: this.discordUsername
                             })
                         });
+
+                        const toast = new ToastMessage();
+                        toast.message = this.i18n.tr('nitrousFeeSuccess');
+                        this.toast.success(toast);
             
                         this.formSubmitted = true;
                     } catch (e) {
+                        const toast = new ToastMessage();
+                        toast.message = this.i18n.tr('nitrousFeeError');
+                        this.toast.error(toast);
                         return;
                     }
                 }

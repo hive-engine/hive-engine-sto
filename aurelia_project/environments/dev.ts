@@ -51,7 +51,8 @@ export default {
         FEE_ACCOUNT_2: 'beggars'
     },
     NITROUS: {
-        FEE_ACCOUNT: 'steem-eng',
-        FEE: 200
+        FEE_ACCOUNT: 'beggars',
+        FEE: 200,
+        FEE_SYMBOL: 'MARKET'
     }
 } as any;

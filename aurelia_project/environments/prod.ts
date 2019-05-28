@@ -52,6 +52,7 @@ export default {
     },
     NITROUS: {
         FEE_ACCOUNT: 'steem-eng',
-        FEE: 200
+        FEE: 200,
+        FEE_SYMBOL: 'ENG'
     }
 } as any;

@@ -80,5 +80,7 @@
     "initializeSuccess": "Scotbot successfully initialized and 500 ENG fee paid.",
     "initializeError": "There was an error broadcasting your transaction",
     "settingsSaved": "Your ScotBot settings have been successfully saved.",
-    "settingsSavedError": "Your settings were not saved. There was an error broadcasting your transaction"
+    "settingsSavedError": "Your settings were not saved. There was an error broadcasting your transaction",
+    "nitrousFeeSuccess": "Nitrous fee paid. We will be in contact.",
+    "nitrousFeeError": "Something went wrong. Please contact us on Discord."
 }

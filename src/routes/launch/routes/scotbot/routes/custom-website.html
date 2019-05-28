@@ -3,6 +3,7 @@
         <div class="row">
             <div class="col-md-12">
                 <h1>Custom Website</h1>
+                <p>Want to run your own custom version of Condenser to work with your Steem Engine token? Complete the form below, pay the fee and we'll help you do the rest.</p>
 
                 <div if.bind="formSubmitted">
                     <p>Thank you for your purchase. We will be in contact.</p>
@@ -34,7 +35,7 @@
                     </div>
     
                     <div class="mb-5">
-                        <button type="button" click.delegate="sendFee()" disabled.bind="formSubmitted">Pay ${ENG_FEE} ENG</button>
+                        <button type="button" click.delegate="sendFee()" disabled.bind="formSubmitted">Pay ${ENG_FEE} ${environment.NITROUS.FEE_SYMBOL}</button>
                     </div>
                 </div>
             </div>
