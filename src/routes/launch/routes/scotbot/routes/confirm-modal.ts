@@ -3,7 +3,7 @@ import { ToastMessage, ToastService } from 'services/toast-service';
 import { PLATFORM } from 'aurelia-pal';
 import { DialogController } from 'aurelia-dialog';
 import { autoinject, useView } from 'aurelia-framework';
-import environment from 'environment';
+import { environment } from 'environment';
 
 @useView(PLATFORM.moduleName('./confirm-modal.html'))
 @autoinject()

@@ -17,7 +17,7 @@ import store from 'store/store';
 
 import modalCss from './styles/modal.css';
 
-import environment from './environment';
+import { environment } from './environment';
 
 LogManager.addAppender(new ConsoleAppender());
 

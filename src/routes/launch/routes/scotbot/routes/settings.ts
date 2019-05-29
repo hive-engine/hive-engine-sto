@@ -10,7 +10,7 @@ import {
 import { BootstrapFormRenderer } from "resources/bootstrap-form-renderer";
 import { SteemEngine } from "services/steem-engine";
 import { autoinject } from 'aurelia-framework';
-import environment from "environment";
+import { environment } from 'environment';
 import { difference, sleep } from "common/functions";
 import { DialogService } from 'aurelia-dialog';
 import { ConfirmModal } from "./confirm-modal";
