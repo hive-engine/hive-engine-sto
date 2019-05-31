@@ -13,6 +13,8 @@ interface ScotConfig {
     reduction_percentage?: number;
     rewards_token?: number;
     rewards_token_every_n_block?: number;
+    promoted_post_account?: string;
+    vote_window_days?: number;
 
     /** The symbol of the token. eg. ENG */
     token?: string;

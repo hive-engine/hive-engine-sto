@@ -10,7 +10,7 @@ import {
 import { BootstrapFormRenderer } from "resources/bootstrap-form-renderer";
 import { SteemEngine } from "services/steem-engine";
 import { autoinject } from 'aurelia-framework';
-import environment from "environment";
+import { environment } from 'environment';
 import { difference, sleep } from "common/functions";
 import { DialogService } from 'aurelia-dialog';
 import { ConfirmModal } from "./confirm-modal";
@@ -35,94 +35,96 @@ class SettingsModel implements ScotConfig {
     token_account;
     vote_power_consumption;
     vote_regeneration_seconds;
+    vote_window_days;
 }
 
-ValidationRules.ensure("author_curve_exponent")
-    .required()
-    .then()
-    .satisfies(
-        (value: any, object: any) =>
-            parseFloat(value) >= 1 && parseFloat(value) <= 2
-    )
-    .withMessageKey("authorCurveExponent")
+ValidationRules.
+    ensure("author_curve_exponent")
+        .required()
+        .then()
+        .satisfies(
+            (value: any, object: any) =>
+                parseFloat(value) >= 1 && parseFloat(value) <= 2
+        )
+        .withMessageKey("authorCurveExponent")
     .ensure("author_reward_percentage")
-    .required()
-    .then()
-    .satisfies(
-        (value: any, object: any) =>
-            parseInt(value) >= 0 && parseInt(value) <= 100
-    )
-    .withMessageKey("authorRewardPercentage")
+        .required()
+        .then()
+        .satisfies(
+            (value: any, object: any) =>
+                parseInt(value) >= 0 && parseInt(value) <= 100
+        )
+        .withMessageKey("authorRewardPercentage")
     .ensure("cashout_window_days")
-    .required()
-    .then()
-    .satisfies(
-        (value: any, object: any) =>
-            parseFloat(value) >= 0.1 && parseFloat(value) <= 365
-    )
-    .withMessageKey("cashoutWindowDays")
+        .required()
+        .then()
+        .satisfies(
+            (value: any, object: any) =>
+                parseFloat(value) >= 0.1 && parseFloat(value) <= 365
+        )
+        .withMessageKey("cashoutWindowDays")
     .ensure("curation_curve_exponent")
-    .required()
-    .then()
-    .satisfies(
-        (value: any, object: any) =>
-            parseFloat(value) >= 0.5 && parseFloat(value) <= 2
-    )
-    .withMessageKey("curationCurveExponent")
+        .required()
+        .then()
+        .satisfies(
+            (value: any, object: any) =>
+                parseFloat(value) >= 0.5 && parseFloat(value) <= 2
+        )
+        .withMessageKey("curationCurveExponent")
     .ensure("downvote_power_consumption")
-    .required()
-    .then()
-    .satisfies(
-        (value: any, object: any) =>
-            parseInt(value) >= 1 && parseInt(value) <= 10000
-    )
-    .withMessageKey("downvotePowerConsumption")
+        .required()
+        .then()
+        .satisfies(
+            (value: any, object: any) =>
+                parseInt(value) >= 1 && parseInt(value) <= 10000
+        )
+        .withMessageKey("downvotePowerConsumption")
     .ensure("downvote_regeneration_seconds")
-    .required()
-    .then()
-    .satisfies((value: any, object: any) => parseInt(value) >= -1)
-    .withMessageKey("downvoteRegenerationSeconds")
+        .required()
+        .then()
+        .satisfies((value: any, object: any) => parseInt(value) >= -1)
+        .withMessageKey("downvoteRegenerationSeconds")
     .ensure("reduction_every_n_block")
-    .required()
-    .then()
-    .satisfies((value: any, object: any) => parseFloat(value) > 0)
-    .withMessageKey("reductionEveryNBlock")
+        .required()
+        .then()
+        .satisfies((value: any, object: any) => parseFloat(value) > 0)
+        .withMessageKey("reductionEveryNBlock")
     .ensure("reduction_percentage")
-    .required()
-    .then()
-    .satisfies(
-        (value: any, object: any) =>
-            parseFloat(value) >= 1 && parseFloat(value) <= 100
-    )
-    .withMessageKey("reductionPercentage")
+        .required()
+        .then()
+        .satisfies(
+            (value: any, object: any) =>
+                parseFloat(value) >= 1 && parseFloat(value) <= 100
+        )
+        .withMessageKey("reductionPercentage")
     .ensure("rewards_token")
-    .required()
-    .then()
-    .satisfies((value: any, object: any) => parseFloat(value) > 0)
-    .withMessageKey("rewardsToken")
+        .required()
+        .then()
+        .satisfies((value: any, object: any) => parseFloat(value) > 0)
+        .withMessageKey("rewardsToken")
     .ensure("rewards_token_every_n_block")
-    .required()
-    .then()
-    .satisfies((value: any, object: any) => parseFloat(value) > 0)
-    .withMessageKey("rewardsTokenEveryNBlock")
+        .required()
+        .then()
+        .satisfies((value: any, object: any) => parseFloat(value) > 0)
+        .withMessageKey("rewardsTokenEveryNBlock")
     .ensure("vote_power_consumption")
-    .required()
-    .then()
-    .satisfies(
-        (value: any, object: any) =>
+        .required()
+        .then()
+        .satisfies(
+            (value: any, object: any) =>
             parseFloat(value) >= 1 && parseFloat(value) <= 10000
-    )
+        )
     .withMessageKey("votePowerConsumption")
     .ensure("vote_regeneration_seconds")
-    .required()
-    .then()
-    .satisfies((value: any, object: any) => parseInt(value) > 0)
-    .withMessageKey("voteRegenerationSeconds")
+        .required()
+        .then()
+        .satisfies((value: any, object: any) => parseInt(value) > 0)
+        .withMessageKey("voteRegenerationSeconds")
     .ensure("json_metadata_value")
-    .required()
-    .then()
-    .satisfies((value: any, object: any) => value !== "scottest")
-    .withMessageKey("jsonMetadataValue")
+        .required()
+        .then()
+        .satisfies((value: any, object: any) => value !== "scottest")
+        .withMessageKey("jsonMetadataValue")
     .on(SettingsModel);
 
 @autoinject()
