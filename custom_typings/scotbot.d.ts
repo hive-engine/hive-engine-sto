@@ -1,6 +1,8 @@
 interface ScotConfig {
     author_curve_exponent?: number;
     author_reward_percentage?: number;
+    beneficiaries_account?: string;
+    beneficiaries_reward_percentage?: number;
     cashout_window_days?: number;
     curation_curve_exponent?: number;
     downvote_power_consumption?: number;

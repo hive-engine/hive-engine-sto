@@ -45,6 +45,16 @@
                             <label>${'Author Reward Percentage' & t}</label>
                             <input class="form-control" type="text" value.bind="settings.author_reward_percentage | number & validate:controller">
                         </div>
+
+                        <div class="form-group">
+                            <label>${'Beneficiaries Account' & t}</label>
+                            <input class="form-control" type="text" value.bind="settings.beneficiaries_account & validate:controller">
+                        </div>
+    
+                        <div class="form-group">
+                            <label>${'Beneficiaries Reward Percentage' & t}</label>
+                            <input class="form-control" type="text" value.bind="settings.beneficiaries_reward_percentage | number & validate:controller">
+                        </div>
     
                         <div class="form-group">
                             <label>${'Cashout Window Days' & t}</label>
@@ -76,7 +86,7 @@
                         </div>
     
                         <div class="form-group">
-                            <label>${'JSON App Value' & t}</label>
+                            <label>${'JSON Metadata App Value' & t}</label>
                             <input class="form-control" type="text" value.bind="settings.json_metadata_app_value & validate:controller">
                         </div>
     

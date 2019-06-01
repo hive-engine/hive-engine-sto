@@ -18,6 +18,8 @@ import { ToastService } from "services/toast-service";
 class SettingsModel implements ScotConfig {
     author_curve_exponent;
     author_reward_percentage;
+    beneficiaries_account;
+    beneficiaries_reward_percentage;
     cashout_window_days;
     curation_curve_exponent;
     downvote_power_consumption;
@@ -48,6 +50,14 @@ ValidationRules.
         )
         .withMessageKey("authorCurveExponent")
     .ensure("author_reward_percentage")
+        .required()
+        .then()
+        .satisfies(
+            (value: any, object: any) =>
+                parseInt(value) >= 0 && parseInt(value) <= 100
+        )
+        .withMessageKey("authorRewardPercentage")
+    .ensure("beneficiaries_reward_percentage")
         .required()
         .then()
         .satisfies(
