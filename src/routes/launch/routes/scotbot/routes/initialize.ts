@@ -9,7 +9,7 @@ import { ValidationControllerFactory, ValidationController, ValidationRules, Con
 import { ToastMessage, ToastService } from 'services/toast-service';
 
 import steem from 'steem';
-import environment from 'environment';
+import { environment } from 'environment';
 import { I18N } from 'aurelia-i18n';
 
 @autoinject()

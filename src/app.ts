@@ -16,7 +16,7 @@ import { PLATFORM } from 'aurelia-pal';
 import { autoinject } from 'aurelia-framework';
 import { Router, RouterConfiguration, activationStrategy } from 'aurelia-router';
 
-import environment from 'environment';
+import { environment } from 'environment';
 
 import 'store/store';
 import { loadSteemPrice } from 'store/actions';

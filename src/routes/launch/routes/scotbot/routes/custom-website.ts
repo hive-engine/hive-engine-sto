@@ -4,7 +4,7 @@ import { BootstrapFormRenderer } from 'resources/bootstrap-form-renderer';
 import { autoinject, newInstance, lazy } from 'aurelia-framework';
 import { ValidationControllerFactory, ValidationController, ControllerValidateResult, ValidationRules } from 'aurelia-validation';
 import { SteemEngine } from 'services/steem-engine';
-import environment from 'environment';
+import { environment } from 'environment';
 import { ToastService, ToastMessage } from 'services/toast-service';
 
 @autoinject()

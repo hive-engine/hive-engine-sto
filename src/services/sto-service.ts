@@ -1,6 +1,6 @@
 import { autoinject, newInstance } from 'aurelia-framework';
 import { HttpClient, json } from 'aurelia-fetch-client';
-import environment from 'environment';
+import { environment } from 'environment';
 
 @autoinject()
 export class StoService {

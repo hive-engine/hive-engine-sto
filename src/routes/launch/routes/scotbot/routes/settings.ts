@@ -26,6 +26,7 @@ class SettingsModel implements ScotConfig {
     json_metadata_app_value;
     json_metadata_key;
     json_metadata_value;
+    promoted_post_account;
     reduction_every_n_block;
     reduction_percentage;
     rewards_token;
