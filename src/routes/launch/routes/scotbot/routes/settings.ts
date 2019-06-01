@@ -11,7 +11,6 @@ import { BootstrapFormRenderer } from "resources/bootstrap-form-renderer";
 import { SteemEngine } from "services/steem-engine";
 import { autoinject } from 'aurelia-framework';
 import { environment } from 'environment';
-import { difference, sleep } from "common/functions";
 import { DialogService } from 'aurelia-dialog';
 import { ConfirmModal } from "./confirm-modal";
 import { ToastService } from "services/toast-service";
@@ -114,7 +113,12 @@ ValidationRules.
             (value: any, object: any) =>
             parseFloat(value) >= 1 && parseFloat(value) <= 10000
         )
-    .withMessageKey("votePowerConsumption")
+        .withMessageKey("votePowerConsumption")
+    .ensure("vote_window_days")
+        .required()
+        .then()
+        .satisfies((value: any, object: any) => !isNaN(parseFloat(value)))
+        .withMessageKey("voteWindowDays")
     .ensure("vote_regeneration_seconds")
         .required()
         .then()

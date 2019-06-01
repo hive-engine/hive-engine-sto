@@ -37,6 +37,11 @@
                         </div>
     
                         <div class="form-group">
+                            <label>${'Promoted Post Account' & t}</label>
+                            <input class="form-control" type="text" value.bind="settings.promoted_post_account & validate:controller">
+                        </div>
+    
+                        <div class="form-group">
                             <label>${'Author Reward Percentage' & t}</label>
                             <input class="form-control" type="text" value.bind="settings.author_reward_percentage | number & validate:controller">
                         </div>
@@ -113,6 +118,11 @@
                         <div class="form-group">
                             <label>${'Vote Regeneration Seconds' & t}</label>
                             <input class="form-control" type="text" value.bind="settings.vote_regeneration_seconds | number & validate:controller">
+                        </div>
+
+                        <div class="form-group">
+                            <label>${'Vote Window Days' & t}</label>
+                            <input class="form-control" type="text" value.bind="settings.vote_window_days | number & validate:controller">
                         </div>
                     </div>
 
