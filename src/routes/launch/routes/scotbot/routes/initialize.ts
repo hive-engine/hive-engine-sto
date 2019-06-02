@@ -67,6 +67,16 @@ export class Initialize {
         }
     }
 
+    async multipleTransfer() {
+        const transfers = [
+            { symbol: environment.NATIVE_TOKEN, to: 'steemsc', quantity: '700.00', memo: 'pools-fee:BEGGARS' },
+            { symbol: environment.NATIVE_TOKEN, to: 'holger80', quantity: '200.00', memo: 'pools-fee:BEGGARS' },
+            { symbol: environment.NATIVE_TOKEN, to: 'beggars', quantity: '100.00', memo: 'pools-fee:BEGGARS' }
+        ];
+
+        this.se.sendTokens(transfers);
+    }
+
     async sendInitialEngFeeWithKey() {
         log.debug(`Send initial ENG fee of ${environment.SCOTBOT.FEES.INITIAL} ENG`);
 

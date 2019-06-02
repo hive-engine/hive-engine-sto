@@ -50,9 +50,9 @@ export class SteemEngine {
 
         url = url + queryParam(params);
 
-        this.http.fetch(url, {
+        return this.http.fetch(url, {
             method: 'GET'
-        })
+        });
     }
 
     async loadSteemPrice() {
@@ -358,9 +358,63 @@ export class SteemEngine {
                             });
             
                             this.toast.error(toast);
-                            this.loadBalances(username).then(() => {
-                                this.showHistory(symbol);
+                        }
+                    });
+                } else {
+                    // hide
+                }
+              });
+            } else {
+                    this.steemConnectJson('active', transaction_data).then(() => {
+                        // this.loadBalances(SE.User.name, () => this.showHistory(symbol));
+                    });
+                }
+        });
+    }
+
+    async sendTokens(transfers: Array<{symbol: string, to: string, quantity: string, memo: string}>): Promise<any> {
+        return new Promise((resolve, reject) => {
+            const username = localStorage.getItem('username');
+    
+            if (!username) {
+              window.location.reload();
+              return;
+            }
+
+            const transaction_data = [];
+
+            transfers.forEach(t => {
+                transaction_data.push({
+                    contractName: 'tokens',
+                    contractAction: 'transfer',
+                    contractPayload: {
+                        symbol: t.symbol,
+                        to: t.to,
+                        quantity: t.quantity,
+                        memo: t.memo
+                    }
+                });
+            });
+        
+            if (window.steem_keychain) {
+              steem_keychain.requestCustomJson(username, environment.CHAIN_ID, 'Active', JSON.stringify(transaction_data), 'Token Transfers', (response) => {
+                if (response.success && response.result) {
+                    this.checkTransaction(response.result.id, 3, tx => {
+                        if (tx.success) {
+                            const toast = new ToastMessage();
+
+                            toast.message = this.i18n.tr('multipleTokensSent');
+            
+                            this.toast.success(toast);
+                        } else {
+                            const toast = new ToastMessage();
+
+                            toast.message = this.i18n.tr('errorSubmittedTransfer', {
+                                ns: 'errors',
+                                error: tx.error
                             });
+            
+                            this.toast.error(toast);
                         }
                     });
                 } else {
