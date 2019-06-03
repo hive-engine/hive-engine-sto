@@ -1,19 +1,19 @@
-import { ToastMessage } from "../../../../../services/toast-service";
+import { ToastMessage } from '../../../../../services/toast-service';
 import { I18N } from 'aurelia-i18n';
-import { ScotService } from "../../../../../services/scot-service";
+import { ScotService } from '../../../../../services/scot-service';
 import {
     ValidationController,
     ValidationControllerFactory,
     ValidationRules,
     ControllerValidateResult
 } from 'aurelia-validation';
-import { BootstrapFormRenderer } from "resources/bootstrap-form-renderer";
-import { SteemEngine } from "services/steem-engine";
+import { BootstrapFormRenderer } from 'resources/bootstrap-form-renderer';
+import { SteemEngine } from 'services/steem-engine';
 import { autoinject } from 'aurelia-framework';
 import { environment } from 'environment';
 import { DialogService } from 'aurelia-dialog';
-import { ConfirmModal } from "./confirm-modal";
-import { ToastService } from "services/toast-service";
+import { ConfirmModal } from './confirm-modal';
+import { ToastService } from 'services/toast-service';
 
 class SettingsModel implements ScotConfig {
     author_curve_exponent;
@@ -40,106 +40,105 @@ class SettingsModel implements ScotConfig {
     vote_window_days;
 }
 
-ValidationRules.
-    ensure("author_curve_exponent")
-        .required()
-        .then()
-        .satisfies(
-            (value: any, object: any) =>
-                parseFloat(value) >= 1 && parseFloat(value) <= 2
-        )
-        .withMessageKey("authorCurveExponent")
-    .ensure("author_reward_percentage")
-        .required()
-        .then()
-        .satisfies(
-            (value: any, object: any) =>
-                parseInt(value) >= 0 && parseInt(value) <= 100
-        )
-        .withMessageKey("authorRewardPercentage")
-    .ensure("beneficiaries_reward_percentage")
-        .required()
-        .then()
-        .satisfies(
-            (value: any, object: any) =>
-                parseInt(value) >= 0 && parseInt(value) <= 100
-        )
-        .withMessageKey("authorRewardPercentage")
-    .ensure("cashout_window_days")
-        .required()
-        .then()
-        .satisfies(
-            (value: any, object: any) =>
-                parseFloat(value) >= 0.1 && parseFloat(value) <= 365
-        )
-        .withMessageKey("cashoutWindowDays")
-    .ensure("curation_curve_exponent")
-        .required()
-        .then()
-        .satisfies(
-            (value: any, object: any) =>
-                parseFloat(value) >= 0.5 && parseFloat(value) <= 2
-        )
-        .withMessageKey("curationCurveExponent")
-    .ensure("downvote_power_consumption")
-        .required()
-        .then()
-        .satisfies(
-            (value: any, object: any) =>
-                parseInt(value) >= 1 && parseInt(value) <= 10000
-        )
-        .withMessageKey("downvotePowerConsumption")
-    .ensure("downvote_regeneration_seconds")
-        .required()
-        .then()
-        .satisfies((value: any, object: any) => parseInt(value) >= -1)
-        .withMessageKey("downvoteRegenerationSeconds")
-    .ensure("reduction_every_n_block")
-        .required()
-        .then()
-        .satisfies((value: any, object: any) => parseFloat(value) > 0)
-        .withMessageKey("reductionEveryNBlock")
-    .ensure("reduction_percentage")
-        .required()
-        .then()
-        .satisfies(
-            (value: any, object: any) =>
-                parseFloat(value) >= 1 && parseFloat(value) <= 100
-        )
-        .withMessageKey("reductionPercentage")
-    .ensure("rewards_token")
-        .required()
-        .then()
-        .satisfies((value: any, object: any) => parseFloat(value) > 0)
-        .withMessageKey("rewardsToken")
-    .ensure("rewards_token_every_n_block")
-        .required()
-        .then()
-        .satisfies((value: any, object: any) => parseFloat(value) > 0)
-        .withMessageKey("rewardsTokenEveryNBlock")
-    .ensure("vote_power_consumption")
-        .required()
-        .then()
-        .satisfies(
-            (value: any, object: any) =>
+ValidationRules.ensure('author_curve_exponent')
+    .required()
+    .then()
+    .satisfies(
+        (value: any, object: any) =>
+            parseFloat(value) >= 1 && parseFloat(value) <= 2
+    )
+    .withMessageKey('authorCurveExponent')
+    .ensure('author_reward_percentage')
+    .required()
+    .then()
+    .satisfies(
+        (value: any, object: any) =>
+            parseInt(value) >= 0 && parseInt(value) <= 100
+    )
+    .withMessageKey('authorRewardPercentage')
+    .ensure('beneficiaries_reward_percentage')
+    .required()
+    .then()
+    .satisfies(
+        (value: any, object: any) =>
+            parseInt(value) >= 0 && parseInt(value) <= 100
+    )
+    .withMessageKey('authorRewardPercentage')
+    .ensure('cashout_window_days')
+    .required()
+    .then()
+    .satisfies(
+        (value: any, object: any) =>
+            parseFloat(value) >= 0.1 && parseFloat(value) <= 365
+    )
+    .withMessageKey('cashoutWindowDays')
+    .ensure('curation_curve_exponent')
+    .required()
+    .then()
+    .satisfies(
+        (value: any, object: any) =>
+            parseFloat(value) >= 0.5 && parseFloat(value) <= 2
+    )
+    .withMessageKey('curationCurveExponent')
+    .ensure('downvote_power_consumption')
+    .required()
+    .then()
+    .satisfies(
+        (value: any, object: any) =>
+            parseInt(value) >= 1 && parseInt(value) <= 10000
+    )
+    .withMessageKey('downvotePowerConsumption')
+    .ensure('downvote_regeneration_seconds')
+    .required()
+    .then()
+    .satisfies((value: any, object: any) => parseInt(value) >= -1)
+    .withMessageKey('downvoteRegenerationSeconds')
+    .ensure('reduction_every_n_block')
+    .required()
+    .then()
+    .satisfies((value: any, object: any) => parseFloat(value) > 0)
+    .withMessageKey('reductionEveryNBlock')
+    .ensure('reduction_percentage')
+    .required()
+    .then()
+    .satisfies(
+        (value: any, object: any) =>
+            parseFloat(value) >= 1 && parseFloat(value) <= 100
+    )
+    .withMessageKey('reductionPercentage')
+    .ensure('rewards_token')
+    .required()
+    .then()
+    .satisfies((value: any, object: any) => parseFloat(value) > 0)
+    .withMessageKey('rewardsToken')
+    .ensure('rewards_token_every_n_block')
+    .required()
+    .then()
+    .satisfies((value: any, object: any) => parseFloat(value) > 0)
+    .withMessageKey('rewardsTokenEveryNBlock')
+    .ensure('vote_power_consumption')
+    .required()
+    .then()
+    .satisfies(
+        (value: any, object: any) =>
             parseFloat(value) >= 1 && parseFloat(value) <= 10000
-        )
-        .withMessageKey("votePowerConsumption")
-    .ensure("vote_window_days")
-        .required()
-        .then()
-        .satisfies((value: any, object: any) => !isNaN(parseFloat(value)))
-        .withMessageKey("voteWindowDays")
-    .ensure("vote_regeneration_seconds")
-        .required()
-        .then()
-        .satisfies((value: any, object: any) => parseInt(value) > 0)
-        .withMessageKey("voteRegenerationSeconds")
-    .ensure("json_metadata_value")
-        .required()
-        .then()
-        .satisfies((value: any, object: any) => value !== "scottest")
-        .withMessageKey("jsonMetadataValue")
+    )
+    .withMessageKey('votePowerConsumption')
+    .ensure('vote_window_days')
+    .required()
+    .then()
+    .satisfies((value: any, object: any) => !isNaN(parseFloat(value)))
+    .withMessageKey('voteWindowDays')
+    .ensure('vote_regeneration_seconds')
+    .required()
+    .then()
+    .satisfies((value: any, object: any) => parseInt(value) > 0)
+    .withMessageKey('voteRegenerationSeconds')
+    .ensure('json_metadata_value')
+    .required()
+    .then()
+    .satisfies((value: any, object: any) => value !== 'scottest')
+    .withMessageKey('jsonMetadataValue')
     .on(SettingsModel);
 
 @autoinject()
@@ -178,7 +177,7 @@ export class Settings {
     }
 
     async activate() {
-        const user = localStorage.getItem("username");
+        const user = localStorage.getItem('username');
 
         try {
             const balance = await this.se.loadBalances(
@@ -205,7 +204,7 @@ export class Settings {
     }
 
     async saveSettings() {
-        const user = localStorage.getItem("username");
+        const user = localStorage.getItem('username');
 
         const validator: ControllerValidateResult = await this.controller.validate();
 
@@ -230,7 +229,7 @@ export class Settings {
                         environment.SCOTBOT.FEE_ACCOUNT_1,
                         environment.SCOTBOT.FEES.SETUP_1,
                         JSON.stringify(this.settings),
-                        "ENG",
+                        'ENG',
                         async response => {
                             if (response.success && !this.feeTwoPaid) {
                                 this.feeOnePaid = true;
@@ -266,12 +265,12 @@ export class Settings {
                     environment.SCOTBOT.CHANGE_ACCOUNT,
                     environment.SCOTBOT.FEES.CHANGE,
                     JSON.stringify(this.settings),
-                    "ENG",
+                    'ENG',
                     response => {
                         if (response.success) {
                             const toast = new ToastMessage();
 
-                            toast.message = this.i18n.tr("settingsSaved");
+                            toast.message = this.i18n.tr('settingsSaved');
 
                             this.toast.success(toast);
                         }
