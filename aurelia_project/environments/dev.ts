@@ -1,3 +1,4 @@
+import { NativeTokens } from 'common/types';
 import { baseEnvironmentConfiguration } from 'base-environment';
 
 export const environment: Partial<EnvironmentInterface> = {
@@ -12,13 +13,13 @@ export const environment: Partial<EnvironmentInterface> = {
     ACCOUNTS_API_URL: 'https://testaccounts.steem-engine.com',
     CONVERTER_API: 'https://converter-api.steem-engine.com/api',
     NODE_API_URL: 'http://localhost:3000/v1/',
-	NATIVE_TOKEN: 'SSC',
+	NATIVE_TOKEN: NativeTokens.Ssc,
     STEEMP_ACCOUNT: 'steemsc',
     AIRDROP: {
         FEE_ACCOUNT: 'beggars',
         FEE: '0.001',
         MEMO: 'airdrop-fee',
-        TOKEN: 'SSC'
+        TOKEN: NativeTokens.Ssc
     },
     SCOTBOT: {
         FEE_ACCOUNT: 'steemsc',
@@ -36,6 +37,6 @@ export const environment: Partial<EnvironmentInterface> = {
     NITROUS: {
         FEE_ACCOUNT: 'beggars',
         FEE: 200,
-        FEE_SYMBOL: 'SSC'
+        FEE_SYMBOL: NativeTokens.Ssc
     }
 };

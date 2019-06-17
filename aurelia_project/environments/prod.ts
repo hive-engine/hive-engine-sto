@@ -1,4 +1,5 @@
 import { baseEnvironmentConfiguration } from 'base-environment';
+import { NativeTokens } from 'common/types';
 
 export const environment: Partial<EnvironmentInterface> = {
     ...baseEnvironmentConfiguration,
@@ -12,13 +13,13 @@ export const environment: Partial<EnvironmentInterface> = {
     PRICE_API: 'https://postpromoter.net/api/prices',
 	ACCOUNTS_API_URL: 'https://api.steem-engine.com/accounts',
     CONVERTER_API: 'https://converter-api.steem-engine.com/api',
-	NATIVE_TOKEN: 'ENG',
+	NATIVE_TOKEN: NativeTokens.Eng,
     STEEMP_ACCOUNT: 'steem-peg',
     AIRDROP: {
         FEE_ACCOUNT: 'steem-eng',
         FEE: '20.000',
         MEMO: 'airdrop-fee',
-        TOKEN: 'ENG'
+        TOKEN: NativeTokens.Eng
     },
     SCOTBOT: {
         FEE_ACCOUNT: 'steemsc',
@@ -36,6 +37,6 @@ export const environment: Partial<EnvironmentInterface> = {
     NITROUS: {
         FEE_ACCOUNT: 'steem-eng',
         FEE: 200,
-        FEE_SYMBOL: 'ENG'
+        FEE_SYMBOL: NativeTokens.Eng
     }
 };
