@@ -24,6 +24,12 @@ interface EnvironmentInterface {
     DISABLED_TOKENS: string[];
     PEGGED_TOKEN: string;
     PEGGED_TOKENS: PeggedToken[];
+    AIRDROP: {
+        FEE_ACCOUNT: string;
+        FEE: string;
+        MEMO: string;
+        TOKEN: string;
+    };
     SCOTBOT: {
         FEE_ACCOUNT: string;
         CHANGE_ACCOUNT: string;

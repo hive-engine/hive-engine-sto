@@ -14,6 +14,12 @@ export const environment: Partial<EnvironmentInterface> = {
     NODE_API_URL: 'http://localhost:3000/v1/',
 	NATIVE_TOKEN: 'SSC',
     STEEMP_ACCOUNT: 'steemsc',
+    AIRDROP: {
+        FEE_ACCOUNT: 'beggars',
+        FEE: '0.001',
+        MEMO: 'airdrop-fee',
+        TOKEN: 'SSC'
+    },
     SCOTBOT: {
         FEE_ACCOUNT: 'steemsc',
         CHANGE_ACCOUNT: 'null',

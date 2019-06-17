@@ -14,6 +14,12 @@ export const environment: Partial<EnvironmentInterface> = {
     CONVERTER_API: 'https://converter-api.steem-engine.com/api',
 	NATIVE_TOKEN: 'ENG',
     STEEMP_ACCOUNT: 'steem-peg',
+    AIRDROP: {
+        FEE_ACCOUNT: 'steem-eng',
+        FEE: '20.000',
+        MEMO: 'airdrop-fee',
+        TOKEN: 'ENG'
+    },
     SCOTBOT: {
         FEE_ACCOUNT: 'steemsc',
         CHANGE_ACCOUNT: 'null',

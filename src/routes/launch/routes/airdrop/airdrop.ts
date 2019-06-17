@@ -6,6 +6,7 @@ import steem from 'steem';
 
 import Papa from 'papaparse';
 import { ValidationController, ValidationControllerFactory, ValidationRules } from 'aurelia-validation';
+import { environment } from 'environment';
 
 const STEEM_ENGINE_OP_ID = 'ssc-mainnet1';
 const MAX_PAYLOAD_SIZE = 2000;
@@ -136,7 +137,8 @@ export class Airdrop {
 
     payFee() {
         if (this.currentToken) {
-            steem_keychain.requestSendToken(localStorage.getItem('username'), 'beggars', '20.000', 'airdrop-fee', 'ENG', response => {
+            const username = localStorage.getItem('username');
+            steem_keychain.requestSendToken(username, environment.AIRDROP.FEE_ACCOUNT, environment.AIRDROP.FEE, environment.AIRDROP.MEMO, environment.AIRDROP.TOKEN, response => {
                 if (response.success) {
                     this.hasPaidEngFee = true;
                     this.step = 4;
