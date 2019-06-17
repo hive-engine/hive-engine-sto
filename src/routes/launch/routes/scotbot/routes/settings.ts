@@ -1,6 +1,6 @@
-import { ToastMessage } from '../../../../../services/toast-service';
+import { ToastMessage } from 'services/toast-service';
 import { I18N } from 'aurelia-i18n';
-import { ScotService } from '../../../../../services/scot-service';
+import { ScotService } from 'services/scot-service';
 import {
     ValidationController,
     ValidationControllerFactory,
@@ -14,6 +14,7 @@ import { environment } from 'environment';
 import { DialogService } from 'aurelia-dialog';
 import { ConfirmModal } from './confirm-modal';
 import { ToastService } from 'services/toast-service';
+import { NativeTokens } from 'common/types';
 
 class SettingsModel implements ScotConfig {
     author_curve_exponent;
@@ -229,7 +230,7 @@ export class Settings {
                         environment.SCOTBOT.FEE_ACCOUNT_1,
                         environment.SCOTBOT.FEES.SETUP_1,
                         JSON.stringify(this.settings),
-                        'ENG',
+                        NativeTokens.Eng,
                         async response => {
                             if (response.success && !this.feeTwoPaid) {
                                 this.feeOnePaid = true;
@@ -265,7 +266,7 @@ export class Settings {
                     environment.SCOTBOT.CHANGE_ACCOUNT,
                     environment.SCOTBOT.FEES.CHANGE,
                     JSON.stringify(this.settings),
-                    'ENG',
+                    NativeTokens.Eng,
                     response => {
                         if (response.success) {
                             const toast = new ToastMessage();

@@ -4,6 +4,7 @@ import { PLATFORM } from 'aurelia-pal';
 import { DialogController } from 'aurelia-dialog';
 import { autoinject, useView } from 'aurelia-framework';
 import { environment } from 'environment';
+import { NativeTokens } from '../../../../../common/types';
 
 @useView(PLATFORM.moduleName('./confirm-modal.html'))
 @autoinject()
@@ -33,7 +34,7 @@ export class ConfirmModal {
             environment.SCOTBOT.FEE_ACCOUNT_2,
             environment.SCOTBOT.FEES.SETUP_2,
             JSON.stringify(this.item),
-            'ENG', (response) => {
+            NativeTokens.Eng, (response) => {
                 if (response.success) {
                     this.parent.feeTwoPaid = true;
 

@@ -1,3 +1,4 @@
+import { NativeTokens } from 'common/types';
 import { log } from 'services/log-service';
 import { SecurityModal } from './security-modal';
 import { DialogService } from 'aurelia-dialog';
@@ -114,7 +115,7 @@ export class Initialize {
                 log.debug(`We have an encoded memo`);
 
                 steem_keychain.requestSendToken(user, environment.SCOTBOT.FEE_ACCOUNT, 
-                    environment.SCOTBOT.FEES.INITIAL, encoded, 'ENG', (response) => {
+                    environment.SCOTBOT.FEES.INITIAL, encoded, NativeTokens.Eng, (response) => {
                     if (response.success) {
                         log.debug(`User has paid first 500 ENG fee`);
 
