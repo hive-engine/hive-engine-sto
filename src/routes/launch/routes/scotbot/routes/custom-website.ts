@@ -23,8 +23,7 @@ export class CustomWebsite {
     private email: string;
     private discordUsername: string;
 
-    // Fallback if the API cannot return a price
-    private ENG_FEE = '650.000';
+    private ENG_FEE = '1000.000';
 
     constructor(
         private controllerFactory: ValidationControllerFactory, 
@@ -51,33 +50,6 @@ export class CustomWebsite {
                 .useStandardConfiguration()
                 .withBaseUrl(environment.NODE_API_URL);
         });
-    }
-
-    async activate() {
-        await this.getPrice();
-    }
-
-    async bind() {
-        this.interval = setInterval(this.getPrice, 60 * 1000)
-    }
-
-    unbind() {
-        clearInterval(this.interval);
-    }
-    
-    async getPrice() {
-        try {
-            const req = await this.http.fetch(environment.PRICE_API);
-            const price = await req.json();
-            
-            const fee = Math.round(environment.NITROUS.FEE / parseFloat(price.steem_price));
-
-            if (fee > 0) {
-                this.ENG_FEE = fee.toFixed(3)
-            }
-        } catch {
-
-        }
     }
 
     async sendFee() {
