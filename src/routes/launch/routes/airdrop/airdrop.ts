@@ -21,6 +21,7 @@ export class Airdrop {
     public airdropInProgress = false;
     public airdropComplete = false;
     public completed: number = 0;
+    public errors = [];
     public fileInput: HTMLInputElement;
     public memoText: string;
     public tokenSymbol: string;
@@ -215,12 +216,16 @@ export class Airdrop {
             const required_auths = [localStorage.getItem('username')];
             const required_posting_auths = [];
 
-            await steem.broadcast.customJsonAsync(this.activeKey, required_auths, required_posting_auths, STEEM_ENGINE_OP_ID, JSON.stringify(payload));
+            try {
+                await steem.broadcast.customJsonAsync(this.activeKey, required_auths, required_posting_auths, STEEM_ENGINE_OP_ID, JSON.stringify(payload));
             
-            this.completed++;
-            this.airdropPercentage = Math.round((this.completed / this.payloads.length) * 100);
+                this.completed++;
+                this.airdropPercentage = Math.round((this.completed / this.payloads.length) * 100);
+            } catch (e) {
+                this.errors.push(e);
+            }
 
-            if (this.completed !== (this.payloads.length) && this.completed !== 0) {
+            if (this.completed !== (this.payloads.length) && this.completed !== 0 && !this.errors.length) {
                 await sleep(3000);
             } else {
                 this.airdropInProgress = false;

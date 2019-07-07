@@ -126,6 +126,8 @@
 
                 <p if.bind="airdropComplete">Airdrop is complete. You can now close your browser and/or tab.</p>
                 <p if.bind="airdropComplete">Total amount distributed: <strong>${totalInPayload} ${tokenSymbol}</strong></p>
+
+                <p if.bind="airdropComplete && errors.length"><strong>There were one or more errors. Please contact @beggars on Discord for assistance.</strong></p>
             </div>
         </div>
     </div>
