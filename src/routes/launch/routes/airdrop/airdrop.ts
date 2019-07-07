@@ -29,6 +29,7 @@ export class Airdrop {
     public step = 1;
     public payloads = [[]];
     public totalInPayload: any = 0.00;
+    public airdropFee = '0';
         
     public currentUser: string;
     public currentAmount: number;
@@ -129,7 +130,8 @@ export class Airdrop {
                 if (!this.usersNotExisting.length) {
                     this.step = 2;
                 }
-            
+
+                this.airdropFee = (this.usersToAirDrop.length * 20 / 1000).toFixed(3);
             }
         } catch (e) {
             console.error(e);
@@ -139,7 +141,8 @@ export class Airdrop {
     payFee() {
         if (this.currentToken) {
             const username = localStorage.getItem('username');
-            steem_keychain.requestSendToken(username, environment.AIRDROP.FEE_ACCOUNT, environment.AIRDROP.FEE, environment.AIRDROP.MEMO, environment.AIRDROP.TOKEN, response => {
+
+            steem_keychain.requestSendToken(username, environment.AIRDROP.FEE_ACCOUNT, this.airdropFee, environment.AIRDROP.MEMO, 'FUTURE', response => {
                 if (response.success) {
                     this.hasPaidEngFee = true;
                     this.step = 4;
@@ -223,6 +226,7 @@ export class Airdrop {
                 this.airdropPercentage = Math.round((this.completed / this.payloads.length) * 100);
             } catch (e) {
                 this.errors.push(e);
+                throw new Error(e);
             }
 
             if (this.completed !== (this.payloads.length) && this.completed !== 0 && !this.errors.length) {

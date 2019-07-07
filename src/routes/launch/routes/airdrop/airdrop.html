@@ -85,12 +85,13 @@
                     <li>Token Symbol: ${currentToken.symbol}</li>
                     <li>Accounts being airdropped: ${usersToAirDrop.length}</li>
                     <li>Total amount being distributed: ${totalAmountBeingAirdropped} ${currentToken.symbol}</li>
+                    <li>Fee: ${airdropFee}</li>
                 </ul>
 
-                <p>If these details are correct, please proceed to paying the 20 ENG fee. You will need to have the Steem Keychain extension installed to do this.</p>
+                <p>If these details are correct, please proceed to paying the airdrop fee totalling: ${airdropFee} ENG. You will need to have the Steem Keychain extension installed to do this.</p>
 
                 <div class="form-group">
-                    <button type="button" click.delegate="payFee()" class="btn btn-primary">${'Pay 20 ENG' & t}</button>
+                    <button type="button" click.delegate="payFee()" class="btn btn-primary">${'Pay' & t} ${airdropFee} ENG</button>
                 </div>
             </fieldset>
 
@@ -127,7 +128,7 @@
                 <p if.bind="airdropComplete">Airdrop is complete. You can now close your browser and/or tab.</p>
                 <p if.bind="airdropComplete">Total amount distributed: <strong>${totalInPayload} ${tokenSymbol}</strong></p>
 
-                <p if.bind="airdropComplete && errors.length"><strong>There were one or more errors. Please contact @beggars on Discord for assistance.</strong></p>
+                <p if.bind="airdropComplete && errors.length"><strong>There were one or more errors. Please contact @beggars on Discord for assistance. Number of users successfully airdropped (top-down) was: ${completed}</strong></p>
             </div>
         </div>
     </div>
