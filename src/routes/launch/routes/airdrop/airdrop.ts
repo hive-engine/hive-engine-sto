@@ -146,7 +146,7 @@ export class Airdrop {
         if (this.currentToken) {
             const username = localStorage.getItem('username');
 
-            steem_keychain.requestSendToken(username, environment.AIRDROP.FEE_ACCOUNT, this.airdropFee, environment.AIRDROP.MEMO, 'FUTURE', response => {
+            steem_keychain.requestSendToken(username, environment.AIRDROP.FEE_ACCOUNT, this.airdropFee, environment.AIRDROP.MEMO, environment.AIRDROP.TOKEN, response => {
                 if (response.success) {
                     this.hasPaidEngFee = true;
                     this.step = 4;

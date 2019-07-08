@@ -77,7 +77,7 @@
 
             <fieldset if.bind="step == 3">
                 <h6 class="mb-3">Fees</h6>
-                <p>This is an irreversible process. All sales are final, this cannot be undone. Please double and triple everything in your CSV file is correct before proceeding. The fee for issuing an airdrop is: <strong>20 ENG</strong>.</p>
+                <p>This is an irreversible process. All sales are final, this cannot be undone. Please double and triple everything in your CSV file is correct before proceeding. The fee for issuing this airdrop is: <strong>${airdropFee} ENG</strong>.</p>
 
                 <h6>Are these details correct?</h6>
 
@@ -97,7 +97,7 @@
 
             <fieldset if.bind="step == 4 && !airdropInProgress && !airdropComplete">
                 <h6 class="mb-3">You're ready</h6>
-                <p>Filling out the active key and entering "AIRDROP" will initiate the airdrop process.</p>
+                <p>Filling out the active key and entering "AIRDROP" will initiate the airdrop process. Once you press the button, the airdrop will begin and under no circumstances should you close the browser window.</p>
 
                 <div class="form-group mb-3">
                     <label>Please enter your active key</label>
