@@ -9,8 +9,12 @@ import { ValidationController, ValidationControllerFactory, ValidationRules } fr
 import { environment } from 'environment';
 
 const STEEM_ENGINE_OP_ID = 'ssc-mainnet1';
-const MAX_PAYLOAD_SIZE = 2000;
-const MAX_ACCOUNTS_CHECK = 999;
+const MAX_PAYLOAD_SIZE = 8192;
+const MAX_ACCOUNTS_CHECK = 500;
+
+steem.api.setOptions({
+    url: 'https://anyx.io'
+});
 
 @autoinject()
 export class Airdrop {
