@@ -1,3 +1,4 @@
+import { Store } from 'aurelia-store';
 import { BootstrapFormRenderer } from 'resources/bootstrap-form-renderer';
 import { SteemEngine } from 'services/steem-engine';
 import { autoinject, computedFrom } from 'aurelia-framework';
@@ -7,6 +8,7 @@ import steem from 'steem';
 import Papa from 'papaparse';
 import { ValidationController, ValidationControllerFactory, ValidationRules } from 'aurelia-validation';
 import { environment } from 'environment';
+import { State } from 'store/state';
 
 const STEEM_ENGINE_OP_ID = 'ssc-mainnet1';
 const MAX_PAYLOAD_SIZE = 8192;
@@ -15,6 +17,8 @@ const MAX_ACCOUNTS_CHECK = 500;
 steem.api.setOptions({
     url: 'https://anyx.io'
 });
+
+
 
 @autoinject()
 export class Airdrop {
@@ -55,7 +59,7 @@ export class Airdrop {
 @beggars,100
 @fdskjflk,232`;
 
-    constructor(private controllerFactory: ValidationControllerFactory, private se: SteemEngine) {
+    constructor(private controllerFactory: ValidationControllerFactory, private se: SteemEngine, private store: Store<State>) {
         this.controller = controllerFactory.createForCurrentScope();
 
         this.renderer = new BootstrapFormRenderer();
