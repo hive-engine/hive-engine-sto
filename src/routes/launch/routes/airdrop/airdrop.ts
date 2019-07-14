@@ -14,6 +14,19 @@ const STEEM_ENGINE_OP_ID = 'ssc-mainnet1';
 const MAX_PAYLOAD_SIZE = 8192;
 const MAX_ACCOUNTS_CHECK = 500;
 
+const STEEM_ENDPOINTS = [
+    {
+        url: 'https://anyx.io',
+        maxPayloadSize: 8192,
+        maxAccountsCheck: 500
+    },
+    {
+        url: 'https://api.steemit.com',
+        maxPayloadSize: 2000,
+        maxAccountsCheck: 999
+    }
+];
+
 steem.api.setOptions({
     url: 'https://anyx.io'
 });
