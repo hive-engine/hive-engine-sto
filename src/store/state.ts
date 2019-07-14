@@ -18,18 +18,6 @@ export interface State {
   
   loading: boolean;
 
-  steemPrice: number;
-
-  buyBook: any[];
-
-  sellBook: any[];
-
-  tradesHistory: any[];
-
-  token: any;
-
-  tokens: any[];
-
   investorQuestionnaire: {
       currentStep: number;
       totalSteps: number;
@@ -53,7 +41,6 @@ export const initialState: State = {
       loggedIn: false
   },
   loading: false,
-  steemPrice: 0,
   buyBook: [],
   sellBook: [],
   tradesHistory: [],

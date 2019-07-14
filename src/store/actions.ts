@@ -42,20 +42,6 @@ export async function logout(state: State): Promise<State> {
     return newState;
 }
 
-export async function loadSteemPrice(state: State): Promise<State> {
-    const newState = { ...state };
-
-    try {
-        const price = await SE.loadSteemPrice();
-
-        newState.steemPrice = price;
-    } catch (e) {
-        return newState;
-    }
-
-    return newState;
-}
-
 export async function loadBalances(state: State, username: string): Promise<State> {
     let newState = { ...state };
 
@@ -122,7 +108,6 @@ export async function loadUserBalances(state: State, symbol: string, account?): 
 store.registerAction('loading', loading);
 store.registerAction('login', login);
 store.registerAction('logout', logout);
-store.registerAction('loadSteemPrice', loadSteemPrice);
 store.registerAction('loadBalances', loadBalances);
 store.registerAction('loadTokens', loadTokens);
 store.registerAction('getToken', getToken);

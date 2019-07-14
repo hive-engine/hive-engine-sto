@@ -34,26 +34,6 @@ export function addCommas(nStr, currency?) {
 	return x1 + x2;
 }
 
-export function usdFormat(val, decimal_limit?, steemPrice?) {
-    if (!steemPrice) {
-        steemPrice = window.steem_price;
-    }
-
-    const usd = val * steemPrice;
-
-    if (decimal_limit != null && !isNaN(parseInt(decimal_limit))) {
-        return '$' + addCommas(usd.toFixed(decimal_limit));
-    }
-        
-    if (usd >= 1) {
-        return '$' + addCommas(usd.toFixed(2));
-    } else if(usd >= 0.1) {
-        return '$' + usd.toFixed(3);
-    } else {
-        return '$' + usd.toFixed(5);
-    }
-}
-
 export function largeNumber(val) {
 	val = parseFloat(val);
 	

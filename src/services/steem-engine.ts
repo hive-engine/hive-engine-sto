@@ -55,16 +55,6 @@ export class SteemEngine {
         });
     }
 
-    async loadSteemPrice() {
-        const request = await this.http2.fetch('https://postpromoter.net/api/prices', {
-            method: 'get'
-        });
-
-        const response = await request.json();
-
-        return parseFloat(response.steem_price);
-    }
-
     async login(username: string, key?: string) {
         return new Promise(async (resolve, reject) => {
             if (window.steem_keychain && !key) {
@@ -301,12 +291,6 @@ export class SteemEngine {
                 params = { ...params, ...result };
             }
 
-			if(++loaded >= 3) {
-                return params;
-            }
-		});
-
-		this.loadSteemPrice().then(() => {
 			if(++loaded >= 3) {
                 return params;
             }
