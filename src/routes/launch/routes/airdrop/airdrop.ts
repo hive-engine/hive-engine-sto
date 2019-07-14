@@ -1,4 +1,4 @@
-import { Store } from 'aurelia-store';
+import { Store, connectTo } from 'aurelia-store';
 import { BootstrapFormRenderer } from 'resources/bootstrap-form-renderer';
 import { SteemEngine } from 'services/steem-engine';
 import { autoinject, computedFrom } from 'aurelia-framework';
@@ -16,11 +16,13 @@ const MAX_ACCOUNTS_CHECK = 500;
 
 const STEEM_ENDPOINTS = [
     {
+        id: 1,
         url: 'https://anyx.io',
         maxPayloadSize: 8192,
         maxAccountsCheck: 500
     },
     {
+        id: 2,
         url: 'https://api.steemit.com',
         maxPayloadSize: 2000,
         maxAccountsCheck: 999
@@ -31,9 +33,16 @@ steem.api.setOptions({
     url: 'https://anyx.io'
 });
 
+function updateAirdropStateAction(state: State, obj: any): State {
+    const newState = { ...state };
 
+    newState.airdrop = { ...newState.airdrop, ...obj };
+
+    return newState;
+}
 
 @autoinject()
+@connectTo()
 export class Airdrop {
     public hasPaidEngFee = false;
     public usersToAirDrop = [];
@@ -66,6 +75,8 @@ export class Airdrop {
     public uploadMode = 'file';
     public manualCsv;
 
+    private state: State;
+
     private csvExample = `@inertia,56
 @aggroed,21
 @yabapmatt,69
@@ -80,6 +91,10 @@ export class Airdrop {
         this.controller.addRenderer(this.renderer);
     }
 
+    attached() {
+        this.store.registerAction('updateAirdropStateAction', updateAirdropStateAction);
+    }
+
     async goToStep(step: number) {
         const result = await this.controller.validate();
 
@@ -92,7 +107,8 @@ export class Airdrop {
 
                     if (token) {
                         this.tokenExists = true;
-                        this.currentToken = token;
+
+                        this.store.dispatch(updateAirdropStateAction, { currentToken: token });
                     } else {
                         this.tokenExists = false;
                         return;
@@ -102,7 +118,7 @@ export class Airdrop {
                 }
             }
 
-            this.step = step;
+            this.store.dispatch(updateAirdropStateAction, { currentStep: step });
         }
     }
 
@@ -149,7 +165,7 @@ export class Airdrop {
 
                 // All users exist
                 if (!this.usersNotExisting.length) {
-                    this.step = 2;
+                    this.state.airdrop.step = 2;
                 }
 
                 this.airdropFee = (this.usersToAirDrop.length * 20 / 1000).toFixed(3);
@@ -159,16 +175,14 @@ export class Airdrop {
         }
     }
 
-    payFee() {
+    payFee(username: string) {
         if (this.currentToken) {
-            const username = localStorage.getItem('username');
-
             steem_keychain.requestSendToken(username, environment.AIRDROP.FEE_ACCOUNT, this.airdropFee, environment.AIRDROP.MEMO, environment.AIRDROP.TOKEN, response => {
                 if (response.success) {
                     this.hasPaidEngFee = true;
-                    this.step = 4;
 
-                    localStorage.setItem('airdrop_transaction_id', response.result.id);
+                    this.store.dispatch(updateAirdropStateAction, { currentStep: 4 });
+                    this.store.dispatch(updateAirdropStateAction, { feeTransactionId: response.result.id });
                 }
             });
         }

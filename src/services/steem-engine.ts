@@ -204,74 +204,6 @@ export class SteemEngine {
         return await this.ssc.findOne('tokens', 'tokens', { symbol });
     }
 
-    async loadTokens() {
-        return new Promise((resolve, reject) => {
-            this.ssc.find('tokens', 'tokens', { }, 1000, 0, [], (err, result) => {
-                let tokens = result.filter(t => !environment.DISABLED_TOKENS.includes(t.symbol));
-    
-                this.ssc.find('market', 'metrics', { }, 1000, 0, '', false).then(async (metrics) => {
-                    tokens.forEach(token => {
-                        token.highestBid = 0;
-                        token.lastPrice = 0;
-                        token.lowestAsk = 0;
-                        token.marketCap = 0;
-                        token.volume = 0;
-                        token.priceChangePercent = 0;
-                        token.priceChangeSteem = 0;
-    
-                        token.metadata = tryParse(token.metadata);
-
-                        if (!token.metadata) {
-                            token.metadata = {};
-                        }
-    
-                        if (!metrics) {
-                            return;
-                        }
-    
-                        const metric = metrics.find(m => token.symbol == m.symbol);
-    
-                        if (metric) {
-                            token.highestBid = parseFloat(metric.highestBid);
-                            token.lastPrice = parseFloat(metric.lastPrice);
-                            token.lowestAsk = parseFloat(metric.lowestAsk);
-                            token.marketCap = token.lastPrice * token.circulatingSupply;
-                            
-                            if (Date.now() / 1000 < metric.volumeExpiration) {
-                                token.volume = parseFloat(metric.volume);
-                            }
-    
-                            if(Date.now() / 1000 < metric.lastDayPriceExpiration) {
-                                token.priceChangePercent = parseFloat(metric.priceChangePercent);
-                                token.priceChangeSteem = parseFloat(metric.priceChangeSteem);
-                            }
-                        }
-    
-                        if (steemp_balance && steemp_balance.balance) {
-                            const token = this.getToken('STEEMP');
-                            token.supply -= parseFloat(steemp_balance.balance);
-                            token.circulatingSupply -= parseFloat(steemp_balance.balance);
-                        }
-                    });
-    
-                    tokens.sort((a, b) => {
-                        return (b.volume > 0 ? b.volume : b.marketCap / 1000000000) - (a.volume > 0 ? a.volume : a.marketCap / 1000000000);
-                    });
-    
-                    const steemp_balance = await this.ssc.findOne('tokens', 'balances', { account: 'steem-peg', symbol: 'STEEMP' });
-    
-                    if (steemp_balance && steemp_balance.balance) {
-                        //const token = await this.getToken('STEEMP');
-                        //token.supply -= parseFloat(steemp_balance.balance);
-                        //token.circulatingSupply -= parseFloat(steemp_balance.balance);
-                    }
-    
-                    resolve(tokens);
-                });
-            });
-        });
-    }
-
     async loadParams() {
         let loaded = 0;
         let params = {};
@@ -413,31 +345,6 @@ export class SteemEngine {
         });
     }
 
-    getBalance(token) {
-        if (this.state.user && this.state.user.balances) {
-            const token2 = this.state.user.balances.find(b => b.symbol === token);
-            return token2 ? parseFloat(token2.balance) : 0;
-        }
-
-        return 0;
-    }
-
-    getToken(symbol: string) {
-        return this.state.tokens.find(t => t.symbol === symbol);
-    }
-
-    async showHistory(symbol: string) {
-        let token =  this.getToken(symbol);
-        
-        const history = await this.request('/history', { 
-            account: this.state.user.name, 
-            limit: 100, 
-            offset: 0, 
-            type: 'user', 
-            symbol: symbol 
-        });
-    }
-
     checkTransaction(trx_id, retries, callback) {
 		this.ssc.getTransactionInfo(trx_id, (err, result) => {
 			if (result) {
@@ -460,73 +367,6 @@ export class SteemEngine {
                 callback({ success: false, error: 'Transaction not found.' });
             }
 		});
-    }
-    
-    async buyBook(symbol, account?: string) {
-        if (symbol == environment.PEGGED_TOKEN) {
-            symbol = environment.NATIVE_TOKEN;
-        }
-
-        const token = this.getToken(symbol);
-
-        if (token.metadata && token.metadata.hide_in_market) {
-            return false;
-        }
-
-        if (!account) {
-            return this.ssc.find('market', 'buyBook', { symbol: symbol }, 200, 0, [{ index: 'price', descending: true }], false);
-        }
-
-        return this.ssc.find('market', 'buyBook', { symbol, account }, 200, 0, [{ index: 'price', descending: true }], false);
-    }
-    
-    async sellBook(symbol, account?: string) {
-        if (symbol == environment.PEGGED_TOKEN) {
-            symbol = environment.NATIVE_TOKEN;
-        }
-
-        const token = this.getToken(symbol);
-
-        if (token.metadata && token.metadata.hide_in_market) {
-            return false;
-        }
-
-        if (!account) {
-            return this.ssc.find('market', 'sellBook', { symbol }, 200, 0, [{ index: 'price', descending: false }], false);
-        }
-
-        return this.ssc.find('market', 'sellBook', { 
-            symbol, 
-            account 
-        }, 200, 0, [{ index: 'price', descending: false }], false);
-    }
-    
-    async tradesHistory(symbol) {
-        if (symbol == environment.PEGGED_TOKEN) {
-            symbol = environment.NATIVE_TOKEN;
-        }
-
-        const token = this.getToken(symbol);
-
-        if (token.metadata && token.metadata.hide_in_market) {
-            return false;
-        }
-
-        return this.ssc.find('market', 'tradesHistory', { symbol: symbol }, 30, 0, [{ index: 'timestamp', descending: false }], false);
-    }
-
-    async userBalances(symbol, account) {
-        if (symbol == environment.PEGGED_TOKEN) {
-            symbol = environment.NATIVE_TOKEN;
-        }
-
-        const token = this.getToken(symbol);
-
-        if (token.metadata && token.metadata.hide_in_market) {
-            return false;
-        }
-
-        return this.ssc.find('tokens', 'balances', { account: account, symbol : { '$in' : [symbol, 'STEEMP'] } }, 2, 0, '', false);
     }
 
     issueToken(symbol, to, quantity) {
