@@ -1,3 +1,4 @@
+import { AirDropMode } from './../../../../store/state';
 import { Store, connectTo } from 'aurelia-store';
 import { BootstrapFormRenderer } from 'resources/bootstrap-form-renderer';
 import { SteemEngine } from 'services/steem-engine';
@@ -10,6 +11,8 @@ import { ValidationController, ValidationControllerFactory, ValidationRules } fr
 import { environment } from 'environment';
 import { State } from 'store/state';
 
+import { Client, PrivateKey, Operation } from 'dsteem';
+
 const STEEM_ENGINE_OP_ID = 'ssc-mainnet1';
 const MAX_PAYLOAD_SIZE = 8192;
 const MAX_ACCOUNTS_CHECK = 500;
@@ -19,19 +22,57 @@ const STEEM_ENDPOINTS = [
         id: 1,
         url: 'https://anyx.io',
         maxPayloadSize: 8192,
-        maxAccountsCheck: 500
+        maxAccountsCheck: 500,
+        instance: null,
+        disabled: false
     },
     {
         id: 2,
         url: 'https://api.steemit.com',
         maxPayloadSize: 2000,
-        maxAccountsCheck: 999
+        maxAccountsCheck: 999,
+        instance: null,
+        disabled: false
     }
 ];
 
-steem.api.setOptions({
-    url: 'https://anyx.io'
+// How many errors to tolerate before bailing on this API?
+const API_ERROR_LIMIT = 2;
+
+const clients = STEEM_ENDPOINTS.map(node => {
+    node.instance = new Client(node.url, { timeout: 1000 });
+
+    return node;
 });
+
+function getClient() { 
+    const client = clients.find(c => !c.disabled);
+    return client.instance;
+}
+
+async function cutomJson(account: string, key: string, id: string, json: any, useActive: boolean, retries: number = 0) {
+	const data = {
+		id: id, 
+		json: JSON.stringify(json),
+		required_auths: useActive ? [account] : [],
+		required_posting_auths: useActive ? [] : [account]
+    };
+    
+    return await getClient().broadcast.json(data, PrivateKey.fromString(key))
+        .then(response => {
+            console.log(`Custom JSON operation successful`);
+            return response;
+        })
+		.catch(async err => {
+			console.error(`Error broadcasting custom JSON operation. Error: ${err}`);
+
+			if (retries < 3) {
+                return await cutomJson(account, key, id, json, useActive, retries + 1);
+            } else {
+                console.error('Error broadcasting custom JSON after 3 failed attempts.');
+            }
+		});
+}
 
 function updateAirdropStateAction(state: State, obj: any): State {
     const newState = { ...state };
@@ -60,7 +101,7 @@ export class Airdrop {
     public payloads = [[]];
     public totalInPayload: any = 0.00;
     public airdropFee = '0';
-    public airdropMode = 'transfer';
+    public airdropMode: AirDropMode = AirDropMode.transfer;
         
     public currentUser: string;
     public currentAmount: number;
