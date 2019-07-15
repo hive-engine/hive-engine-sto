@@ -65,6 +65,14 @@
                     <input type="text" value.bind="tokenSymbol & validate" class="form-control" placeholder="Eg. ENG">
                 </div>
 
+                <div class="form-group mb-3">
+                    <label>What method will you be airdropping your tokens?</label>
+                    <select value.bind="airdropMode" class="form-control">
+                        <option value="transfer">Send (will send from your current balance)</option>
+                        <option value="issue">Issue (will mint required amount increasing supply)</option>
+                    </select>
+                </div>
+
                 <div class="alert alert-danger" if.bind="!tokenExists">The token you entered doesn't not exist. Please check the symbol provide is valid and contains no spaces or missing characters.</div>
 
                 <div class="form-group">
