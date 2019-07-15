@@ -60,6 +60,7 @@ export class Airdrop {
     public payloads = [[]];
     public totalInPayload: any = 0.00;
     public airdropFee = '0';
+    public airdropMode = 'transfer';
         
     public currentUser: string;
     public currentAmount: number;
@@ -219,11 +220,11 @@ export class Airdrop {
     
                 const payload = {
                     contractName:'tokens',
-                    contractAction:'issue',
+                    contractAction: this.airdropMode,
                     contractPayload: {
                         symbol: `${this.tokenSymbol.toUpperCase()}`,
                         to: `${username}`,
-                        quantity: `${quantity}`,
+                        quantity: `${quantity.toFixed(this.currentToken.precision)}`,
                         memo: this.memoText
                     }
                 };
