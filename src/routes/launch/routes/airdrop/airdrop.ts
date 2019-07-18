@@ -85,7 +85,6 @@ function updateAirdropStateAction(state: State, obj: any): State {
 @autoinject()
 @connectTo()
 export class Airdrop {
-    public hasPaidEngFee = false;
     public usersToAirDrop = [];
     public usersNotExisting = [];
     public userConfirmationInProgress = false;
@@ -117,7 +116,7 @@ export class Airdrop {
     public uploadMode = 'file';
     public manualCsv;
 
-    private state: State;
+    public state: State;
 
     private csvExample = `@inertia,56
 @aggroed,21
@@ -164,6 +163,22 @@ export class Airdrop {
         }
     }
 
+    async retryRequest<T>(fn: () => Promise<T>, n: number): Promise<T> {
+        let lastError: any;
+
+        await sleep(3000);
+
+        for (let index = 0; index < n; index++) {
+            try {
+                await fn();
+            } catch (e) {
+                lastError = e;
+            }
+        }
+
+        throw lastError;
+    }
+
     async uploadCsv() {
         try {
             const results = this.uploadMode === 'file' ? await parseCsv(this.fileInput.files[0]) as any : await parseCsv(this.manualCsv) as any;
@@ -207,7 +222,7 @@ export class Airdrop {
 
                 // All users exist
                 if (!this.usersNotExisting.length) {
-                    this.state.airdrop.step = 2;
+                    this.goToStep(2);
                 }
 
                 this.airdropFee = (this.usersToAirDrop.length * 20 / 1000).toFixed(3);
@@ -218,11 +233,10 @@ export class Airdrop {
     }
 
     payFee(username: string) {
-        if (this.currentToken) {
+        if (this.state.airdrop.currentToken) {
             steem_keychain.requestSendToken(username, environment.AIRDROP.FEE_ACCOUNT, this.airdropFee, environment.AIRDROP.MEMO, environment.AIRDROP.TOKEN, response => {
                 if (response.success) {
-                    this.hasPaidEngFee = true;
-
+                    this.store.dispatch(updateAirdropStateAction, { feeTxId: response.result.id });
                     this.store.dispatch(updateAirdropStateAction, { currentStep: 4 });
                     this.store.dispatch(updateAirdropStateAction, { feeTransactionId: response.result.id });
                 }
@@ -240,7 +254,7 @@ export class Airdrop {
             }
         });
 
-        return finalAmount.toFixed(this.currentToken.precision);
+        return finalAmount.toFixed(this.state.airdrop.currentToken.precision);
     }
 
     async runAirdrop() {
@@ -254,6 +268,11 @@ export class Airdrop {
             return;
         }
 
+        this.buildPayloads();
+        this.handleJsonBroadcast();
+    }
+
+    buildPayloads() {
         for (const user of this.usersToAirDrop) {
             if (user[1]) {
                 const username = user[0].replace('@', '');
@@ -290,22 +309,29 @@ export class Airdrop {
             });
         });
         
-        this.totalInPayload = this.totalInPayload.toFixed(this.currentToken.precision);
+        this.totalInPayload = this.totalInPayload.toFixed(this.state.airdrop.currentToken.precision);
 
-        for (let payload of this.payloads) {
+        this.store.dispatch(updateAirdropStateAction, { airdropPayloads: this.payloads });
+    }
+
+    async handleJsonBroadcast() {
+        // Iterate over payloads
+        for (const [index, payload] of this.payloads.entries()) {
             const required_auths = [localStorage.getItem('username')];
             const required_posting_auths = [];
-
+    
             try {
                 await steem.broadcast.customJsonAsync(this.activeKey, required_auths, required_posting_auths, STEEM_ENGINE_OP_ID, JSON.stringify(payload));
+
+                // On success, remove the payload
+                this.payloads.splice(index, 1);
             
                 this.completed++;
                 this.airdropPercentage = Math.round((this.completed / this.payloads.length) * 100);
             } catch (e) {
-                this.errors.push(e);
-                throw new Error(e);
+                this.handleJsonBroadcast();
             }
-
+    
             if (this.completed !== (this.payloads.length) && this.completed !== 0 && !this.errors.length) {
                 await sleep(3000);
             } else {
@@ -339,10 +365,11 @@ async function parseCsv(file) {
 ValidationRules
     .ensure('memoText').required().withMessageKey('memoText')
     .ensure('tokenSymbol').required().withMessageKey('tokenSymbol')
-    .when((obj: Airdrop) => obj.step === 2)
     .ensure('activeKey').required().withMessageKey('activeKey')
+    .ensure('accountName').required().withMessageKey('accountName')
+    .when((obj: Airdrop) => obj.state.airdrop.currentStep === 2)
     .ensure('confirmationText').equals('AIRDROP').withMessageKey('confirmationText')
-    .when((obj: Airdrop) => obj.step === 4)
+    .when((obj: Airdrop) => obj.state.airdrop.currentStep === 4)
     .on(Airdrop);
 
 function sleep(milliseconds) {
