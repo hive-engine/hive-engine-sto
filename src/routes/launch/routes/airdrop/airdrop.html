@@ -125,6 +125,8 @@
                     <span class="progress-bar-container-value">${airdropPercentage}%</span>
                 </div>
 
+                <p><strong>Payloads remaining to send: </strong> ${state.airdrop.airdropPayloads.length}</p>
+
                 <p if.bind="airdropComplete">Airdrop is complete. You can now close your browser and/or tab.</p>
                 <p if.bind="airdropComplete">Total amount distributed: <strong>${totalInPayload} ${tokenSymbol}</strong></p>
 
