@@ -135,13 +135,14 @@
             <div if.bind="state.airdrop.currentStep == 4 && airdropInProgress || airdropComplete">
                 <template if.bind="airdropInProgress">
                     <h4>Please wait...</h4>
-                    <p>Do not refresh this page or close the tab while the airdrop runs. Total amount being distributed: <strong>${totalInPayload} ${tokenSymbol}</strong></p>
+                    <p>If something goes wrong, refresh the page and the airdrop should resume. Total amount being distributed: <strong>${totalInPayload} ${tokenSymbol}</strong></p>
+                    <p>Want to cancel the airdrop? <a href="javascript:void(0);" click.delegate="cancelAirdrop()">click here</a>. Please note there are no refunds for cancelled airdrops.</p>
                 </template>
 
-                <div class="progress-bar-container mb-2 mt-3">
-                    <progress min="0" max="${payloads.length}" value.bind="completed" class="mb-5 mt-3"></progress>
+                <!-- <div class="progress-bar-container mb-2 mt-3">
+                    <progress min="0" max="100" value.bind="airdropPercentage" class="mb-5 mt-3"></progress>
                     <span class="progress-bar-container-value">${airdropPercentage}%</span>
-                </div>
+                </div> -->
 
                 <p><strong>Payloads remaining to send: </strong> ${state.airdrop.payloads.length}</p>
 

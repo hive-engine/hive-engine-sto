@@ -3,7 +3,7 @@ import { AirDropMode } from './../../../../store/state';
 import { Store, connectTo } from 'aurelia-store';
 import { BootstrapFormRenderer } from 'resources/bootstrap-form-renderer';
 import { SteemEngine } from 'services/steem-engine';
-import { autoinject, computedFrom, TaskQueue } from 'aurelia-framework';
+import { autoinject, computedFrom, TaskQueue, reset } from 'aurelia-framework';
 
 import Papa from 'papaparse';
 import { ValidationController, ValidationControllerFactory, ValidationRules } from 'aurelia-validation';
@@ -75,6 +75,32 @@ function updateAirdropStateAction(state: State, obj: any): State {
     return newState;
 }
 
+function resetAirdropStateAction(state: State): State {
+    const newState = { ...state };
+
+    newState.airdrop = {
+        currentStep: 1,
+        completed: 0,
+        percentage: 0,
+        usersToAirdrop: [],
+        usersNotExisting: [],
+        airdropCompletion: 0,
+        totalInPayload: 0,
+        currentToken: null,
+        airdropFee: '0.00',
+        payloads: [[]],
+        feeTransactionId: '',
+        details: {
+            token: '',
+            activeKey: '',
+            memoText: '',
+            mode: AirDropMode.issue
+        }
+    };
+
+    return newState;
+}
+
 @autoinject()
 export class Airdrop {
     public usersToAirDrop = [];
@@ -91,6 +117,7 @@ export class Airdrop {
     public accountName: string = '';
     public step = 1;
     public payloads = [[]];
+    public payloadsSize = 0;
     public totalInPayload: any = 0.00;
     public airdropFee = '0';
     public airdropMode: AirDropMode = AirDropMode.transfer;
@@ -131,8 +158,6 @@ export class Airdrop {
         this.subscription = this.store.state.subscribe((state: State) => {
             this.state = state;
 
-            console.log(state);
-
             this.payloads = state.airdrop.payloads;
             this.airdropFee = state.airdrop.airdropFee;
             this.airdropPercentage = state.airdrop.percentage;
@@ -164,6 +189,11 @@ export class Airdrop {
 
     attached() {
         this.store.registerAction('updateAirdropStateAction', updateAirdropStateAction);
+        this.store.registerAction('resetAirdropStateAction', resetAirdropStateAction);
+
+        this.taskQueue.queueMicroTask(() => {
+            this.payloadsSize = this.payloads.length;
+        });
     }
 
     async goToStep(step: number) {
@@ -265,9 +295,9 @@ export class Airdrop {
         }
     }
 
-    payFee(username: string) {
+    payFee() {
         if (this.currentToken) {
-            steem_keychain.requestSendToken(this.accountName, environment.AIRDROP.FEE_ACCOUNT, this.airdropFee, environment.AIRDROP.MEMO, 'FUTURE', response => {
+            steem_keychain.requestSendToken(this.accountName, environment.AIRDROP.FEE_ACCOUNT, this.airdropFee, environment.AIRDROP.MEMO, environment.AIRDROP.TOKEN, response => {
                 if (response.success) {
                     this.store.dispatch(updateAirdropStateAction, { currentStep: 4 });
                     this.store.dispatch(updateAirdropStateAction, { feeTransactionId: response.result.id });
@@ -299,8 +329,10 @@ export class Airdrop {
             return;
         }
 
-        this.buildPayloads();
-        this.handleJsonBroadcast();
+        this.taskQueue.queueTask(() => {
+            this.buildPayloads();
+            this.handleJsonBroadcast(); 
+        });
     }
 
     buildPayloads() {
@@ -358,10 +390,9 @@ export class Airdrop {
                 this.payloads.splice(index, 1);
             
                 this.completed++;
-                this.airdropPercentage = Math.round((this.completed / this.payloads.length) * 100);
 
                 this.store.dispatch(updateAirdropStateAction, { 
-                    percentage: this.airdropPercentage,
+                    percentage: Math.round((this.completed / this.payloadsSize) * 100),
                     completed: this.completed,
                     payloads: this.payloads
                 });
@@ -369,13 +400,31 @@ export class Airdrop {
                 console.error(e);
             }
     
-            if (this.completed !== (this.payloads.length) && this.completed !== 0 && !this.errors.length) {
+            if (this.payloads.length) {
                 await sleep(3000);
             } else {
                 this.airdropInProgress = false;
                 this.airdropComplete = true;
                 this.airdropPercentage = 100;
+
+                localStorage.removeItem('steem-engine__state');
             }
+        }
+
+        if (!this.payloads.length) {
+            this.airdropComplete = true;
+            this.airdropPercentage = 100;
+
+            localStorage.removeItem('steem-engine__state');
+        }
+    }
+
+    cancelAirdrop() {
+        const result = window.confirm('Are you sure you want to cancel?');
+
+        if (result) {
+            localStorage.removeItem('steem-engine__state');
+            this.store.dispatch(resetAirdropStateAction);
         }
     }
 }
