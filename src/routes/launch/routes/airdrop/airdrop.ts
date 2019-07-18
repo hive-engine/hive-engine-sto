@@ -74,7 +74,7 @@ export class Airdrop {
     public uploadMode = 'file';
     public manualCsv;
 
-    private state: State;
+    public state: State;
 
     private csvExample = `@inertia,56
 @aggroed,21
@@ -323,10 +323,11 @@ async function parseCsv(file) {
 ValidationRules
     .ensure('memoText').required().withMessageKey('memoText')
     .ensure('tokenSymbol').required().withMessageKey('tokenSymbol')
-    .when((obj: Airdrop) => obj.step === 2)
     .ensure('activeKey').required().withMessageKey('activeKey')
+    .ensure('accountName').required().withMessageKey('accountName')
+    .when((obj: Airdrop) => obj.state.airdrop.currentStep === 2)
     .ensure('confirmationText').equals('AIRDROP').withMessageKey('confirmationText')
-    .when((obj: Airdrop) => obj.step === 4)
+    .when((obj: Airdrop) => obj.state.airdrop.currentStep === 4)
     .on(Airdrop);
 
 function sleep(milliseconds) {

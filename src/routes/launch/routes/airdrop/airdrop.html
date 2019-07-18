@@ -68,6 +68,11 @@
                 <div class="alert alert-danger" if.bind="!tokenExists">The token you entered doesn't not exist. Please check the symbol provide is valid and contains no spaces or missing characters.</div>
 
                 <div class="form-group mb-3">
+                    <label>Account owner name</label>
+                    <input type="text" value.bind="accountName & validate" class="form-control">
+                </div>
+
+                <div class="form-group mb-3">
                     <label>Please enter your active key</label>
                     <input type="text" value.bind="activeKey & validate" class="form-control">
                 </div>
