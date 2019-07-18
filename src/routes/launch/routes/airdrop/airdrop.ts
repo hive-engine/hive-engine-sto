@@ -191,7 +191,7 @@ export class Airdrop {
     }
 
     payFee(username: string) {
-        if (this.currentToken) {
+        if (this.state.airdrop.currentToken) {
             steem_keychain.requestSendToken(username, environment.AIRDROP.FEE_ACCOUNT, this.airdropFee, environment.AIRDROP.MEMO, environment.AIRDROP.TOKEN, response => {
                 if (response.success) {
                     this.store.dispatch(updateAirdropStateAction, { feeTxId: response.result.id });
@@ -212,7 +212,7 @@ export class Airdrop {
             }
         });
 
-        return finalAmount.toFixed(this.currentToken.precision);
+        return finalAmount.toFixed(this.state.airdrop.currentToken.precision);
     }
 
     async runAirdrop() {
@@ -267,7 +267,9 @@ export class Airdrop {
             });
         });
         
-        this.totalInPayload = this.totalInPayload.toFixed(this.currentToken.precision);
+        this.totalInPayload = this.totalInPayload.toFixed(this.state.airdrop.currentToken.precision);
+
+        this.store.dispatch(updateAirdropStateAction, { airdropPayloads: this.payloads });
     }
 
     async handleJsonBroadcast() {
