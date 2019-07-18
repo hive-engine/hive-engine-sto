@@ -16,8 +16,7 @@ export const environment: Partial<EnvironmentInterface> = {
 	NATIVE_TOKEN: NativeTokens.Eng,
     STEEMP_ACCOUNT: 'steem-peg',
     AIRDROP: {
-        FEE_ACCOUNT: 'steem-eng',
-        FEE: '20.000',
+        FEE_ACCOUNT: 'beggars',
         MEMO: 'airdrop-fee',
         TOKEN: NativeTokens.Eng
     },

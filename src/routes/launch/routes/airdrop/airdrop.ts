@@ -20,7 +20,7 @@ const STEEM_ENDPOINTS = [
     {
         id: 1,
         url: 'https://anyx.io',
-        maxPayloadSize: 8192,
+        maxPayloadSize: 8000,
         maxAccountsCheck: 500,
         instance: null as Client,
         disabled: false
@@ -36,7 +36,7 @@ const STEEM_ENDPOINTS = [
 ];
 
 const clients = STEEM_ENDPOINTS.map(node => {
-    node.instance = new Client(node.url, { timeout: 1000 });
+    node.instance = new Client(node.url, { timeout: 3000 });
 
     return node;
 });
@@ -59,7 +59,7 @@ async function customJson(account: string, key: string, id: string, json: any, u
     } catch (e) {
         console.error(`Error broadcasting custom JSON operation. Error: ${e}`);
         
-        if (retries < 3) {
+        if (retries < 10) {
             return await customJson(account, key, id, json, useActive, retries + 1);
         } else {
             console.error('Error broadcasting custom JSON after 3 failed attempts.');
