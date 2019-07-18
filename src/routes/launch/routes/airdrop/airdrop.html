@@ -67,6 +67,11 @@
 
                 <div class="alert alert-danger" if.bind="!tokenExists">The token you entered doesn't not exist. Please check the symbol provide is valid and contains no spaces or missing characters.</div>
 
+                <div class="form-group mb-3">
+                    <label>Please enter your active key</label>
+                    <input type="text" value.bind="activeKey & validate" class="form-control">
+                </div>
+
                 <div class="form-group">
                     <button type="button" class="btn btn-primary" click.delegate="goToStep(3)">
                         <span if.bind="!tokenValidationInProgress">${'Validate & Continue' & t}</span>
@@ -97,12 +102,7 @@
 
             <fieldset if.bind="step == 4 && !airdropInProgress && !airdropComplete">
                 <h6 class="mb-3">You're ready</h6>
-                <p>Filling out the active key and entering "AIRDROP" will initiate the airdrop process. Once you press the button, the airdrop will begin and under no circumstances should you close the browser window.</p>
-
-                <div class="form-group mb-3">
-                    <label>Please enter your active key</label>
-                    <input type="text" value.bind="activeKey & validate" class="form-control">
-                </div>
+                <p>Entering AIRDROP into the field below will initiate the airdrop process. Once you press the button, the airdrop will begin and under no circumstances should you close the browser window.</p>
 
                 <div class="form-group mb-3">
                     <label>Please type: AIRDROP into the field below to proceed</label>
