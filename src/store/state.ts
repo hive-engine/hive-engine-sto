@@ -49,11 +49,14 @@ export const initialState: State = {
   loading: false,
   airdrop: {
       currentStep: 1,
-      hasPaidFee: false,
+      completed: 0,
+      percentage: 0,
       usersToAirdrop: [],
+      usersNotExisting: [],
       airdropCompletion: 0,
       totalInPayload: 0.00,
       currentToken: null,
+      airdropFee: '0.00',
       payloads: [[]],
       feeTransactionId: '',
       details: {

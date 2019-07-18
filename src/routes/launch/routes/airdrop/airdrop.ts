@@ -1,10 +1,9 @@
+import { Subscription } from 'rxjs';
 import { AirDropMode } from './../../../../store/state';
 import { Store, connectTo } from 'aurelia-store';
 import { BootstrapFormRenderer } from 'resources/bootstrap-form-renderer';
 import { SteemEngine } from 'services/steem-engine';
-import { autoinject, computedFrom } from 'aurelia-framework';
-
-import steem from 'steem';
+import { autoinject, computedFrom, TaskQueue } from 'aurelia-framework';
 
 import Papa from 'papaparse';
 import { ValidationController, ValidationControllerFactory, ValidationRules } from 'aurelia-validation';
@@ -23,7 +22,7 @@ const STEEM_ENDPOINTS = [
         url: 'https://anyx.io',
         maxPayloadSize: 8192,
         maxAccountsCheck: 500,
-        instance: null,
+        instance: null as Client,
         disabled: false
     },
     {
@@ -31,13 +30,10 @@ const STEEM_ENDPOINTS = [
         url: 'https://api.steemit.com',
         maxPayloadSize: 2000,
         maxAccountsCheck: 999,
-        instance: null,
+        instance: null as Client,
         disabled: false
     }
 ];
-
-// How many errors to tolerate before bailing on this API?
-const API_ERROR_LIMIT = 2;
 
 const clients = STEEM_ENDPOINTS.map(node => {
     node.instance = new Client(node.url, { timeout: 1000 });
@@ -47,31 +43,28 @@ const clients = STEEM_ENDPOINTS.map(node => {
 
 function getClient() { 
     const client = clients.find(c => !c.disabled);
-    return client.instance;
+    return client;
 }
 
-async function cutomJson(account: string, key: string, id: string, json: any, useActive: boolean, retries: number = 0) {
+async function customJson(account: string, key: string, id: string, json: any, useActive: boolean, retries: number = 0) {
 	const data = {
 		id: id, 
 		json: JSON.stringify(json),
 		required_auths: useActive ? [account] : [],
 		required_posting_auths: useActive ? [] : [account]
     };
-    
-    return await getClient().broadcast.json(data, PrivateKey.fromString(key))
-        .then(response => {
-            console.log(`Custom JSON operation successful`);
-            return response;
-        })
-		.catch(async err => {
-			console.error(`Error broadcasting custom JSON operation. Error: ${err}`);
 
-			if (retries < 3) {
-                return await cutomJson(account, key, id, json, useActive, retries + 1);
-            } else {
-                console.error('Error broadcasting custom JSON after 3 failed attempts.');
-            }
-		});
+    try {
+        return await getClient().instance.broadcast.json(data, PrivateKey.fromString(key));
+    } catch (e) {
+        console.error(`Error broadcasting custom JSON operation. Error: ${e}`);
+        
+        if (retries < 3) {
+            return await customJson(account, key, id, json, useActive, retries + 1);
+        } else {
+            console.error('Error broadcasting custom JSON after 3 failed attempts.');
+        }
+    }
 }
 
 function updateAirdropStateAction(state: State, obj: any): State {
@@ -83,7 +76,6 @@ function updateAirdropStateAction(state: State, obj: any): State {
 }
 
 @autoinject()
-@connectTo()
 export class Airdrop {
     public usersToAirDrop = [];
     public usersNotExisting = [];
@@ -96,6 +88,7 @@ export class Airdrop {
     public memoText: string;
     public tokenSymbol: string;
     public activeKey: string = '';
+    public accountName: string = '';
     public step = 1;
     public payloads = [[]];
     public totalInPayload: any = 0.00;
@@ -108,6 +101,7 @@ export class Airdrop {
     public tokenExists = true;
     public tokenValidationInProgress = false;
     public currentToken;
+    private feeTransactionId;
 
     public airdropPercentage = 0;
     public controller: ValidationController;
@@ -117,6 +111,7 @@ export class Airdrop {
     public manualCsv;
 
     public state: State;
+    public subscription: Subscription;
 
     private csvExample = `@inertia,56
 @aggroed,21
@@ -124,12 +119,47 @@ export class Airdrop {
 @beggars,100
 @fdskjflk,232`;
 
-    constructor(private controllerFactory: ValidationControllerFactory, private se: SteemEngine, private store: Store<State>) {
+    constructor(private controllerFactory: ValidationControllerFactory, private se: SteemEngine, private store: Store<State>, private taskQueue: TaskQueue) {
         this.controller = controllerFactory.createForCurrentScope();
 
         this.renderer = new BootstrapFormRenderer();
 
         this.controller.addRenderer(this.renderer);
+    }  
+    
+    bind() {
+        this.subscription = this.store.state.subscribe((state: State) => {
+            this.state = state;
+
+            console.log(state);
+
+            this.payloads = state.airdrop.payloads;
+            this.airdropFee = state.airdrop.airdropFee;
+            this.airdropPercentage = state.airdrop.percentage;
+            this.completed = state.airdrop.completed;
+            this.usersNotExisting = state.airdrop.usersNotExisting;
+            this.usersToAirDrop = state.airdrop.usersToAirdrop;
+            this.currentToken = state.airdrop.currentToken;
+            this.activeKey = state.airdrop.details.activeKey;
+            this.memoText = state.airdrop.details.memoText;
+            this.tokenSymbol = state.airdrop.details.token;
+            this.airdropMode = state.airdrop.details.mode;
+            this.feeTransactionId = state.airdrop.feeTransactionId;
+
+            if (state.airdrop.currentStep === 4 && !this.airdropInProgress) {
+                this.taskQueue.queueTask(() => {
+                    this.runAirdrop();
+                });
+            }
+
+            if (state.user.loggedIn) {
+                this.accountName = state.user.name;
+            }
+        });
+    }
+
+    unbind() {
+        this.subscription.unsubscribe();
     }
 
     attached() {
@@ -149,7 +179,15 @@ export class Airdrop {
                     if (token) {
                         this.tokenExists = true;
 
-                        this.store.dispatch(updateAirdropStateAction, { currentToken: token });
+                        this.store.dispatch(updateAirdropStateAction, { 
+                            currentToken: token,
+                            details: {
+                                token: this.tokenSymbol,
+                                activeKey: this.activeKey,
+                                memoText: this.memoText,
+                                mode: this.airdropMode
+                            }
+                        });
                     } else {
                         this.tokenExists = false;
                         return;
@@ -163,26 +201,12 @@ export class Airdrop {
         }
     }
 
-    async retryRequest<T>(fn: () => Promise<T>, n: number): Promise<T> {
-        let lastError: any;
-
-        await sleep(3000);
-
-        for (let index = 0; index < n; index++) {
-            try {
-                await fn();
-            } catch (e) {
-                lastError = e;
-            }
-        }
-
-        throw lastError;
-    }
-
     async uploadCsv() {
         try {
-            const results = this.uploadMode === 'file' ? await parseCsv(this.fileInput.files[0]) as any : await parseCsv(this.manualCsv) as any;
+            const results = this.uploadMode === 'file' ? 
+                await parseCsv(this.fileInput.files[0]) as any : await parseCsv(this.manualCsv) as any;
 
+            // We have parsed the CSV
             if (results.data) {
                 this.usersToAirDrop = results.data;
 
@@ -190,21 +214,24 @@ export class Airdrop {
 
                 let users = [[]];
 
+                // Loop over the users to airdrop and build an array of payloads
                 this.usersToAirDrop.forEach(user => {
                     const username = user[0].replace('@', '');
 
                     const lastUserLength = users[users.length - 1].length;
 
-                    if (lastUserLength > MAX_ACCOUNTS_CHECK) {
+                    if (lastUserLength > getClient().maxAccountsCheck) {
                         users.push([username]);
                     } else {
                         users[users.length - 1].push(username);
                     }        
                 });
 
-                let checkedUsers = [];
+                const checkedUsers = [];
+
+                // Check if all of the accounts exist
                 await forEach(users, async (users, index) => {
-                    const res = await steem.api.getAccountsAsync(users);
+                    const res = await getClient().instance.database.getAccounts(users);
 
                     for (let user of res) {
                         checkedUsers.push(user.name);
@@ -220,12 +247,18 @@ export class Airdrop {
 
                 this.userConfirmationInProgress = false;
 
+                this.store.dispatch(updateAirdropStateAction, { usersToAirdrop: this.usersToAirDrop });
+
                 // All users exist
                 if (!this.usersNotExisting.length) {
                     this.goToStep(2);
                 }
 
-                this.airdropFee = (this.usersToAirDrop.length * 20 / 1000).toFixed(3);
+                this.store.dispatch(updateAirdropStateAction, { 
+                    usersToAirdrop: this.usersToAirDrop,
+                    airdropFee: (this.usersToAirDrop.length * 20 / 1000).toFixed(3),
+                    usersNotExisting: this.usersNotExisting
+                });
             }
         } catch (e) {
             console.error(e);
@@ -233,10 +266,9 @@ export class Airdrop {
     }
 
     payFee(username: string) {
-        if (this.state.airdrop.currentToken) {
-            steem_keychain.requestSendToken(username, environment.AIRDROP.FEE_ACCOUNT, this.airdropFee, environment.AIRDROP.MEMO, environment.AIRDROP.TOKEN, response => {
+        if (this.currentToken) {
+            steem_keychain.requestSendToken(this.accountName, environment.AIRDROP.FEE_ACCOUNT, this.airdropFee, environment.AIRDROP.MEMO, 'FUTURE', response => {
                 if (response.success) {
-                    this.store.dispatch(updateAirdropStateAction, { feeTxId: response.result.id });
                     this.store.dispatch(updateAirdropStateAction, { currentStep: 4 });
                     this.store.dispatch(updateAirdropStateAction, { feeTransactionId: response.result.id });
                 }
@@ -254,11 +286,10 @@ export class Airdrop {
             }
         });
 
-        return finalAmount.toFixed(this.state.airdrop.currentToken.precision);
+        return finalAmount.toFixed(this.currentToken.precision);
     }
 
     async runAirdrop() {
-        this.completed = 0;
         this.airdropInProgress = true;
 
         const validation = await this.controller.validate();
@@ -309,27 +340,33 @@ export class Airdrop {
             });
         });
         
-        this.totalInPayload = this.totalInPayload.toFixed(this.state.airdrop.currentToken.precision);
+        this.totalInPayload = this.totalInPayload.toFixed(this.currentToken.precision);
 
-        this.store.dispatch(updateAirdropStateAction, { airdropPayloads: this.payloads });
+        this.store.dispatch(updateAirdropStateAction, { 
+            payloads: this.payloads,
+            usersToAirdrop: [] 
+        });
     }
 
     async handleJsonBroadcast() {
         // Iterate over payloads
         for (const [index, payload] of this.payloads.entries()) {
-            const required_auths = [localStorage.getItem('username')];
-            const required_posting_auths = [];
-    
             try {
-                await steem.broadcast.customJsonAsync(this.activeKey, required_auths, required_posting_auths, STEEM_ENGINE_OP_ID, JSON.stringify(payload));
+                await customJson(this.accountName, this.activeKey, STEEM_ENGINE_OP_ID, payload, true, 6);
 
                 // On success, remove the payload
                 this.payloads.splice(index, 1);
             
                 this.completed++;
                 this.airdropPercentage = Math.round((this.completed / this.payloads.length) * 100);
+
+                this.store.dispatch(updateAirdropStateAction, { 
+                    percentage: this.airdropPercentage,
+                    completed: this.completed,
+                    payloads: this.payloads
+                });
             } catch (e) {
-                this.handleJsonBroadcast();
+                console.error(e);
             }
     
             if (this.completed !== (this.payloads.length) && this.completed !== 0 && !this.errors.length) {
