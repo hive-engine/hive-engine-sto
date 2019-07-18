@@ -44,7 +44,6 @@ function updateAirdropStateAction(state: State, obj: any): State {
 @autoinject()
 @connectTo()
 export class Airdrop {
-    public hasPaidEngFee = false;
     public usersToAirDrop = [];
     public usersNotExisting = [];
     public userConfirmationInProgress = false;
@@ -122,6 +121,22 @@ export class Airdrop {
         }
     }
 
+    async retryRequest<T>(fn: () => Promise<T>, n: number): Promise<T> {
+        let lastError: any;
+
+        await sleep(3000);
+
+        for (let index = 0; index < n; index++) {
+            try {
+                await fn();
+            } catch (e) {
+                lastError = e;
+            }
+        }
+
+        throw lastError;
+    }
+
     async uploadCsv() {
         try {
             const results = this.uploadMode === 'file' ? await parseCsv(this.fileInput.files[0]) as any : await parseCsv(this.manualCsv) as any;
@@ -165,7 +180,7 @@ export class Airdrop {
 
                 // All users exist
                 if (!this.usersNotExisting.length) {
-                    this.state.airdrop.step = 2;
+                    this.goToStep(2);
                 }
 
                 this.airdropFee = (this.usersToAirDrop.length * 20 / 1000).toFixed(3);
@@ -179,8 +194,7 @@ export class Airdrop {
         if (this.currentToken) {
             steem_keychain.requestSendToken(username, environment.AIRDROP.FEE_ACCOUNT, this.airdropFee, environment.AIRDROP.MEMO, environment.AIRDROP.TOKEN, response => {
                 if (response.success) {
-                    this.hasPaidEngFee = true;
-
+                    this.store.dispatch(updateAirdropStateAction, { feeTxId: response.result.id });
                     this.store.dispatch(updateAirdropStateAction, { currentStep: 4 });
                     this.store.dispatch(updateAirdropStateAction, { feeTransactionId: response.result.id });
                 }

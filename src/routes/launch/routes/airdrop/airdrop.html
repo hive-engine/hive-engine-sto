@@ -2,9 +2,9 @@
     <div class="container">
         <div class="col-md-12">
             <h2>${'Airdrop' & t}</h2>
-            <p if.bind="step == 1">Airdrop your Steem Engine tokens to other Steem users.</p>
+            <p if.bind="state.airdrop.currentStep == 1">Airdrop your Steem Engine tokens to other Steem users.</p>
 
-            <fieldset if.bind="step == 1">
+            <fieldset if.bind="state.airdrop.currentStep == 1">
                 <h6 class="mb-3" if.bind="!usersNotExisting.length">Add Users</h6>
                 <h6 class="mb-3" if.bind="usersNotExisting.length">Some of the users you provided do not exist.</h6>
 
@@ -52,7 +52,7 @@
                 </template>
             </fieldset>
 
-            <fieldset if.bind="step == 2">
+            <fieldset if.bind="state.airdrop.currentStep == 2">
                 <h6 class="mb-3">Almost there...</h6>
 
                 <div class="form-group mb-3">
@@ -80,7 +80,7 @@
                 </div>
             </fieldset>
 
-            <fieldset if.bind="step == 3">
+            <fieldset if.bind="state.airdrop.currentStep == 3">
                 <h6 class="mb-3">Fees</h6>
                 <p>This is an irreversible process. All sales are final, this cannot be undone. Please double and triple everything in your CSV file is correct before proceeding. The fee for issuing this airdrop is: <strong>${airdropFee} ENG</strong>.</p>
 
@@ -100,7 +100,7 @@
                 </div>
             </fieldset>
 
-            <fieldset if.bind="step == 4 && !airdropInProgress && !airdropComplete">
+            <fieldset if.bind="state.airdrop.currentStep == 4 && !airdropInProgress && !airdropComplete">
                 <h6 class="mb-3">You're ready</h6>
                 <p>Entering AIRDROP into the field below will initiate the airdrop process. Once you press the button, the airdrop will begin and under no circumstances should you close the browser window.</p>
 
@@ -114,7 +114,7 @@
                 </div>
             </fieldset>
 
-            <div if.bind="step == 4 && airdropInProgress || airdropComplete">
+            <div if.bind="state.airdrop.currentStep == 4 && airdropInProgress || airdropComplete">
                 <template if.bind="airdropInProgress">
                     <h4>Please wait...</h4>
                     <p>Do not refresh this page or close the tab while the airdrop runs. Total amount being distributed: <strong>${totalInPayload} ${tokenSymbol}</strong></p>
