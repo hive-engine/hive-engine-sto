@@ -372,7 +372,11 @@ export class Airdrop {
             });
         });
         
-        this.totalInPayload = this.totalInPayload.toFixed(this.currentToken.precision);
+        if (!this.totalInPayload) {
+            this.totalInPayload = 0.000;
+        } else {
+            this.totalInPayload = this.totalInPayload.toFixed(this.currentToken.precision);
+        }
 
         this.store.dispatch(updateAirdropStateAction, { 
             payloads: this.payloads,
@@ -384,7 +388,7 @@ export class Airdrop {
         // Iterate over payloads
         for (const [index, payload] of this.payloads.entries()) {
             try {
-                await customJson(this.accountName, this.activeKey, STEEM_ENGINE_OP_ID, payload, true, 6);
+                await customJson(this.accountName, this.activeKey, STEEM_ENGINE_OP_ID, payload, true);
 
                 // On success, remove the payload
                 this.payloads.splice(index, 1);
@@ -396,13 +400,13 @@ export class Airdrop {
                     completed: this.completed,
                     payloads: this.payloads
                 });
+
+                await sleep(3000);
             } catch (e) {
                 console.error(e);
             }
     
-            if (this.payloads.length) {
-                await sleep(3000);
-            } else {
+            if (!this.payloads.length) {
                 this.airdropInProgress = false;
                 this.airdropComplete = true;
                 this.airdropPercentage = 100;
