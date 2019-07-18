@@ -212,6 +212,11 @@ export class Airdrop {
             return;
         }
 
+        this.buildPayloads();
+        this.handleJsonBroadcast();
+    }
+
+    buildPayloads() {
         for (const user of this.usersToAirDrop) {
             if (user[1]) {
                 const username = user[0].replace('@', '');
@@ -249,21 +254,26 @@ export class Airdrop {
         });
         
         this.totalInPayload = this.totalInPayload.toFixed(this.currentToken.precision);
+    }
 
-        for (let payload of this.payloads) {
+    async handleJsonBroadcast() {
+        // Iterate over payloads
+        for (const [index, payload] of this.payloads.entries()) {
             const required_auths = [localStorage.getItem('username')];
             const required_posting_auths = [];
-
+    
             try {
                 await steem.broadcast.customJsonAsync(this.activeKey, required_auths, required_posting_auths, STEEM_ENGINE_OP_ID, JSON.stringify(payload));
+
+                // On success, remove the payload
+                this.payloads.splice(index, 1);
             
                 this.completed++;
                 this.airdropPercentage = Math.round((this.completed / this.payloads.length) * 100);
             } catch (e) {
-                this.errors.push(e);
-                throw new Error(e);
+                this.handleJsonBroadcast();
             }
-
+    
             if (this.completed !== (this.payloads.length) && this.completed !== 0 && !this.errors.length) {
                 await sleep(3000);
             } else {
