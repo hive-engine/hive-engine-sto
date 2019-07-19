@@ -2,9 +2,9 @@
     <div class="container">
         <div class="col-md-12">
             <h2>${'Airdrop' & t}</h2>
-            <p if.bind="step == 1">Airdrop your Steem Engine tokens to other Steem users.</p>
+            <p if.bind="state.airdrop.currentStep == 1">Airdrop your Steem Engine tokens to other Steem users.</p>
 
-            <fieldset if.bind="step == 1">
+            <fieldset if.bind="state.airdrop.currentStep == 1">
                 <h6 class="mb-3" if.bind="!usersNotExisting.length">Add Users</h6>
                 <h6 class="mb-3" if.bind="usersNotExisting.length">Some of the users you provided do not exist.</h6>
 
@@ -52,28 +52,43 @@
                 </template>
             </fieldset>
 
-            <fieldset if.bind="step == 2">
+            <fieldset if.bind="state.airdrop.currentStep == 2">
                 <h6 class="mb-3">Almost there...</h6>
 
-                <div class="form-group mb-3">
+                <div class="form-group mb-4">
                     <label>Enter a memo everyone will see in their wallet</label>
                     <input type="text" value.bind="memoText & validate" class="form-control">
+                    <small id="memoHelp" class="form-text text-muted">Users will see this memo when they check their wallet.</small>
                 </div>
 
-                <div class="form-group mb-3">
+                <div class="form-group mb-4">
                     <label>What is the symbol of the token being airdropped?</label>
-                    <input type="text" value.bind="tokenSymbol & validate" class="form-control" placeholder="Eg. ENG">
+                    <input type="text" value.bind="tokenSymbol & validate" class="form-control">
+                    <small id="symbolHelp" class="form-text text-muted">Your token symbol. For example: ENG</small>
                 </div>
 
-                <div class="form-group mb-3">
+                <div class="form-group mb-4">
                     <label>What method will you be airdropping your tokens?</label>
                     <select value.bind="airdropMode" class="form-control">
                         <option value="transfer">Send (will send from your current balance)</option>
                         <option value="issue">Issue (will mint required amount increasing supply)</option>
                     </select>
+                    <small id="methodHelp" class="form-text text-muted">Send requires the tokens to already be in your wallet. Issue will create new tokens and increase supply.</small>
                 </div>
 
                 <div class="alert alert-danger" if.bind="!tokenExists">The token you entered doesn't not exist. Please check the symbol provide is valid and contains no spaces or missing characters.</div>
+
+                <div class="form-group mb-4">
+                    <label>Token owner name</label>
+                    <input type="text" value.bind="accountName & validate" class="form-control">
+                    <small id="tokenOwnerHelp" class="form-text text-muted">The owner of the token. Please ensure your active key is for this account.</small>
+                </div>
+
+                <div class="form-group mb-4">
+                    <label>Please enter your active key</label>
+                    <input type="text" value.bind="activeKey & validate" class="form-control">
+                    <small id="activeKeyHelp" class="form-text text-muted">You can get this from your Steemit wallet.</small>
+                </div>
 
                 <div class="form-group">
                     <button type="button" class="btn btn-primary" click.delegate="goToStep(3)">
@@ -83,7 +98,7 @@
                 </div>
             </fieldset>
 
-            <fieldset if.bind="step == 3">
+            <fieldset if.bind="state.airdrop.currentStep == 3">
                 <h6 class="mb-3">Fees</h6>
                 <p>This is an irreversible process. All sales are final, this cannot be undone. Please double and triple everything in your CSV file is correct before proceeding. The fee for issuing this airdrop is: <strong>${airdropFee} ENG</strong>.</p>
 
@@ -103,14 +118,10 @@
                 </div>
             </fieldset>
 
-            <fieldset if.bind="step == 4 && !airdropInProgress && !airdropComplete">
+            <fieldset if.bind="state.airdrop.currentStep == 4 && !airdropInProgress && !airdropComplete">
                 <h6 class="mb-3">You're ready</h6>
-                <p>Filling out the active key and entering "AIRDROP" will initiate the airdrop process. Once you press the button, the airdrop will begin and under no circumstances should you close the browser window.</p>
-
-                <div class="form-group mb-3">
-                    <label>Please enter your active key</label>
-                    <input type="text" value.bind="activeKey & validate" class="form-control">
-                </div>
+                <p>Entering AIRDROP into the field below will initiate the airdrop process. Once you press the button, the airdrop will begin.</p>
+                <p>If you are resuming an existing airdrop it will start where it left off.</p>
 
                 <div class="form-group mb-3">
                     <label>Please type: AIRDROP into the field below to proceed</label>
@@ -122,16 +133,19 @@
                 </div>
             </fieldset>
 
-            <div if.bind="step == 4 && airdropInProgress || airdropComplete">
+            <div if.bind="state.airdrop.currentStep == 4 && airdropInProgress || airdropComplete">
                 <template if.bind="airdropInProgress">
                     <h4>Please wait...</h4>
-                    <p>Do not refresh this page or close the tab while the airdrop runs. Total amount being distributed: <strong>${totalInPayload} ${tokenSymbol}</strong></p>
+                    <p>If something goes wrong, refresh the page and the airdrop can be resumed where you last left it. Total amount being distributed: <strong>${totalInPayload} ${tokenSymbol}</strong></p>
+                    <p>Want to cancel the airdrop? <a href="javascript:void(0);" click.delegate="cancelAirdrop()">click here</a>. Please note there are no refunds for cancelled airdrops.</p>
                 </template>
 
-                <div class="progress-bar-container mb-2 mt-3">
-                    <progress min="0" max="${payloads.length}" value.bind="completed" class="mb-5 mt-3"></progress>
+                <!-- <div class="progress-bar-container mb-2 mt-3">
+                    <progress min="0" max="100" value.bind="airdropPercentage" class="mb-5 mt-3"></progress>
                     <span class="progress-bar-container-value">${airdropPercentage}%</span>
-                </div>
+                </div> -->
+
+                <p><strong>Payloads remaining to send: </strong> ${payloads.length}</p>
 
                 <p if.bind="airdropComplete">Airdrop is complete. You can now close your browser and/or tab.</p>
                 <p if.bind="airdropComplete">Total amount distributed: <strong>${totalInPayload} ${tokenSymbol}</strong></p>

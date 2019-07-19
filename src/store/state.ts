@@ -3,6 +3,10 @@ import { Step3Model } from '../routes/account/routes/kyc/step-3/step-3.model';
 import { Step2Model } from '../routes/account/routes/kyc/step-2/step-2.model';
 import { Step1Model } from '../routes/account/routes/kyc/step-1/step-1.model';
 
+export enum AirDropMode {
+    'issue' = 'issue',
+    'transfer' = 'transfer'
+};
 export interface State {
   user: {
       name: string;
@@ -18,17 +22,7 @@ export interface State {
   
   loading: boolean;
 
-  steemPrice: number;
-
-  buyBook: any[];
-
-  sellBook: any[];
-
-  tradesHistory: any[];
-
-  token: any;
-
-  tokens: any[];
+  airdrop: any;
 
   investorQuestionnaire: {
       currentStep: number;
@@ -53,12 +47,23 @@ export const initialState: State = {
       loggedIn: false
   },
   loading: false,
-  steemPrice: 0,
-  buyBook: [],
-  sellBook: [],
-  tradesHistory: [],
-  token: 0,
-  tokens: [],
+  airdrop: {
+      currentStep: 1,
+      usersToAirdrop: [],
+      usersNotExisting: [],
+      airdropCompletion: 0,
+      totalInPayload: 0.00,
+      currentToken: null,
+      airdropFee: '0.00',
+      payloads: [[]],
+      feeTransactionId: '',
+      details: {
+          token: '',
+          activeKey: '',
+          memoText: '',
+          mode: AirDropMode.issue
+      }
+  },
   investorQuestionnaire: {
       currentStep: 1,
       totalSteps: 1,

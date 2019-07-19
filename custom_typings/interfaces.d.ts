@@ -26,7 +26,6 @@ interface EnvironmentInterface {
     PEGGED_TOKENS: PeggedToken[];
     AIRDROP: {
         FEE_ACCOUNT: string;
-        FEE: string;
         MEMO: string;
         TOKEN: string;
     };

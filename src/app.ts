@@ -19,7 +19,6 @@ import { Router, RouterConfiguration, activationStrategy } from 'aurelia-router'
 import { environment } from 'environment';
 
 import 'store/store';
-import { loadSteemPrice } from 'store/actions';
 import { Subscription } from 'rxjs';
 
 @autoinject()
@@ -39,20 +38,6 @@ export class App {
           }
         });
     }
-
-    // bind() {
-    //     this.stateSubscription = this.store.state.pipe(pluck('steemPrice')).subscribe(price => {
-    //         if (price) {
-    //             window.steem_price = price;
-    //         }
-    //     });
-    // }
-
-    // unbind() {
-    //     if (this.stateSubscription) {
-    //         this.stateSubscription.unsubscribe();
-    //     }
-    // }
 
     public configureRouter(config: RouterConfiguration, router: Router) {
         config.title = environment.siteName;
@@ -118,9 +103,5 @@ export class App {
         ]);
 
         this.router = router;
-    }
-
-    attached() {
-        this.store.dispatch(loadSteemPrice);
     }
 }
