@@ -343,7 +343,7 @@ export class Airdrop {
                 const lastPayloadSize = JSON.stringify(this.payloads[this.payloads.length - 1]).length;
                 const payloadSize = JSON.stringify(payload).length;
     
-                if (payloadSize + lastPayloadSize > MAX_PAYLOAD_SIZE) {
+                if (payloadSize + lastPayloadSize > getClient().maxPayloadSize) {
                     this.payloads.push([payload]);
                 } else {
                     this.payloads[this.payloads.length - 1].push(payload);
