@@ -363,7 +363,9 @@ export class Airdrop {
         if (!this.totalInPayload && !this.totalInPayload.toFixed) {
             this.totalInPayload = 0.000;
         } else {
-            this.totalInPayload = this.totalInPayload.toFixed(this.currentToken.precision);
+            if (this.currentToken) {
+                this.totalInPayload = this.totalInPayload.toFixed(this.currentToken.precision);
+            }
         }
 
         this.store.dispatch(updateAirdropStateAction, { 
