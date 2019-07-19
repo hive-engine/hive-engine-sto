@@ -6,9 +6,9 @@ export class Launch {
 
     public configureRouter(config: RouterConfiguration, router: Router) {
         config.map([
-            { route: ['', 'launch'], name: 'launch', moduleId: PLATFORM.moduleName('./routes/launch'), nav: true, title: 'Home' },
-            // { route: 'airdrop', name: 'airdrop', moduleId: PLATFORM.moduleName('./routes/airdrop/airdrop'), nav: false, title: 'Airdrop' },
-            { route: 'scotbot', name: 'scotbot', moduleId: PLATFORM.moduleName('./routes/scotbot/index'), nav: true, title: 'Scotbot' },
+            { route: ['', 'scotbot'], name: 'scotbot', moduleId: PLATFORM.moduleName('./routes/scotbot/index'), nav: true, title: 'Scotbot' },
+            { route: 'launch', name: 'launch', moduleId: PLATFORM.moduleName('./routes/launch'), nav: true, title: 'Offerings' },
+            { route: 'airdrop', name: 'airdrop', moduleId: PLATFORM.moduleName('./routes/airdrop/airdrop'), nav: true, title: 'Airdrop' },
             { route: 'state-costs', name: 'stateCosts', moduleId: PLATFORM.moduleName('./routes/state-costs'), nav: false, title: 'State Costs' },
         ]);
 
