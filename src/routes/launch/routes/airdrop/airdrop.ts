@@ -36,7 +36,7 @@ const STEEM_ENDPOINTS = [
 ];
 
 const clients = STEEM_ENDPOINTS.map(node => {
-    node.instance = new Client(node.url, { timeout: 3000 });
+    node.instance = new Client(node.url, { timeout: 10000 });
 
     return node;
 });
@@ -62,7 +62,7 @@ async function customJson(account: string, key: string, id: string, json: any, u
         if (retries < 10) {
             return await customJson(account, key, id, json, useActive, retries + 1);
         } else {
-            console.error('Error broadcasting custom JSON after 3 failed attempts.');
+            console.error('Error broadcasting custom JSON after 10 failed attempts.');
         }
     }
 }
@@ -80,8 +80,6 @@ function resetAirdropStateAction(state: State): State {
 
     newState.airdrop = {
         currentStep: 1,
-        completed: 0,
-        percentage: 0,
         usersToAirdrop: [],
         usersNotExisting: [],
         airdropCompletion: 0,
@@ -108,7 +106,6 @@ export class Airdrop {
     public userConfirmationInProgress = false;
     public airdropInProgress = false;
     public airdropComplete = false;
-    public completed: number = 0;
     public errors = [];
     public fileInput: HTMLInputElement;
     public memoText: string;
@@ -128,9 +125,7 @@ export class Airdrop {
     public tokenExists = true;
     public tokenValidationInProgress = false;
     public currentToken;
-    private feeTransactionId;
 
-    public airdropPercentage = 0;
     public controller: ValidationController;
     public renderer;
 
@@ -152,6 +147,9 @@ export class Airdrop {
         this.renderer = new BootstrapFormRenderer();
 
         this.controller.addRenderer(this.renderer);
+
+        this.store.registerAction('updateAirdropStateAction', updateAirdropStateAction);
+        this.store.registerAction('resetAirdropStateAction', resetAirdropStateAction);
     }  
     
     bind() {
@@ -160,8 +158,6 @@ export class Airdrop {
 
             this.payloads = state.airdrop.payloads;
             this.airdropFee = state.airdrop.airdropFee;
-            this.airdropPercentage = state.airdrop.percentage;
-            this.completed = state.airdrop.completed;
             this.usersNotExisting = state.airdrop.usersNotExisting;
             this.usersToAirDrop = state.airdrop.usersToAirdrop;
             this.currentToken = state.airdrop.currentToken;
@@ -169,13 +165,6 @@ export class Airdrop {
             this.memoText = state.airdrop.details.memoText;
             this.tokenSymbol = state.airdrop.details.token;
             this.airdropMode = state.airdrop.details.mode;
-            this.feeTransactionId = state.airdrop.feeTransactionId;
-
-            if (state.airdrop.currentStep === 4 && !this.airdropInProgress) {
-                this.taskQueue.queueTask(() => {
-                    this.runAirdrop();
-                });
-            }
 
             if (state.user.loggedIn) {
                 this.accountName = state.user.name;
@@ -188,9 +177,6 @@ export class Airdrop {
     }
 
     attached() {
-        this.store.registerAction('updateAirdropStateAction', updateAirdropStateAction);
-        this.store.registerAction('resetAirdropStateAction', resetAirdropStateAction);
-
         this.taskQueue.queueMicroTask(() => {
             this.payloadsSize = this.payloads.length;
         });
@@ -372,7 +358,7 @@ export class Airdrop {
             });
         });
         
-        if (!this.totalInPayload) {
+        if (!this.totalInPayload && !this.totalInPayload.toFixed) {
             this.totalInPayload = 0.000;
         } else {
             this.totalInPayload = this.totalInPayload.toFixed(this.currentToken.precision);
@@ -386,50 +372,42 @@ export class Airdrop {
 
     async handleJsonBroadcast() {
         // Iterate over payloads
-        for (const [index, payload] of this.payloads.entries()) {
-            try {
-                await customJson(this.accountName, this.activeKey, STEEM_ENGINE_OP_ID, payload, true);
-
-                // On success, remove the payload
-                this.payloads.splice(index, 1);
-            
-                this.completed++;
-
-                this.store.dispatch(updateAirdropStateAction, { 
-                    percentage: Math.round((this.completed / this.payloadsSize) * 100),
-                    completed: this.completed,
-                    payloads: this.payloads
-                });
-
-                await sleep(3000);
-            } catch (e) {
-                console.error(e);
-            }
+        try {
+            for (const [index, payload] of this.payloads.entries()) {
+                try {
+                    console.log(`Trying ${index}`);
+                    await customJson(this.accountName, this.activeKey, STEEM_ENGINE_OP_ID, payload, true);
     
-            if (!this.payloads.length) {
-                this.airdropInProgress = false;
-                this.airdropComplete = true;
-                this.airdropPercentage = 100;
-
-                localStorage.removeItem('steem-engine__state');
+                    // On success, remove the payload
+                    this.payloads.splice(index, 1);
+    
+                    this.store.dispatch(updateAirdropStateAction, { 
+                        payloads: this.payloads
+                    });
+    
+                    await sleep(3000);
+                } catch (e) {
+                    console.error(e);
+                }
             }
+        } catch (e) {
+            console.error('Oops: ', e);
         }
 
         if (!this.payloads.length) {
+            this.airdropInProgress = false;
             this.airdropComplete = true;
-            this.airdropPercentage = 100;
 
             localStorage.removeItem('steem-engine__state');
+            window.location.reload();
         }
     }
 
     cancelAirdrop() {
-        const result = window.confirm('Are you sure you want to cancel?');
-
-        if (result) {
-            localStorage.removeItem('steem-engine__state');
-            this.store.dispatch(resetAirdropStateAction);
-        }
+        this.payloads = [];
+        localStorage.removeItem('steem-engine__state');
+        this.store.dispatch(resetAirdropStateAction);
+        window.location.reload();
     }
 }
 

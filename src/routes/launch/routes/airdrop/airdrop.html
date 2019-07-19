@@ -120,7 +120,8 @@
 
             <fieldset if.bind="state.airdrop.currentStep == 4 && !airdropInProgress && !airdropComplete">
                 <h6 class="mb-3">You're ready</h6>
-                <p>Entering AIRDROP into the field below will initiate the airdrop process. Once you press the button, the airdrop will begin and under no circumstances should you close the browser window.</p>
+                <p>Entering AIRDROP into the field below will initiate the airdrop process. Once you press the button, the airdrop will begin.</p>
+                <p>If you are resuming an existing airdrop it will start where it left off.</p>
 
                 <div class="form-group mb-3">
                     <label>Please type: AIRDROP into the field below to proceed</label>
@@ -135,7 +136,7 @@
             <div if.bind="state.airdrop.currentStep == 4 && airdropInProgress || airdropComplete">
                 <template if.bind="airdropInProgress">
                     <h4>Please wait...</h4>
-                    <p>If something goes wrong, refresh the page and the airdrop should resume from where it left off. Total amount being distributed: <strong>${totalInPayload} ${tokenSymbol}</strong></p>
+                    <p>If something goes wrong, refresh the page and the airdrop can be resumed where you last left it. Total amount being distributed: <strong>${totalInPayload} ${tokenSymbol}</strong></p>
                     <p>Want to cancel the airdrop? <a href="javascript:void(0);" click.delegate="cancelAirdrop()">click here</a>. Please note there are no refunds for cancelled airdrops.</p>
                 </template>
 

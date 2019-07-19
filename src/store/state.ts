@@ -49,8 +49,6 @@ export const initialState: State = {
   loading: false,
   airdrop: {
       currentStep: 1,
-      completed: 0,
-      percentage: 0,
       usersToAirdrop: [],
       usersNotExisting: [],
       airdropCompletion: 0,
