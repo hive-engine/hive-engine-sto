@@ -156,15 +156,17 @@ export class Airdrop {
         this.subscription = this.store.state.subscribe((state: State) => {
             this.state = state;
 
-            this.payloads = state.airdrop.payloads;
-            this.airdropFee = state.airdrop.airdropFee;
-            this.usersNotExisting = state.airdrop.usersNotExisting;
-            this.usersToAirDrop = state.airdrop.usersToAirdrop;
-            this.currentToken = state.airdrop.currentToken;
-            this.activeKey = state.airdrop.details.activeKey;
-            this.memoText = state.airdrop.details.memoText;
-            this.tokenSymbol = state.airdrop.details.token;
-            this.airdropMode = state.airdrop.details.mode;
+            if (!state.airdrop || !state.airdrop.payloads) {
+                this.payloads = state.airdrop.payloads;
+                this.airdropFee = state.airdrop.airdropFee;
+                this.usersNotExisting = state.airdrop.usersNotExisting;
+                this.usersToAirDrop = state.airdrop.usersToAirdrop;
+                this.currentToken = state.airdrop.currentToken;
+                this.activeKey = state.airdrop.details.activeKey;
+                this.memoText = state.airdrop.details.memoText;
+                this.tokenSymbol = state.airdrop.details.token;
+                this.airdropMode = state.airdrop.details.mode;
+            }
 
             if (state.user.loggedIn) {
                 this.accountName = state.user.name;
