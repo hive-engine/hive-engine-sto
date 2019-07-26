@@ -43,7 +43,10 @@ export class ScotBot {
     activate() {
         this.subscription = this.ea.subscribe('router:navigation:complete', () => {
             if (this.router.parent) {
-                const routes = this.router.navigation.map(n => n);
+                const routes = this.router.navigation.map(n => {
+                    n.href = n.href.replace('launchscotbot', 'launch/scotbot');
+                    return n;
+                });
                 
                 (this.router.parent.navigation as any).navigation = routes;
             }
