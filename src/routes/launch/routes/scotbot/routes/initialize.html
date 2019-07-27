@@ -13,13 +13,13 @@
             <div class="col-md-10" if.bind="showForm">
                 <p>If you'd like to operate a token that can distribute rewards through steem voting then you need scotbot. Scotbot is a closed source python voting bot created by Holger80 and operated by the steem-engine team.</p>
                 <p>In order to run scotbot you first have to create a token (100 eng burn), make it stakable (1000 eng burn), and then use this form (1000 eng fee). Immediately after filling out the settings it is now live, including being able to add the tag onto existing posts and collect payout immediately.</p>
+                <p>If you're planning on having many services please prepare for it by having a minimum of 200 steem power staked on the issuing account.</p>
+                <p>Please don't use your personal account for this as you'll need to give us keys or posting/active authority to @tokendistributor. We highly recommend posting and active authority over key sharing.</p>
                 <p>This is step one of the ${'initialization' & t & oneTime} process. We will require your active key and a payment of <strong>500 ENG</strong>. You will pay the other <strong>500 ENG</strong> when you first configure the Scotbot.</p>
                 <p><strong>Please note:</strong> all deposits are final for setting up Scotbot, there are no change of mind refunds. This purchase does not include Nitrous, which is a separate product.</p>
                 <p><strong>Your balance:</strong> ${balance & oneTime} ${environment.NATIVE_TOKEN & oneTime}</p>
 
                 <div class="alert alert-danger" role="alert" if.bind="balance < 1000">You do not have 1000 ENG tokens required to setup the Scotbot.</div>
-
-                <p>Concerned about private key security? <a href="javascript:void(0);" click.delegate="showSecurityModal()">click here</a> to learn more about how we protect your private key.</p>
 
                 <form>
                     <div class="form-group">
