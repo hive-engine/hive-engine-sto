@@ -8,7 +8,7 @@ import { environment } from 'environment';
 import { ToastService, ToastMessage } from 'services/toast-service';
 
 @autoinject()
-export class CustomWebsite {
+export class Nitrous {
     private environment = environment;
     private controller: ValidationController;
     private renderer: BootstrapFormRenderer;

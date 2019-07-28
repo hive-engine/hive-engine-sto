@@ -29,11 +29,11 @@ export class ScotBot {
                 title: 'Settings' 
             },
             { 
-                route: 'custom-website', 
-                name: 'customWebsite', 
-                moduleId: PLATFORM.moduleName('./routes/custom-website'), 
+                route: 'nitrous', 
+                name: 'nitrous', 
+                moduleId: PLATFORM.moduleName('./routes/nitrous'), 
                 nav: true, 
-                title: 'Custom Website' 
+                title: 'Nitrous' 
             },
         ]);
 
