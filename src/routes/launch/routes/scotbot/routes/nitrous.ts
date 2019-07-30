@@ -91,4 +91,4 @@ ValidationRules
     .ensure('logo').required().withMessageKey('cwLogo')
     .ensure('email').required().withMessageKey('emailAddress')
     .ensure('discordUsername').required().withMessageKey('discordUsername')
-    .on(CustomWebsite);
+    .on(Nitrous);
