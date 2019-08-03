@@ -326,3 +326,9 @@ nav-menu nav-menu {
     nav-menu nav-menu .nav-link {
         font-size: 16px !important;
     }
+
+.tooltip-inner {
+    max-width: 350px;
+    /* If max-width does not work, try using width instead */
+    width: 350px;
+}

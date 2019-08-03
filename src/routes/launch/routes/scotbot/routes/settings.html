@@ -1,4 +1,6 @@
 <template>
+    <require from="helpers/bootstrap-tooltip"></require>
+
     <div class="container launch-header">
         <div class="row">
             <div class="col-md-12">
@@ -28,21 +30,27 @@
                     <div show.bind="settings.token">
                         <div class="form-group">
                             <label>${'Author Curve Exponent' & t}</label>
+                            <i bootstrap-tooltip data-toggle="tooltip" data-placement="top" data-html="true" 
+                               title="This parameter can be a number between 1 and 2.<br /> 1 is equivalent to linear and > 1 means super linear." 
+                               class="fas fa-info-circle"></i>
                             <input class="form-control" type="text" value.bind="settings.author_curve_exponent | number:1 & validate:controller">
                         </div>
-    
+
                         <div class="form-group">
                             <label>${'Token Account' & t}</label>
                             <input class="form-control" type="text" value.bind="settings.token_account & validate:controller">
                         </div>
-    
+
                         <div class="form-group">
                             <label>${'Promoted Post Account' & t}</label>
                             <input class="form-control" type="text" value.bind="settings.promoted_post_account & validate:controller">
                         </div>
-    
+
                         <div class="form-group">
                             <label>${'Author Reward Percentage' & t}</label>
+                            <i bootstrap-tooltip data-toggle="tooltip" data-placement="top" data-html="true" 
+                               title="Defines the split between post creator and upvoter. When it is set to 50, 50% of the pending tokens goes to the author and the remaining 50% to the voters." 
+                               class="fas fa-info-circle"></i>
                             <input class="form-control" type="text" value.bind="settings.author_reward_percentage | number & validate:controller">
                         </div>
 
@@ -50,83 +58,120 @@
                             <label>${'Beneficiaries Account' & t}</label>
                             <input class="form-control" type="text" value.bind="settings.beneficiaries_account & validate:controller">
                         </div>
-    
+
                         <div class="form-group">
                             <label>${'Beneficiaries Reward Percentage' & t}</label>
                             <input class="form-control" type="text" value.bind="settings.beneficiaries_reward_percentage | number & validate:controller">
                         </div>
-    
+
                         <div class="form-group">
                             <label>${'Cashout Window Days' & t}</label>
+                            <i bootstrap-tooltip data-toggle="tooltip" data-placement="top" data-html="true" title="This parameter defines when voting on a post is closed and the amount of pending token can be claimed. For example for steem, cashout_window_days is 7." class="fas fa-info-circle"></i>
                             <input class="form-control" type="text" value.bind="settings.cashout_window_days | number & validate:controller">
                         </div>
-    
+
                         <div class="form-group">
                             <label>${'Curation Curve Exponent' & t}</label>
+                            <i bootstrap-tooltip data-toggle="tooltip" data-placement="top" data-html="true" 
+                               title="This parameter defines the curation rewards. It can be a number between 0.5 and 2.<br />The curation reward which can be given to the voters is<br /><sub>curation_reward = pending_token - author_reward</sub><br />For each vote, a weight is calculated. When curation_curve_exponent = 1, the weight is linear the vote rshares."
+                               class="fas fa-info-circle"></i>   
                             <input class="form-control" type="text" value.bind="settings.curation_curve_exponent | number & validate:controller">
                         </div>
-    
+
                         <div class="form-group">
                             <label>${'Downvote Power Consumption' & t}</label>
+                            <i bootstrap-tooltip data-toggle="tooltip" data-placement="top" data-html="true" 
+                               title="Defines how the downvote power is reduced with a 100% downvote. When it is set to 200 (2%), the downvote power is reduced to 98% when downvoting at a full downvote power and a weight of 100%."
+                               class="fas fa-info-circle"></i>
                             <input class="form-control" type="text" value.bind="settings.downvote_power_consumption | number & validate:controller">
                         </div>
-    
+
                         <div class="form-group">
                             <label>${'Downvote Regeneration Seconds' & t}</label>
+                            <i bootstrap-tooltip data-toggle="tooltip" data-placement="top" data-html="true"
+                               title="Defines in which time duration an empty downvote power is regenerating to 100%. When this parameter is negative, the downvote pool is deactivated and downvoting will reduce the vote power."
+                               class="fas fa-info-circle"></i>
                             <input class="form-control" type="text" value.bind="settings.downvote_regeneration_seconds | number & validate:controller">
                         </div>
-    
+
                         <div class="form-group">
                             <label>${'Issue Token?' & t}</label>
+                            <i bootstrap-tooltip data-toggle="tooltip" data-placement="top" data-html="true"
+                               title="When this parameter is true, claimed token are send out with the issue command. This is only be possible when the token account is also the token creator. When issue_token is false, token are send out with the transfer command. In this case, the token account just needs to have sufficient token in its wallet."
+                               class="fas fa-info-circle"></i>
                             <select class="form-control" value.bind="settings.issue_token & validate:controller">
                                 <option model.bind="null">Please select</option>
                                 <option model.bind="true">True</option>
                                 <option model.bind="false">False</option>
                             </select>
                         </div>
-    
+
                         <div class="form-group">
                             <label>${'JSON Metadata App Value' & t}</label>
                             <input class="form-control" type="text" value.bind="settings.json_metadata_app_value & validate:controller">
                         </div>
-    
+
                         <div class="form-group">
                             <label>${'JSON Metadata Key' & t}</label>
+                            <i bootstrap-tooltip data-toggle="tooltip" data-placement="top" data-html="true"
+                               title="This parameter is important, it defines which parameter in the json metadata of a post is checked. One possible choice is &quot;tags&quot;. Only posts that have a json_metadata_key parameter in the json metadata field are included and can collect rewards. The value of the json_metadata_key must include or be equal to json_metadata_value.<br />When json_metadata_key=&quot;tags&quot; and json_metadata_value=&quot;scottest&quot;, then only posts that have a &quot;scottest&quot; tag can have pending tokens. Pending tokens will be generated when token holder upvote this post.<br />json_metadata_key can also be a new parameter, as for example scot_token. In this case, a new frontend is needed that broadcasts posts that have this parameter in its json metadata field."
+                               class="fas fa-info-circle"></i>
                             <input class="form-control" type="text" value.bind="settings.json_metadata_key & validate:controller">
                         </div>
-    
+
                         <div class="form-group">
                             <label>${'JSON Metadata Value' & t}</label>
+                            <i bootstrap-tooltip data-toggle="tooltip" data-placement="top" data-html="true"
+                                title="This parameter is important, it defines which parameter in the json metadata of a post is checked. One possible choice is &quot;tags&quot;. Only posts that have a json_metadata_key parameter in the json metadata field are included and can collect rewards. The value of the json_metadata_key must include or be equal to json_metadata_value.<br />When json_metadata_key=&quot;tags&quot; and json_metadata_value=&quot;scottest&quot;, then only posts that have a &quot;scottest&quot; tag can have pending tokens. Pending tokens will be generated when token holder upvote this post.<br />json_metadata_key can also be a new parameter, as for example scot_token. In this case, a new frontend is needed that broadcasts posts that have this parameter in its json metadata field."
+                               class="fas fa-info-circle"></i>
                             <input class="form-control" type="text" value.bind="settings.json_metadata_value & validate:controller">
                         </div>
-    
+
                         <div class="form-group">
                             <label>${'Reduction Every N Block' & t}</label>
+                            <i bootstrap-tooltip data-toggle="tooltip" data-placement="top" data-html="true"
+                               title="Every reduction_every_n_block blocks, the amount of token that are added to the pool is reduced by reduction_percentage.<br />When reduction_every_n_block=10512000 and reduction_percentage=0.5, the reward is reduced by 0.5% every year"
+                               class="fas fa-info-circle"></i>
                             <input class="form-control" type="text" value.bind="settings.reduction_every_n_block | number & validate:controller">
                         </div>
-    
+
                         <div class="form-group">
                             <label>${'Reduction Percentage' & t}</label>
+                            <i bootstrap-tooltip data-toggle="tooltip" data-placement="top" data-html="true"
+                               title="Every reduction_every_n_block blocks, the amount of token that are added to the pool is reduced by reduction_percentage.<br />When reduction_every_n_block=10512000 and reduction_percentage=0.5, the reward is reduced by 0.5% every year"
+                               class="fas fa-info-circle"></i>
                             <input class="form-control" type="text" value.bind="settings.reduction_percentage | number & validate:controller">
                         </div>
-    
+
                         <div class="form-group">
                             <label>${'Rewards Token' & t}</label>
+                            <i bootstrap-tooltip data-toggle="tooltip" data-placement="top" data-html="true"
+                               title="These two parameters define the size of the reward pool. Every rewards_token_every_n_block steem blocks, the reward pool is increased by rewards_token.<br />When for example rewards_token_every_n_block=3 and rewards_token=8, 8 token are added to the reward pool every 9s (3 blocks). Every hour, 3200 token are added to the pool and every day 76800 token."
+                               class="fas fa-info-circle"></i>
                             <input class="form-control" type="text" value.bind="settings.rewards_token | number & validate:controller">
                         </div>
-    
+
                         <div class="form-group">
-                            <label>${'Rewards Token Every N Block' & t}</label>
+                            <label>${'Rewards Token Every N Block' & t}</label> 
+                            <i bootstrap-tooltip data-toggle="tooltip" data-placement="top" data-html="true"
+                               title="These two parameters define the size of the reward pool. Every rewards_token_every_n_block steem blocks, the reward pool is increased by rewards_token.<br />When for example rewards_token_every_n_block=3 and rewards_token=8, 8 token are added to the reward pool every 9s (3 blocks). Every hour, 3200 token are added to the pool and every day 76800 token."
+                               class="fas fa-info-circle"></i>
                             <input class="form-control" type="text" value.bind="settings.rewards_token_every_n_block | number & validate:controller">
                         </div>
-    
+
                         <div class="form-group">
                             <label>${'Voter Power Consumption' & t}</label>
+                            <i bootstrap-tooltip data-toggle="tooltip" data-placement="top" data-html="true"
+                               title="Defines how the vote power is reduced with a 100% vote. When it is set to 200 (2%), the vote power is reduced to 98% when voting at full vote power and a weight of 100%. (integer in the steem percentage notation 100 means 1 %)"
+                               class="fas fa-info-circle"></i>
                             <input class="form-control" type="text" value.bind="settings.vote_power_consumption | number & validate:controller">
                         </div>
-    
+
                         <div class="form-group">
                             <label>${'Vote Regeneration Seconds' & t}</label>
+                            <i bootstrap-tooltip data-toggle="tooltip" data-placement="top" data-html="true"
+                               title="Defines in which time duration an empty vote power is regenerating to 100%.(integer in the steem percentage notation 100 means 1 %)"
+                               class="fas fa-info-circle"></i>
                             <input class="form-control" type="text" value.bind="settings.vote_regeneration_seconds | number & validate:controller">
                         </div>
 
