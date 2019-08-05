@@ -22,8 +22,7 @@ export class Nitrous {
     private logo: string;
     private email: string;
     private discordUsername: string;
-
-    private ENG_FEE = '1000.000';
+    private steemUsername: string;
 
     constructor(
         private controllerFactory: ValidationControllerFactory, 
@@ -65,7 +64,8 @@ export class Nitrous {
                                 url: this.url,
                                 logo: this.logo,
                                 email: this.email,
-                                discordUsername: this.discordUsername
+                                discordUsername: this.discordUsername,
+                                steemUsername: this.steemUsername
                             })
                         });
 
@@ -91,4 +91,5 @@ ValidationRules
     .ensure('logo').required().withMessageKey('cwLogo')
     .ensure('email').required().withMessageKey('emailAddress')
     .ensure('discordUsername').required().withMessageKey('discordUsername')
+    .ensure('steemUsername').required().withMessageKey('steemUsername')
     .on(Nitrous);
