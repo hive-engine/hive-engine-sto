@@ -40,5 +40,6 @@
     "jsonMetadataValue": "Please enter a value for this other than the default",
     "cwUrl": "Please enter a valid URL",
     "cwLogo": "Please enter a URL to a logo image",
-    "discordUsername": "Please enter your Discord handle"
+    "discordUsername": "Please enter your Discord handle",
+    "steemUsername": "Please enter your Steem username"
 }
