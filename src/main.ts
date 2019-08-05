@@ -1,4 +1,5 @@
-import '@babel/polyfill';
+import 'core-js/stable';
+import 'regenerator-runtime/runtime';
 import 'bootstrap/dist/js/bootstrap.bundle';
 
 import { Aurelia, LogManager } from 'aurelia-framework';
