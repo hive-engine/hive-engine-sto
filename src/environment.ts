@@ -15,11 +15,6 @@ export const environment: Partial<EnvironmentInterface> = {
     CONVERTER_API: 'https://converter-api.steem-engine.com/api',
 	NATIVE_TOKEN: NativeTokens.Eng,
     STEEMP_ACCOUNT: 'steem-peg',
-    AIRDROP: {
-        FEE_ACCOUNT: 'beggars',
-        MEMO: 'airdrop-fee',
-        TOKEN: NativeTokens.Eng
-    },
     SCOTBOT: {
         FEE_ACCOUNT: 'steemsc',
         CHANGE_ACCOUNT: 'null',
@@ -35,7 +30,7 @@ export const environment: Partial<EnvironmentInterface> = {
     },
     NITROUS: {
         FEE_ACCOUNT: 'steem-eng',
-        FEE: 200,
+        FEE: '1000.000',
         FEE_SYMBOL: NativeTokens.Eng
     }
 };

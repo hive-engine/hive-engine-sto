@@ -44,7 +44,7 @@ interface EnvironmentInterface {
     };
     NITROUS: {
         FEE_ACCOUNT: string;
-        FEE: number;
+        FEE: string;
         FEE_SYMBOL: string;
     }
 }
