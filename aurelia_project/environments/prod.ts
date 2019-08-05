@@ -30,7 +30,7 @@ export const environment: Partial<EnvironmentInterface> = {
     },
     NITROUS: {
         FEE_ACCOUNT: 'steem-eng',
-        FEE: 200,
+        FEE: '1000.000',
         FEE_SYMBOL: NativeTokens.Eng
     }
 };

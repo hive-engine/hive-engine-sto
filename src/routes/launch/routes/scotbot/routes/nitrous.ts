@@ -56,7 +56,7 @@ export class Nitrous {
         const validator: ControllerValidateResult = await this.controller.validate();
 
         if (validator.valid) {
-            window.steem_keychain.requestSendToken(localStorage.getItem('username'), environment.NITROUS.FEE_ACCOUNT, this.ENG_FEE, 'Nitrous fee', environment.NITROUS.FEE_SYMBOL, async response => {
+            window.steem_keychain.requestSendToken(localStorage.getItem('username'), environment.NITROUS.FEE_ACCOUNT, environment.NITROUS.FEE, 'Nitrous fee', environment.NITROUS.FEE_SYMBOL, async response => {
                 if (response.success) {
                     try {
                         await this.api.fetch('customWebsite', {

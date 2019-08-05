@@ -23,7 +23,7 @@ const cssRules = [
   {
     loader: 'postcss-loader',
     options: { plugins: () => [
-      require('autoprefixer')({ browsers: ['last 2 versions'] }),
+      require('autoprefixer')(),
       require('cssnano')()
     ] }
   }
