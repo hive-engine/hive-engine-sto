@@ -19,7 +19,7 @@
                     <div class="form-group">
                         <label>${'Logo URL' & t}</label>
                         <input class="form-control" type="text" value.bind="logo & validate:controller" aria-describedby="logoHelp">
-                        <small id="logoHelp" class="form-text text-muted">A URL to your desired Nitrous logo.</small>
+                        <small id="logoHelp" class="form-text text-muted">A URL to your desired Nitrous logo. This must be 40 pixels in height.</small>
                     </div>
     
                     <div class="form-group">
@@ -32,6 +32,12 @@
                         <label>${'Discord Username' & t}</label>
                         <input class="form-control" type="text" value.bind="discordUsername & validate:controller" aria-describedby="discordHelp">
                         <small id="discordHelp" class="form-text text-muted">This will allow us to communicate easier with you during the setup process.</small>
+                    </div>
+
+                    <div class="form-group">
+                        <label>${'Steem Username' & t}</label>
+                        <input class="form-control" type="text" value.bind="steemUsername & validate:controller" aria-describedby="steemUsernameHelp">
+                        <small id="steemUsernameHelp" class="form-text text-muted">This will allow us to verify you have paid the fee.</small>
                     </div>
     
                     <div class="mb-5">
