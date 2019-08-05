@@ -16,7 +16,7 @@ import { initialState } from './store/state';
 import { login, loading } from 'store/actions';
 import store from 'store/store';
 
-import modalCss from './styles/modal.css';
+'!style-loader!css-loader!./styles/modal.css';
 
 import { environment } from './environment';
 
@@ -49,8 +49,7 @@ export async function configure(aurelia: Aurelia) {
     aurelia.use.plugin(PLATFORM.moduleName('ag-grid-aurelia'));
     aurelia.use.plugin(PLATFORM.moduleName('aurelia-dialog'), config => {
         config
-            .useDefaults()
-            .useCSS(modalCss)
+            .useDefaults();
     });
 
     aurelia.use.plugin(PLATFORM.moduleName('aurelia-store', 'store'), {
