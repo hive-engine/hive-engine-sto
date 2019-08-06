@@ -1,0 +1,58 @@
+<template>
+    <require from="helpers/bootstrap-tooltip"></require>
+
+    <div class="container launch-header">
+        <div class="row">
+            <div class="col-md-12">
+                <h1>TokenBB</h1>
+                <div class="row">
+                    <p class="col-md-9">A forum is an exceptional place to continue discussion in your community and be able to have a lasting conversation.</p>
+                </div>
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col-md-10">
+                <div if.bind="formSubmitted">
+                    <p>Thank you for your purchase. We will be in contact.</p>
+                </div>
+                
+                <div if.bind="!formSubmitted">
+                    <div class="form-group">
+                        <label>${'Desired URL' & t}</label>
+                        <input class="form-control" type="text" value.bind="url & validate:controller" aria-describedby="urlHelp">
+                        <small id="urlHelp" class="form-text text-muted">This will be the URL for your Nitrous instance.</small>
+                    </div>
+            
+                    <div class="form-group">
+                        <label>${'Logo URL' & t}</label>
+                        <input class="form-control" type="text" value.bind="logo & validate:controller" aria-describedby="logoHelp">
+                        <small id="logoHelp" class="form-text text-muted">A URL to your desired Nitrous logo. This must be 40 pixels in height.</small>
+                    </div>
+    
+                    <div class="form-group">
+                        <label>${'Email' & t}</label>
+                        <input class="form-control" type="text" value.bind="email & validate:controller" aria-describedby="emailHelp">
+                        <small id="emailHelp" class="form-text text-muted">We'll never share your email with anyone else.</small>
+                    </div>
+    
+                    <div class="form-group">
+                        <label>${'Discord Username' & t}</label>
+                        <input class="form-control" type="text" value.bind="discordUsername & validate:controller" aria-describedby="discordHelp">
+                        <small id="discordHelp" class="form-text text-muted">This will allow us to communicate easier with you during the setup process.</small>
+                    </div>
+
+                    <div class="form-group">
+                        <label>${'Steem Username' & t}</label>
+                        <input class="form-control" type="text" value.bind="steemUsername & validate:controller" aria-describedby="steemUsernameHelp">
+                        <small id="steemUsernameHelp" class="form-text text-muted">This will allow us to verify you have paid the fee.</small>
+                    </div>
+    
+                    <div class="mb-5">
+                        <button type="button" click.delegate="sendFee()" disabled.bind="formSubmitted">Pay ${ENG_FEE} ${environment.NITROUS.FEE_SYMBOL}</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</template>
