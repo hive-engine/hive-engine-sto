@@ -92,4 +92,4 @@ ValidationRules
     .ensure('email').required().withMessageKey('emailAddress')
     .ensure('discordUsername').required().withMessageKey('discordUsername')
     .ensure('steemUsername').required().withMessageKey('steemUsername')
-    .on(Nitrous);
+    .on(ScotBB);
