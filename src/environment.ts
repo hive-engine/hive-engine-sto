@@ -32,5 +32,15 @@ export const environment: Partial<EnvironmentInterface> = {
         FEE_ACCOUNT: 'steem-eng',
         FEE: '1000.000',
         FEE_SYMBOL: NativeTokens.Eng
-    }
+    },
+    SCOTBB: {
+        FEE_ACCOUNT: 'steem-eng',
+        FEE: '1000.000',
+        FEE_SYMBOL: NativeTokens.Eng
+    },
+    SCOTTUBE: {
+        FEE_ACCOUNT: 'steem-eng',
+        FEE: '1000.000',
+        FEE_SYMBOL: NativeTokens.Eng
+    },
 };

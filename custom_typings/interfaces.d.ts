@@ -46,5 +46,20 @@ interface EnvironmentInterface {
         FEE_ACCOUNT: string;
         FEE: string;
         FEE_SYMBOL: string;
-    }
+    };
+    SCOTBB: {
+        FEE_ACCOUNT: string;
+        FEE: string;
+        FEE_SYMBOL: string;
+    };
+    SCOTTUBE: {
+        FEE_ACCOUNT: string;
+        FEE: string;
+        FEE_SYMBOL: string;
+    };
+    SCOTPEAK: {
+        FEE_ACCOUNT: string;
+        FEE: string;
+        FEE_SYMBOL: string;
+    };
 }
