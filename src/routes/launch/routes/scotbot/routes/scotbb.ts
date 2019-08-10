@@ -55,10 +55,10 @@ export class ScotBB {
         const validator: ControllerValidateResult = await this.controller.validate();
 
         if (validator.valid) {
-            window.steem_keychain.requestSendToken(localStorage.getItem('username'), environment.NITROUS.FEE_ACCOUNT, environment.NITROUS.FEE, 'ScotBB fee', environment.NITROUS.FEE_SYMBOL, async response => {
+            window.steem_keychain.requestSendToken(localStorage.getItem('username'), environment.SCOTBB.FEE_ACCOUNT, environment.SCOTBB.FEE, 'ScotBB fee', environment.SCOTBB.FEE_SYMBOL, async response => {
                 if (response.success) {
                     try {
-                        await this.api.fetch('scotBB', {
+                        await this.api.fetch('scotbb', {
                             method: 'POST',
                             body: json({
                                 url: this.url,
