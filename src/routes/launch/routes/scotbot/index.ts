@@ -35,6 +35,27 @@ export class ScotBot {
                 nav: true, 
                 title: 'Nitrous' 
             },
+            { 
+                route: 'scotbb', 
+                name: 'scotbb', 
+                moduleId: PLATFORM.moduleName('./routes/scotbb'), 
+                nav: true, 
+                title: 'ScotBB' 
+            },
+            { 
+                route: 'scottube', 
+                name: 'scottube', 
+                moduleId: PLATFORM.moduleName('./routes/scottube'), 
+                nav: true, 
+                title: 'ScotTube' 
+            },
+            { 
+                route: 'scotpeak', 
+                name: 'scotpeak', 
+                moduleId: PLATFORM.moduleName('./routes/scotpeak'), 
+                nav: true, 
+                title: 'ScotPeak' 
+            },
         ]);
 
         this.router = router;
