@@ -1,0 +1,28 @@
+<template>
+    <require from="helpers/bootstrap-tooltip"></require>
+
+    <div class="container launch-header">
+        <div class="row">
+            <div class="col-md-12">
+                <h1>ScotTube</h1>
+                <div class="row">
+                    <p class="col-md-9">The heart of the internet is in video sharing. Now you can share videos and reward content in your own token. This is enabled by scottube. To setup your Scottube you’ll need access to github and setup will require approximately 15 minutes. Instructions will follow in an email.</p>
+                </div>
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col-md-10">
+                <div if.bind="formSubmitted">
+                    <p>Thank you for your purchase. To get started, please bookmark this link with detailed instructions for getting started: https://steemit.com/dtube/@heimindanger/steem-engine-tokens-dtube-scottube</p>
+                </div>
+                
+                <div if.bind="!formSubmitted">    
+                    <div class="mb-5">
+                        <button type="button" click.delegate="sendFee()" disabled.bind="formSubmitted">Pay ${environment.SCOTTUBE.FEE} ${environment.SCOTTUBE.FEE_SYMBOL}</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</template>
