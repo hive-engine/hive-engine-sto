@@ -1,3 +1,54 @@
 <template>
+    <require from="helpers/bootstrap-tooltip"></require>
+
+    <div class="container launch-header">
+        <div class="row">
+            <div class="col-md-12">
+                <h1>Scotbot Mining</h1>
+                <div class="row">
+                    <p class="col-md-9">Scotbot can enable mining where token A mines token B.</p>
+                </div>
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col-md-10">
+                <div if.bind="formSubmitted">
+                    <p>Thank you for your purchase. We will be in contact.</p>
+                </div>
+                
+                <div if.bind="!formSubmitted">    
+                    <p>In order to set this up we have to setup a new rewards pool. So, you'll have to tell us "I want X tokens minted every n blocks" like "I want 10 tokens minted every 5 blocks." Keep in mind a block is a second.</p>
+                    <p>The price of 1 miner is 100 eng burned for the token creation. 1000 eng burned to make the token stakable, and 1000 eng as a fee to setup the rewards pool.</p>
+                    <p>The price of 2 miners is 200 eng burned for the tokens, 2000 eng to make each token stakable, 1000 eng for the scotbot setup fee for the mining rewards pool.</p>
+
+                    <div class="form-group">
+                        <label>${'How many miners would you like to create?' & t}</label>
+                        <select class="form-control" type="text" value.bind="minersCount & validate:controller" aria-describedby="minerHelp">
+                            <option value="1">1</option>
+                            <option value="2">2</option>
+                        </select>
+
+                        <small id="minerHelp" class="form-text text-muted">A minimum of 1 miner can be created.</small>
+                    </div>
     
+                    <div class="form-group" if.bind="minersCount == 2">
+                        <label>${'Enter a number with up to 2 decimals between 1 and 100.' & t}</label>
+                        <input class="form-control" type="text" value.bind="numberWithDecimals & validate:controller" aria-describedby="numberWithDecimalsHelp">
+                        <small id="numberWithDecimalsHelp" class="form-text text-muted">This will allow us to communicate easier with you during the setup process.</small>
+                    </div>
+
+                    <div class="form-group">
+                        <label>${'Steem Username' & t}</label>
+                        <input class="form-control" type="text" value.bind="steemUsername & validate:controller" aria-describedby="steemUsernameHelp">
+                        <small id="steemUsernameHelp" class="form-text text-muted">This will allow us to verify you have paid the fee.</small>
+                    </div>
+
+                    <div class="mb-5">
+                        <button type="button" click.delegate="sendFee()" disabled.bind="formSubmitted">Pay ${environment.SCOTPEAK.FEE} ${environment.SCOTPEAK.FEE_SYMBOL}</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
 </template>
