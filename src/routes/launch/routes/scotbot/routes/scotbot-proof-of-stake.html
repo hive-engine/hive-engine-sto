@@ -1,3 +1,42 @@
 <template>
+    <require from="helpers/bootstrap-tooltip"></require>
+
+    <div class="container launch-header">
+        <div class="row">
+            <div class="col-md-12">
+                <h1>Scotbot Proof of Stake</h1>
+                <div class="row">
+                    <p class="col-md-9">Scotbot can enable mining where owning token A generates more of token A.</p>
+                </div>
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col-md-10">
+                <div if.bind="formSubmitted">
+                    <p>Thank you for your purchase. We will be in contact.</p>
+                </div>
+                
+                <div if.bind="!formSubmitted">    
+                    <p>If you want this to happen we need to setup a rewards pool for it. This will require a 1000 eng setup fee and requires a token that has already been created and already has staking enabled.</p>
     
+                    <div class="form-group">
+                        <label>${'How big should the mining pool be?' & t}</label>
+                        <input class="form-control" type="text" value.bind="miningPoolSize & validate:controller" aria-describedby="miningPoolSizeHelp">
+                        <small id="miningPoolSizeHelp" class="form-text text-muted">We need to know X tokens minted per Y blocks</small>
+                    </div>
+
+                    <div class="form-group">
+                        <label>${'Steem Username' & t}</label>
+                        <input class="form-control" type="text" value.bind="steemUsername & validate:controller" aria-describedby="steemUsernameHelp">
+                        <small id="steemUsernameHelp" class="form-text text-muted">This will allow us to verify you have paid the fee.</small>
+                    </div>
+
+                    <div class="mb-5">
+                        <button type="button" click.delegate="sendFee()" class="btn btn-primary btn-sm" disabled.bind="formSubmitted">Pay ${environment.SCOTPEAK.FEE} ${environment.SCOTPEAK.FEE_SYMBOL}</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
 </template>

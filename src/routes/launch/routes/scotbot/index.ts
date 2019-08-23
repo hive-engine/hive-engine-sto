@@ -61,7 +61,14 @@ export class ScotBot {
                 name: 'scotbot-mining', 
                 moduleId: PLATFORM.moduleName('./routes/scotbot-mining'), 
                 nav: true, 
-                title: 'Scotbot Mining' 
+                title: 'Mining' 
+            },
+            { 
+                route: 'scotbot-pos', 
+                name: 'scotbot-pos', 
+                moduleId: PLATFORM.moduleName('./routes/scotbot-proof-of-stake'), 
+                nav: true, 
+                title: 'Proof of Stake' 
             },
         ]);
 
