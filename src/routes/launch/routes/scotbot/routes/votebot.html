@@ -1,0 +1,49 @@
+<template>
+    <require from="helpers/bootstrap-tooltip"></require>
+
+    <div class="container launch-header">
+        <div class="row">
+            <div class="col-md-12">
+                <h1>Votebot</h1>
+                <div class="row">
+                    <p class="col-md-9">There's hardy a better way to give your token immediate utility than by creating a voting bot, powering it up with some steem, and letting it vote only when people send it your token!</p>
+                </div>
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col-md-10">                
+                <div if.bind="!formSubmitted">    
+                    <p>You'll want this on a new account. Something like @token.voter. After you set this up, you will need to give active and posting authority to the @postpromoter account. You can do this <a href="https://eonwarped.github.io/steem/sk/main.html" target="_blank">here</a>.</p>
+                    <p>Once you have created it and staked it you have one major question to figure out. Any of the delegators will get a share of their rewards proportional to the delegation, but you'll also have SP that lives on the bot. The question is what should we do with tokens earned by organic SP?</p>
+
+                    <div class="form-group">
+                        <label>${'What should happen to tokens earned by organic SP?' & t}</label>
+                        <select class="form-control" type="text" value.bind="tokenAction & validate:controller" aria-describedby="minerHelp">
+                            <option>Please select an option...</option>
+                            <option value="1">Send it to an account</option>
+                            <option value="2">Send it to @null</option>
+                            <option value="3">Ignore the SP on the voting account so that the delegators get the benefit of the organic SP.</option>
+                        </select>
+                    </div>
+
+                    <div class="form-group" if.bind="tokenAction == 1">
+                        <label>${'Token rewards account' & t}</label>
+                        <input class="form-control" type="text" value.bind="toAccount & validate:controller" aria-describedby="tokenRewardsHelp">
+                        <small id="tokenRewardsHelp" class="form-text text-muted">This account will receive all voting rewards.</small>
+                    </div>
+
+                    <div class="form-group">
+                        <label>${'Steem Username' & t}</label>
+                        <input class="form-control" type="text" value.bind="steemUsername & validate:controller" aria-describedby="steemUsernameHelp">
+                        <small id="steemUsernameHelp" class="form-text text-muted">This will allow us to verify you have paid the fee.</small>
+                    </div>
+
+                    <div class="mb-5">
+                        <button type="button" click.delegate="sendFee()" class="btn btn-primary btn-sm" disabled.bind="formSubmitted">Pay ${environment.SCOTPEAK.FEE} ${environment.SCOTPEAK.FEE_SYMBOL}</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</template>

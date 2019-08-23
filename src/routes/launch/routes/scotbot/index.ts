@@ -70,6 +70,13 @@ export class ScotBot {
                 nav: true, 
                 title: 'Proof of Stake' 
             },
+            { 
+                route: 'votebot', 
+                name: 'votebot', 
+                moduleId: PLATFORM.moduleName('./routes/votebot'), 
+                nav: true, 
+                title: 'Votebot' 
+            },
         ]);
 
         this.router = router;
