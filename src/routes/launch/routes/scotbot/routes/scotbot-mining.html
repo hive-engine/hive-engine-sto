@@ -39,6 +39,18 @@
                     </div>
 
                     <div class="form-group">
+                        <label>${'How frequently should the miner reward tokens?' & t}</label>
+                        <input class="form-control" type="text" value.bind="minerFrequency & validate:controller" aria-describedby="minerFrequencyHelp">
+                        <small id="minerFrequencyHelp" class="form-text text-muted">Hourly is the shortest you can do</small>
+                    </div>
+
+                    <div class="form-group">
+                        <label>${'How many accounts should receive mined rewards?' & t}</label>
+                        <input class="form-control" type="text" value.bind="accountsForRewards & validate:controller" aria-describedby="accountsForRewardsHelp">
+                        <small id="accountsForRewardsHelp" class="form-text text-muted">10-50</small>
+                    </div>
+
+                    <div class="form-group">
                         <label>${'Steem Username' & t}</label>
                         <input class="form-control" type="text" value.bind="steemUsername & validate:controller" aria-describedby="steemUsernameHelp">
                         <small id="steemUsernameHelp" class="form-text text-muted">This will allow us to verify you have paid the fee.</small>
