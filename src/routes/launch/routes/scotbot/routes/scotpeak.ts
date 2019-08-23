@@ -80,3 +80,9 @@ export class ScotPeak {
         }
     }
 }
+
+ValidationRules
+    .ensure('email').required().withMessageKey('email')
+    .ensure('discordUsername').required().withMessageKey('discordUsername')
+    .ensure('steemUsername').required().withMessageKey('steemUsername')
+    .on(ScotPeak);
