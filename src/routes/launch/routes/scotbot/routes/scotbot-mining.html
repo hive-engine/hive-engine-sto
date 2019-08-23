@@ -35,7 +35,7 @@
                     <div class="form-group" if.bind="minersCount == 2">
                         <label>${'Enter a number with up to 2 decimals between 1 and 100.' & t}</label>
                         <input class="form-control" type="text" value.bind="numberWithDecimals & validate:controller" aria-describedby="numberWithDecimalsHelp">
-                        <small id="numberWithDecimalsHelp" class="form-text text-muted">This will allow us to communicate easier with you during the setup process.</small>
+                        <small id="numberWithDecimalsHelp" class="form-text text-muted">The number of decimals for mining rate.</small>
                     </div>
 
                     <div class="form-group">
@@ -46,8 +46,7 @@
 
                     <div class="form-group">
                         <label>${'How many accounts should receive mined rewards?' & t}</label>
-                        <input class="form-control" type="text" value.bind="accountsForRewards & validate:controller" aria-describedby="accountsForRewardsHelp">
-                        <small id="accountsForRewardsHelp" class="form-text text-muted">10-50</small>
+                        <input class="form-control" type="text" value.bind="accountsForRewards & validate:controller">
                     </div>
 
                     <div class="form-group">
@@ -57,7 +56,7 @@
                     </div>
 
                     <div class="mb-5">
-                        <button type="button" click.delegate="sendFee()" class="btn btn-primary btn-sm" disabled.bind="formSubmitted">Pay ${environment.SCOTPEAK.FEE} ${environment.SCOTPEAK.FEE_SYMBOL}</button>
+                        <button type="button" click.delegate="sendFee()" class="btn btn-primary btn-sm" disabled.bind="formSubmitted">Pay ${total.toFixed(3)} ${environment.SCOTPEAK.FEE_SYMBOL}</button>
                     </div>
                 </div>
             </div>

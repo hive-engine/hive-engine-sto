@@ -56,6 +56,13 @@ export class ScotBot {
                 nav: true, 
                 title: 'ScotPeak' 
             },
+            { 
+                route: 'scotbot-mining', 
+                name: 'scotbot-mining', 
+                moduleId: PLATFORM.moduleName('./routes/scotbot-mining'), 
+                nav: true, 
+                title: 'Scotbot Mining' 
+            },
         ]);
 
         this.router = router;
