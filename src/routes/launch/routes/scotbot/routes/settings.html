@@ -21,13 +21,14 @@
                 <form>
                     <div class="form-group mb-3">
                         <label>${'Choose your token' & t}</label>
-                        <select class="form-control" value.bind="settings.token & validate:controller" change.delegate="tokenChanged()">
+                        <select class="form-control" value.bind="settings.token & validate:controller" change.delegate="tokenChanged()" disabled.bind="isLoading">
                             <option value="">Please select a token</option>
                             <option repeat.for="token of tokens" model.bind="token.symbol">${token.symbol & oneTime}</option>
+                            <option value="ENG">ENG</option>
                         </select>
                     </div>
 
-                    <div show.bind="settings.token">
+                    <div show.bind="settings.token && info">
                         <div class="form-group">
                             <label>${'Author Curve Exponent' & t}</label>
                             <i bootstrap-tooltip data-toggle="tooltip" data-placement="top" data-html="true" 
@@ -182,7 +183,7 @@
                     </div>
 
                     <div class="mb-5">
-                        <button type="button" class="btn btn-primary btn-sm" click.delegate="saveSettings()">Save Settings</button>
+                        <button type="button" class="btn btn-primary btn-sm" click.delegate="saveSettings()" if.bind="settings.token && info">Save Settings</button>
                     </div>
                 </form>
             </div>

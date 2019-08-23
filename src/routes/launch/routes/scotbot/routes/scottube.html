@@ -19,7 +19,7 @@
                 
                 <div if.bind="!formSubmitted">    
                     <div class="mb-5">
-                        <button type="button" click.delegate="sendFee()" disabled.bind="formSubmitted">Pay ${environment.SCOTTUBE.FEE} ${environment.SCOTTUBE.FEE_SYMBOL}</button>
+                        <button type="button" class="btn btn-primary btn-sm" click.delegate="sendFee()" disabled.bind="formSubmitted">Pay ${environment.SCOTTUBE.FEE} ${environment.SCOTTUBE.FEE_SYMBOL}</button>
                     </div>
                 </div>
             </div>

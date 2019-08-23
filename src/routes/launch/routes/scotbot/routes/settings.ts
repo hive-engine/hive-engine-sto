@@ -158,6 +158,7 @@ export class Settings {
     private tokens = [];
     private config;
     private info;
+    private isLoading = false;
 
     private feeOnePaid = false;
     private feeTwoPaid = false;
@@ -197,11 +198,15 @@ export class Settings {
     }
 
     async tokenChanged() {
+        this.isLoading = true;
+
         const config = await this.scot.getConfig(this.settings.token);
         const info = await this.scot.getInfo(this.settings.token);
 
         this.info = info;
         this.settings = config;
+
+        this.isLoading = false;
     }
 
     async saveSettings() {
