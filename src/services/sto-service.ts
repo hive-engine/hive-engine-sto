@@ -13,7 +13,9 @@ export class StoService {
                     request(message) {
                         let token = localStorage.getItem('se_access_token') || null;
 
-                        message.headers.set('Authorization', `Bearer ${token}`);
+                        if (token !== null) {
+                            message.headers.set('Authorization', `Bearer ${token}`);
+                        }
                         
                         return message;
                     }

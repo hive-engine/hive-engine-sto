@@ -120,7 +120,6 @@ export class SteemEngine {
 
                                 // Store the username, private key, access token and refresh token
                                 localStorage.setItem('username', username);
-                                localStorage.setItem('key', key);
                                 localStorage.setItem('se_access_token', tokens.accessToken);
                                 localStorage.setItem('se_refresh_token', tokens.refreshToken);
 

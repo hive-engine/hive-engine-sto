@@ -1,7 +1,7 @@
-import { Step4Model } from '../routes/account/routes/kyc/step-4/step-4.model';
-import { Step3Model } from '../routes/account/routes/kyc/step-3/step-3.model';
-import { Step2Model } from '../routes/account/routes/kyc/step-2/step-2.model';
-import { Step1Model } from '../routes/account/routes/kyc/step-1/step-1.model';
+import { Step4Model } from '../routes/account/routes/accredited-investor/step-4/step-4.model';
+import { Step3Model } from '../routes/account/routes/accredited-investor/step-3/step-3.model';
+import { Step2Model } from '../routes/account/routes/accredited-investor/step-2/step-2.model';
+import { Step1Model } from '../routes/account/routes/accredited-investor/step-1/step-1.model';
 
 export enum AirDropMode {
     'issue' = 'issue',
@@ -47,23 +47,6 @@ export const initialState: State = {
       loggedIn: false
   },
   loading: false,
-  airdrop: {
-      currentStep: 1,
-      usersToAirdrop: [],
-      usersNotExisting: [],
-      airdropCompletion: 0,
-      totalInPayload: 0.00,
-      currentToken: null,
-      airdropFee: '0.00',
-      payloads: [[]],
-      feeTransactionId: '',
-      details: {
-          token: '',
-          activeKey: '',
-          memoText: '',
-          mode: AirDropMode.issue
-      }
-  },
   investorQuestionnaire: {
       currentStep: 1,
       totalSteps: 1,
