@@ -96,7 +96,7 @@ export class App {
                 route: 'account',
                 name: 'account',
                 moduleId: PLATFORM.moduleName('./routes/account/index'),
-                nav: false,
+                nav: true,
                 auth: true,
                 title: 'Account'
             }
