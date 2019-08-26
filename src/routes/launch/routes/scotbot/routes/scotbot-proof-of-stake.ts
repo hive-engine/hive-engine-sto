@@ -15,8 +15,10 @@ export class ScotbotProofOfStake {
     private interval;
     private formSubmitted = false;
 
+    private tokenSymbol;
     private miningPoolSize;
     private steemUsername;
+    private discordUsername;
 
     private total = 0;
 
@@ -64,8 +66,10 @@ export class ScotbotProofOfStake {
                 await this.api.fetch('scotbot-pos', {
                     method: 'POST',
                     body: json({
+                        tokenSymbol: this.tokenSymbol,
                         miningPoolSize: this.miningPoolSize,
-                        steemUsername: this.steemUsername
+                        steemUsername: this.steemUsername,
+                        discordUsername: this.discordUsername
                     })
                 });
 

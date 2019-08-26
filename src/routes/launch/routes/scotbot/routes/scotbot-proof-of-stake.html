@@ -21,6 +21,12 @@
                     <p>If you want this to happen we need to setup a rewards pool for it. This will require a 1000 eng setup fee and requires a token that has already been created and already has staking enabled.</p>
     
                     <div class="form-group">
+                        <label>${'Token symbol' & t}</label>
+                        <input class="form-control" type="text" value.bind="tokenSymbol & validate:controller" aria-describedby="tokenSymbolHelp">
+                        <small id="tokenSymbolHelp" class="form-text text-muted">The symbol of your token</small>
+                    </div>
+
+                    <div class="form-group">
                         <label>${'How big should the mining pool be?' & t}</label>
                         <input class="form-control" type="text" value.bind="miningPoolSize & validate:controller" aria-describedby="miningPoolSizeHelp">
                         <small id="miningPoolSizeHelp" class="form-text text-muted">We need to know X tokens minted per Y blocks</small>
@@ -30,6 +36,12 @@
                         <label>${'Steem Username' & t}</label>
                         <input class="form-control" type="text" value.bind="steemUsername & validate:controller" aria-describedby="steemUsernameHelp">
                         <small id="steemUsernameHelp" class="form-text text-muted">This will allow us to verify you have paid the fee.</small>
+                    </div>
+
+                    <div class="form-group">
+                        <label>${'Discord Username' & t}</label>
+                        <input class="form-control" type="text" value.bind="discordUsername & validate:controller" aria-describedby="discordUsernameHelp">
+                        <small id="discordUsernameHelp" class="form-text text-muted">If we need to contact you, your Discord username will speed things up.</small>
                     </div>
 
                     <div class="mb-5">
