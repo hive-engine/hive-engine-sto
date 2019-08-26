@@ -322,6 +322,8 @@ export class SteemEngine {
                             toast.message = this.i18n.tr('multipleTokensSent');
             
                             this.toast.success(toast);
+
+                            resolve();
                         } else {
                             const toast = new ToastMessage();
 
@@ -331,10 +333,12 @@ export class SteemEngine {
                             });
             
                             this.toast.error(toast);
+
+                            reject();
                         }
                     });
                 } else {
-                    // hide
+                    reject();
                 }
               });
             } else {

@@ -55,33 +55,42 @@ export class Nitrous {
         const validator: ControllerValidateResult = await this.controller.validate();
 
         if (validator.valid) {
-            window.steem_keychain.requestSendToken(localStorage.getItem('username'), environment.NITROUS.FEE_ACCOUNT, environment.NITROUS.FEE, 'Nitrous fee', environment.NITROUS.FEE_SYMBOL, async response => {
-                if (response.success) {
-                    try {
-                        await this.api.fetch('customWebsite', {
-                            method: 'POST',
-                            body: json({
-                                url: this.url,
-                                logo: this.logo,
-                                email: this.email,
-                                discordUsername: this.discordUsername,
-                                steemUsername: this.steemUsername
-                            })
-                        });
+            try {
+                const transfer = await this.se.sendTokens([
+                    { symbol: 'ENG', to: 'beggars', quantity: '500.000', memo: 'Nitrous 50% payout' },
+                    { symbol: 'ENG', to: 'aggroed', quantity: '250.000', memo: 'Nitrous 25% payout' },
+                    { symbol: 'ENG', to: 'se-dev', quantity: '250.000', memo: 'Nitrous 25% payout' },
+                ]);
 
-                        const toast = new ToastMessage();
-                        toast.message = this.i18n.tr('nitrousFeeSuccess');
-                        this.toast.success(toast);
-            
-                        this.formSubmitted = true;
-                    } catch (e) {
-                        const toast = new ToastMessage();
-                        toast.message = this.i18n.tr('nitrousFeeError');
-                        this.toast.error(toast);
-                        return;
-                    }
+                try {
+                    await this.api.fetch('customWebsite', {
+                        method: 'POST',
+                        body: json({
+                            url: this.url,
+                            logo: this.logo,
+                            email: this.email,
+                            discordUsername: this.discordUsername,
+                            steemUsername: this.steemUsername
+                        })
+                    });
+
+                    const toast = new ToastMessage();
+                    toast.message = this.i18n.tr('nitrousFeeSuccess');
+                    this.toast.success(toast);
+        
+                    this.formSubmitted = true;
+                } catch (e) {
+                    const toast = new ToastMessage();
+                    toast.message = this.i18n.tr('nitrousFeeError');
+                    this.toast.error(toast);
+                    return;
                 }
-            });
+            } catch (e) {
+                const toast = new ToastMessage();
+                toast.message = this.i18n.tr('nitrousFeeError');
+                this.toast.error(toast);
+                return;
+            }
         }
     }
 }

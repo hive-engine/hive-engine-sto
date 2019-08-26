@@ -26,5 +26,10 @@ export const baseEnvironmentConfiguration: Partial<EnvironmentInterface> = {
 			symbol: 'DOGE',
 			pegged_token_symbol: 'DOGEP'
 		}
-	]
+    ],
+    SPLIT_ACCOUNT_FEES: {
+        BEGGARS: 'beggars',
+        AGGROED: 'aggroed',
+        SE_DEV: 'se-dev'
+    }
 };

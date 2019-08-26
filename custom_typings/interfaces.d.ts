@@ -24,6 +24,11 @@ interface EnvironmentInterface {
     DISABLED_TOKENS: string[];
     PEGGED_TOKEN: string;
     PEGGED_TOKENS: PeggedToken[];
+    SPLIT_ACCOUNT_FEES: {
+        BEGGARS: string;
+        AGGROED: string;
+        SE_DEV: string;
+    };
     AIRDROP: {
         FEE_ACCOUNT: string;
         MEMO: string;
