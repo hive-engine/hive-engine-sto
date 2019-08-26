@@ -86,5 +86,7 @@
     "nitrousFeeError": "Something went wrong. Please contact us on Discord.",
     "votebotSuccess": "Votebot fee successfully paid",
     "votebotError": "There was an error or you cancelled the payment",
-    "tokenAction": "Please select a rewards action"
+    "tokenAction": "Please select a rewards action",
+    "feePaidSuccess": "Fee was successfully paid.",
+    "feePaidError": "There was an error. Please check transaction history before trying again."
 }

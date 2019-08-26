@@ -75,7 +75,7 @@ export class Initialize {
             { symbol: environment.NATIVE_TOKEN, to: 'beggars', quantity: '100.00', memo: 'pools-fee:BEGGARS' }
         ];
 
-        this.se.sendTokens(transfers);
+        this.se.sendTokens('Initialize Fee', transfers);
     }
 
     async sendInitialEngFeeWithKey() {

@@ -56,7 +56,7 @@ export class Nitrous {
 
         if (validator.valid) {
             try {
-                const transfer = await this.se.sendTokens([
+                const transfer = await this.se.sendTokens('Nitrous fee', [
                     { symbol: 'ENG', to: 'beggars', quantity: '500.000', memo: 'Nitrous 50% payout' },
                     { symbol: 'ENG', to: 'aggroed', quantity: '250.000', memo: 'Nitrous 25% payout' },
                     { symbol: 'ENG', to: 'se-devworks', quantity: '250.000', memo: 'Nitrous 25% payout' },

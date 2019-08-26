@@ -287,7 +287,7 @@ export class SteemEngine {
         });
     }
 
-    async sendTokens(transfers: Array<{symbol: string, to: string, quantity: string, memo: string}>): Promise<any> {
+    async sendTokens(title: string = 'Token Transfer', transfers: Array<{symbol: string, to: string, quantity: string, memo: string}>): Promise<any> {
         return new Promise((resolve, reject) => {
             const username = localStorage.getItem('username');
     
@@ -312,9 +312,9 @@ export class SteemEngine {
             });
         
             if (window.steem_keychain) {
-              steem_keychain.requestCustomJson(username, environment.CHAIN_ID, 'Active', JSON.stringify(transaction_data), 'Token Transfers', (response) => {
+              steem_keychain.requestCustomJson(username, environment.CHAIN_ID, 'Active', JSON.stringify(transaction_data), title, (response) => {
                 if (response.success && response.result) {
-                    this.checkTransaction(response.result.id, 3, tx => {
+                    this.checkTransaction(`${response.result.id}-0`, 3, tx => {
                         if (tx.success) {
                             const toast = new ToastMessage();
 
@@ -351,7 +351,7 @@ export class SteemEngine {
     checkTransaction(trx_id, retries, callback) {
 		this.ssc.getTransactionInfo(trx_id, (err, result) => {
 			if (result) {
-				let error = null;
+                let error = null;
 
 				if (result.logs) {
 					const logs = JSON.parse(result.logs);

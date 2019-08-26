@@ -52,31 +52,34 @@ export class ScotbotProofOfStake {
     async sendFee() {
         const validator: ControllerValidateResult = await this.controller.validate();
 
-        if (validator.valid) {
-            window.steem_keychain.requestSendToken(localStorage.getItem('username'), environment.SCOTTUBE.FEE_ACCOUNT, this.total.toFixed(3), 'Scotbot Mining fee', environment.SCOTTUBE.FEE_SYMBOL, async response => {
-                if (response.success) {
-                    try {
-                        await this.api.fetch('scotbot-pos', {
-                            method: 'POST',
-                            body: json({
-                                miningPoolSize: this.miningPoolSize,
-                                steemUsername: this.steemUsername
-                            })
-                        });
 
-                        const toast = new ToastMessage();
-                        toast.message = this.i18n.tr('scotMiningSuccess');
-                        this.toast.success(toast);
-            
-                        this.formSubmitted = true;
-                    } catch (e) {
-                        const toast = new ToastMessage();
-                        toast.message = this.i18n.tr('scotMiningError');
-                        this.toast.error(toast);
-                        return;
-                    }
-                }
-            });
+        if (validator.valid) {
+            try {
+                await this.se.sendTokens('Proof of Stake Fee', [
+                    { symbol: environment.NATIVE_TOKEN, to: environment.SPLIT_ACCOUNT_FEES.BEGGARS, quantity: '500.000', memo: 'ScotBot PoS 50% fee' },
+                    { symbol: environment.NATIVE_TOKEN, to: environment.SPLIT_ACCOUNT_FEES.AGGROED, quantity: '250.000', memo: 'ScotBot PoS 25% fee' },
+                    { symbol: environment.NATIVE_TOKEN, to: environment.SPLIT_ACCOUNT_FEES.SE_DEV, quantity: '250.000', memo: 'ScotBot PoS 25% fee' }
+                ]);
+
+                await this.api.fetch('scotbot-pos', {
+                    method: 'POST',
+                    body: json({
+                        miningPoolSize: this.miningPoolSize,
+                        steemUsername: this.steemUsername
+                    })
+                });
+
+                const toast = new ToastMessage();
+                toast.message = this.i18n.tr('feePaidSuccess');
+                this.toast.success(toast);
+    
+                this.formSubmitted = true;    
+            } catch (e) {
+                const toast = new ToastMessage();
+                toast.message = this.i18n.tr('feePaidError');
+                this.toast.error(toast);
+                return;
+            }
         }
     }
 }
