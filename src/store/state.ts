@@ -22,8 +22,6 @@ export interface State {
   
   loading: boolean;
 
-  airdrop: any;
-
   investorQuestionnaire: {
       currentStep: number;
       totalSteps: number;
