@@ -20,6 +20,7 @@ export class ScotbotMining {
     private minerFrequency;
     private accountsForRewards;
     private steemUsername;
+    private discordUsername;
 
     private total = 0;
 
@@ -81,7 +82,8 @@ export class ScotbotMining {
                         numberWithDecimals: this.numberWithDecimals,
                         minerFrequency: this.minerFrequency,
                         accountsForRewards: this.accountsForRewards,
-                        steemUsername: this.steemUsername
+                        steemUsername: this.steemUsername,
+                        discordUsername: this.discordUsername,
                     })
                 });
 

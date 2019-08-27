@@ -39,6 +39,12 @@
                         <small id="steemUsernameHelp" class="form-text text-muted">This will allow us to verify you have paid the fee.</small>
                     </div>
 
+                    <div class="form-group">
+                        <label>${'Discord Username' & t}</label>
+                        <input class="form-control" type="text" value.bind="discordUsername & validate:controller" aria-describedby="discordUsernameHelp">
+                        <small id="discordUsernameHelp" class="form-text text-muted">If we need to contact you, your Discord username will speed things up.</small>
+                    </div>
+
                     <div class="mb-5">
                         <button type="button" click.delegate="sendFee()" class="btn btn-primary btn-sm" disabled.bind="formSubmitted">Pay ${environment.SCOTPEAK.FEE} ${environment.SCOTPEAK.FEE_SYMBOL}</button>
                     </div>

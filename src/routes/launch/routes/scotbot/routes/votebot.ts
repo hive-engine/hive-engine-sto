@@ -18,6 +18,7 @@ export class Votebot {
     private tokenAction;
     private toAccount = ''; // If tokenAction === 1
     private steemUsername;
+    private discordUsername;
 
     private total = 0;
 
@@ -66,7 +67,8 @@ export class Votebot {
                     body: json({
                         tokenAction: this.tokenAction,
                         toAccount: this.toAccount,
-                        steemUsername: this.steemUsername
+                        steemUsername: this.steemUsername,
+                        discordUsername: this.discordUsername
                     })
                 });
 
