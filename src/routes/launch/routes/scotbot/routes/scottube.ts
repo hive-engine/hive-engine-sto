@@ -49,20 +49,24 @@ export class ScotTube {
         const validator: ControllerValidateResult = await this.controller.validate();
 
         if (validator.valid) {
-            window.steem_keychain.requestSendToken(localStorage.getItem('username'), environment.SCOTTUBE.FEE_ACCOUNT, environment.SCOTTUBE.FEE, 'Scottube fee', environment.SCOTTUBE.FEE_SYMBOL, async response => {
-                if (response.success) {
-                    const toast = new ToastMessage();
-                    toast.message = this.i18n.tr('scotTubeSuccess');
-                    this.toast.success(toast);
-        
-                    this.formSubmitted = true;
-                } else {
-                    const toast = new ToastMessage();
-                    toast.message = this.i18n.tr('scotTubeError');
-                    this.toast.error(toast);
-                    return;
-                }
-            });
+            try {
+                await this.se.sendTokens('ScotTube Fee', [
+                    { symbol: environment.NATIVE_TOKEN, to: environment.SPLIT_ACCOUNT_FEES.BEGGARS, quantity: '500.000', memo: 'ScotTube 50% payout' },
+                    { symbol: environment.NATIVE_TOKEN, to: environment.SPLIT_ACCOUNT_FEES.AGGROED, quantity: '250.000', memo: 'ScotTube 25% payout' },
+                    { symbol: environment.NATIVE_TOKEN, to: environment.SPLIT_ACCOUNT_FEES.SE_DEV, quantity: '250.000', memo: 'ScotTube 25% payout' },
+                ]);
+
+                const toast = new ToastMessage();
+                toast.message = this.i18n.tr('feePaidSuccess');
+                this.toast.success(toast);
+    
+                this.formSubmitted = true;
+            } catch (e) {
+                const toast = new ToastMessage();
+                toast.message = this.i18n.tr('feePaidError');
+                this.toast.error(toast);
+                return;
+            }
         }
     }
 }

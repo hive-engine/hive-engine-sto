@@ -56,38 +56,31 @@ export class Nitrous {
 
         if (validator.valid) {
             try {
-                const transfer = await this.se.sendTokens('Nitrous fee', [
-                    { symbol: 'ENG', to: 'beggars', quantity: '500.000', memo: 'Nitrous 50% payout' },
-                    { symbol: 'ENG', to: 'aggroed', quantity: '250.000', memo: 'Nitrous 25% payout' },
-                    { symbol: 'ENG', to: 'se-devworks', quantity: '250.000', memo: 'Nitrous 25% payout' },
+                await this.se.sendTokens('Nitrous Fee', [
+                    { symbol: environment.NATIVE_TOKEN, to: environment.SPLIT_ACCOUNT_FEES.BEGGARS, quantity: '500.000', memo: 'Nitrous 50% payout' },
+                    { symbol: environment.NATIVE_TOKEN, to: environment.SPLIT_ACCOUNT_FEES.AGGROED, quantity: '250.000', memo: 'Nitrous 25% payout' },
+                    { symbol: environment.NATIVE_TOKEN, to: environment.SPLIT_ACCOUNT_FEES.SE_DEV, quantity: '250.000', memo: 'Nitrous 25% payout' },
                 ]);
 
-                try {
-                    await this.api.fetch('customWebsite', {
-                        method: 'POST',
-                        body: json({
-                            url: this.url,
-                            logo: this.logo,
-                            email: this.email,
-                            discordUsername: this.discordUsername,
-                            steemUsername: this.steemUsername
-                        })
-                    });
+                await this.api.fetch('customWebsite', {
+                    method: 'POST',
+                    body: json({
+                        url: this.url,
+                        logo: this.logo,
+                        email: this.email,
+                        discordUsername: this.discordUsername,
+                        steemUsername: this.steemUsername
+                    })
+                });
 
-                    const toast = new ToastMessage();
-                    toast.message = this.i18n.tr('nitrousFeeSuccess');
-                    this.toast.success(toast);
-        
-                    this.formSubmitted = true;
-                } catch (e) {
-                    const toast = new ToastMessage();
-                    toast.message = this.i18n.tr('nitrousFeeError');
-                    this.toast.error(toast);
-                    return;
-                }
+                const toast = new ToastMessage();
+                toast.message = this.i18n.tr('feePaidSuccess');
+                this.toast.success(toast);
+    
+                this.formSubmitted = true;
             } catch (e) {
                 const toast = new ToastMessage();
-                toast.message = this.i18n.tr('nitrousFeeError');
+                toast.message = this.i18n.tr('feePaidError');
                 this.toast.error(toast);
                 return;
             }

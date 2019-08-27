@@ -55,33 +55,35 @@ export class ScotBB {
         const validator: ControllerValidateResult = await this.controller.validate();
 
         if (validator.valid) {
-            window.steem_keychain.requestSendToken(localStorage.getItem('username'), environment.SCOTBB.FEE_ACCOUNT, environment.SCOTBB.FEE, 'ScotBB fee', environment.SCOTBB.FEE_SYMBOL, async response => {
-                if (response.success) {
-                    try {
-                        await this.api.fetch('scotbb', {
-                            method: 'POST',
-                            body: json({
-                                url: this.url,
-                                logo: this.logo,
-                                email: this.email,
-                                discordUsername: this.discordUsername,
-                                steemUsername: this.steemUsername
-                            })
-                        });
+            try {
+                await this.se.sendTokens('Nitrous Fee', [
+                    { symbol: environment.NATIVE_TOKEN, to: environment.SPLIT_ACCOUNT_FEES.BEGGARS, quantity: '500.000', memo: 'ScotBB 50% payout' },
+                    { symbol: environment.NATIVE_TOKEN, to: environment.SPLIT_ACCOUNT_FEES.AGGROED, quantity: '250.000', memo: 'ScotBB 25% payout' },
+                    { symbol: environment.NATIVE_TOKEN, to: environment.SPLIT_ACCOUNT_FEES.SE_DEV, quantity: '250.000', memo: 'ScotBB 25% payout' },
+                ]);
 
-                        const toast = new ToastMessage();
-                        toast.message = this.i18n.tr('scotBBSuccess');
-                        this.toast.success(toast);
-            
-                        this.formSubmitted = true;
-                    } catch (e) {
-                        const toast = new ToastMessage();
-                        toast.message = this.i18n.tr('scotBBError');
-                        this.toast.error(toast);
-                        return;
-                    }
-                }
-            });
+                await this.api.fetch('scotbb', {
+                    method: 'POST',
+                    body: json({
+                        url: this.url,
+                        logo: this.logo,
+                        email: this.email,
+                        discordUsername: this.discordUsername,
+                        steemUsername: this.steemUsername
+                    })
+                });
+
+                const toast = new ToastMessage();
+                toast.message = this.i18n.tr('feePaidSuccess');
+                this.toast.success(toast);
+    
+                this.formSubmitted = true;
+            } catch (e) {
+                const toast = new ToastMessage();
+                toast.message = this.i18n.tr('feePaidError');
+                this.toast.error(toast);
+                return;
+            }
         }
     }
 }

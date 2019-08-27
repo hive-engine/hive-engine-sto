@@ -67,33 +67,35 @@ export class ScotbotMining {
         const validator: ControllerValidateResult = await this.controller.validate();
 
         if (validator.valid) {
-            window.steem_keychain.requestSendToken(localStorage.getItem('username'), environment.SCOTTUBE.FEE_ACCOUNT, this.total.toFixed(3), 'Scotbot Mining fee', environment.SCOTTUBE.FEE_SYMBOL, async response => {
-                if (response.success) {
-                    try {
-                        await this.api.fetch('scotbot-mining', {
-                            method: 'POST',
-                            body: json({
-                                minersCount: this.minersCount,
-                                numberWithDecimals: this.numberWithDecimals,
-                                minerFrequency: this.minerFrequency,
-                                accountsForRewards: this.accountsForRewards,
-                                steemUsername: this.steemUsername
-                            })
-                        });
+            try {
+                await this.se.sendTokens('Nitrous Fee', [
+                    { symbol: environment.NATIVE_TOKEN, to: environment.SPLIT_ACCOUNT_FEES.BEGGARS, quantity: '500.000', memo: 'ScotBot Mining 50% payout' },
+                    { symbol: environment.NATIVE_TOKEN, to: environment.SPLIT_ACCOUNT_FEES.AGGROED, quantity: '250.000', memo: 'ScotBot Mining 25% payout' },
+                    { symbol: environment.NATIVE_TOKEN, to: environment.SPLIT_ACCOUNT_FEES.SE_DEV, quantity: '250.000', memo: 'ScotBot Mining 25% payout' },
+                ]);
 
-                        const toast = new ToastMessage();
-                        toast.message = this.i18n.tr('scotMiningSuccess');
-                        this.toast.success(toast);
-            
-                        this.formSubmitted = true;
-                    } catch (e) {
-                        const toast = new ToastMessage();
-                        toast.message = this.i18n.tr('scotMiningError');
-                        this.toast.error(toast);
-                        return;
-                    }
-                }
-            });
+                await this.api.fetch('scotbot-mining', {
+                    method: 'POST',
+                    body: json({
+                        minersCount: this.minersCount,
+                        numberWithDecimals: this.numberWithDecimals,
+                        minerFrequency: this.minerFrequency,
+                        accountsForRewards: this.accountsForRewards,
+                        steemUsername: this.steemUsername
+                    })
+                });
+
+                const toast = new ToastMessage();
+                toast.message = this.i18n.tr('feePaidSuccess');
+                this.toast.success(toast);
+    
+                this.formSubmitted = true;
+            } catch (e) {
+                const toast = new ToastMessage();
+                toast.message = this.i18n.tr('feePaidError');
+                this.toast.error(toast);
+                return;
+            }
         }
     }
 }

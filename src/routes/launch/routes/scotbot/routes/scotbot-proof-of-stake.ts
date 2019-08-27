@@ -54,7 +54,6 @@ export class ScotbotProofOfStake {
     async sendFee() {
         const validator: ControllerValidateResult = await this.controller.validate();
 
-
         if (validator.valid) {
             try {
                 await this.se.sendTokens('Proof of Stake Fee', [
