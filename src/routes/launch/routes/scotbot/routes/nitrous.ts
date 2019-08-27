@@ -23,6 +23,7 @@ export class Nitrous {
     private email: string;
     private discordUsername: string;
     private steemUsername: string;
+    private loading = false;
 
     constructor(
         private controllerFactory: ValidationControllerFactory, 
@@ -55,6 +56,8 @@ export class Nitrous {
         const validator: ControllerValidateResult = await this.controller.validate();
 
         if (validator.valid) {
+            this.loading = true;
+
             try {
                 await this.se.sendTokens('Nitrous Fee', [
                     { symbol: environment.NATIVE_TOKEN, to: environment.SPLIT_ACCOUNT_FEES.BEGGARS, quantity: '500.000', memo: 'Nitrous 50% payout' },
@@ -78,10 +81,12 @@ export class Nitrous {
                 this.toast.success(toast);
     
                 this.formSubmitted = true;
+                this.loading = false;
             } catch (e) {
                 const toast = new ToastMessage();
                 toast.message = this.i18n.tr('feePaidError');
                 this.toast.error(toast);
+                this.loading = false;
                 return;
             }
         }

@@ -14,6 +14,7 @@ export class ScotTube {
     private renderer: BootstrapFormRenderer;
     private interval;
     private formSubmitted = false;
+    private loading = false;
 
     private http: HttpClient;
     private api: HttpClient;
@@ -49,6 +50,8 @@ export class ScotTube {
         const validator: ControllerValidateResult = await this.controller.validate();
 
         if (validator.valid) {
+            this.loading = true;
+
             try {
                 await this.se.sendTokens('ScotTube Fee', [
                     { symbol: environment.NATIVE_TOKEN, to: environment.SPLIT_ACCOUNT_FEES.BEGGARS, quantity: '500.000', memo: 'ScotTube 50% payout' },
@@ -61,10 +64,12 @@ export class ScotTube {
                 this.toast.success(toast);
     
                 this.formSubmitted = true;
+                this.loading = false;
             } catch (e) {
                 const toast = new ToastMessage();
                 toast.message = this.i18n.tr('feePaidError');
                 this.toast.error(toast);
+                this.loading = false;
                 return;
             }
         }

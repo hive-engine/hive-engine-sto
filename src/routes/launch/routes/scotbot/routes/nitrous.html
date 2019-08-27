@@ -41,7 +41,7 @@
                     </div>
     
                     <div class="mb-5">
-                        <button type="button" class="btn btn-primary btn-sm" click.delegate="sendFee()" disabled.bind="formSubmitted">Pay ${environment.NITROUS.FEE} ${environment.NITROUS.FEE_SYMBOL}</button>
+                        <button type="button" class="btn btn-primary btn-sm" click.delegate="sendFee()" disabled.bind="loading || formSubmitted">Pay ${environment.NITROUS.FEE} ${environment.NITROUS.FEE_SYMBOL}</button>
                     </div>
                 </div>
             </div>

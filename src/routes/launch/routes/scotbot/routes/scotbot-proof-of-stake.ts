@@ -19,6 +19,7 @@ export class ScotbotProofOfStake {
     private miningPoolSize;
     private steemUsername;
     private discordUsername;
+    private loading = false;
 
     private total = 0;
 
@@ -55,6 +56,8 @@ export class ScotbotProofOfStake {
         const validator: ControllerValidateResult = await this.controller.validate();
 
         if (validator.valid) {
+            this.loading = true;
+
             try {
                 await this.se.sendTokens('Proof of Stake Fee', [
                     { symbol: environment.NATIVE_TOKEN, to: environment.SPLIT_ACCOUNT_FEES.BEGGARS, quantity: '500.000', memo: 'ScotBot PoS 50% fee' },
@@ -76,11 +79,13 @@ export class ScotbotProofOfStake {
                 toast.message = this.i18n.tr('feePaidSuccess');
                 this.toast.success(toast);
     
-                this.formSubmitted = true;    
+                this.formSubmitted = true;  
+                this.loading = false;  
             } catch (e) {
                 const toast = new ToastMessage();
                 toast.message = this.i18n.tr('feePaidError');
                 this.toast.error(toast);
+                this.loading = false;
                 return;
             }
         }

@@ -19,6 +19,7 @@ export class Votebot {
     private toAccount = ''; // If tokenAction === 1
     private steemUsername;
     private discordUsername;
+    private loading = false;
 
     private total = 0;
 
@@ -55,6 +56,8 @@ export class Votebot {
         const validator: ControllerValidateResult = await this.controller.validate();
 
         if (validator.valid) {
+            this.loading = true;
+
             try {
                 await this.se.sendTokens('Nitrous Fee', [
                     { symbol: environment.NATIVE_TOKEN, to: environment.SPLIT_ACCOUNT_FEES.BEGGARS, quantity: '500.000', memo: 'Votebot 50% payout' },
@@ -77,10 +80,12 @@ export class Votebot {
                 this.toast.success(toast);
     
                 this.formSubmitted = true;
+                this.loading = false;
             } catch (e) {
                 const toast = new ToastMessage();
                 toast.message = this.i18n.tr('feePaidError');
                 this.toast.error(toast);
+                this.loading = false;
                 return;
             }
         }
