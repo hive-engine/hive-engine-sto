@@ -54,7 +54,7 @@ export class ScotTube {
 
             try {
                 await this.se.sendTokens('ScotTube Fee', [
-                    { symbol: environment.NATIVE_TOKEN, to: environment.SPLIT_ACCOUNT_FEES.BEGGARS, quantity: '500.000', memo: 'ScotTube 50% payout' },
+                    { symbol: environment.NATIVE_TOKEN, to: environment.SPLIT_ACCOUNT_FEES.DTUBE, quantity: '500.000', memo: 'ScotTube 50% payout' },
                     { symbol: environment.NATIVE_TOKEN, to: environment.SPLIT_ACCOUNT_FEES.AGGROED, quantity: '250.000', memo: 'ScotTube 25% payout' },
                     { symbol: environment.NATIVE_TOKEN, to: environment.SPLIT_ACCOUNT_FEES.SE_DEV, quantity: '250.000', memo: 'ScotTube 25% payout' },
                 ]);

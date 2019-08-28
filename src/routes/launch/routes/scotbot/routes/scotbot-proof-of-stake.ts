@@ -60,7 +60,7 @@ export class ScotbotProofOfStake {
 
             try {
                 await this.se.sendTokens('Proof of Stake Fee', [
-                    { symbol: environment.NATIVE_TOKEN, to: environment.SPLIT_ACCOUNT_FEES.BEGGARS, quantity: '500.000', memo: 'ScotBot PoS 50% fee' },
+                    { symbol: environment.NATIVE_TOKEN, to: environment.SPLIT_ACCOUNT_FEES.HOLGER, quantity: '500.000', memo: 'ScotBot PoS 50% fee' },
                     { symbol: environment.NATIVE_TOKEN, to: environment.SPLIT_ACCOUNT_FEES.AGGROED, quantity: '250.000', memo: 'ScotBot PoS 25% fee' },
                     { symbol: environment.NATIVE_TOKEN, to: environment.SPLIT_ACCOUNT_FEES.SE_DEV, quantity: '250.000', memo: 'ScotBot PoS 25% fee' }
                 ]);

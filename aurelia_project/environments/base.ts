@@ -29,7 +29,15 @@ export const baseEnvironmentConfiguration: Partial<EnvironmentInterface> = {
     ],
     SPLIT_ACCOUNT_FEES: {
         BEGGARS: 'beggars',
+        HOLGER: 'holger80',
+        EONWARPED: 'eonwarped',
+        BUILDTEAM: 'buildteam.pay',
+        DTUBE: 'dtube',
+        STEEMPEAK: 'steempeak',
+        SOMEGUY123: 'someguy123',
+        YABAPMATT: 'yabapmatt',
         AGGROED: 'aggroed',
-        SE_DEV: 'se-devworks'
+        SE_DEV: 'se-devworks',
+        NULL: 'null'
     }
 };

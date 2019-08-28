@@ -26,8 +26,16 @@ interface EnvironmentInterface {
     PEGGED_TOKENS: PeggedToken[];
     SPLIT_ACCOUNT_FEES: {
         BEGGARS: string;
+        HOLGER: string;
+        EONWARPED: string;
+        BUILDTEAM: string;
+        DTUBE: string;
+        STEEMPEAK: string;
+        SOMEGUY123: string;
+        YABAPMATT: string;
         AGGROED: string;
         SE_DEV: string;
+        NULL: string;
     };
     AIRDROP: {
         FEE_ACCOUNT: string;
