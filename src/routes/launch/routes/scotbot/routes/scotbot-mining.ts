@@ -55,6 +55,10 @@ export class ScotbotMining {
         });
     }
 
+    attached() {
+        this.minersCountChanged(1);
+    }
+
     minersCountChanged(total) {
         const parsedTotal = parseInt(total);
 
