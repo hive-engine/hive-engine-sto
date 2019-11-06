@@ -229,7 +229,7 @@ export class Settings {
             if (this.info.setup_complete !== 2) {
                 // If we haven't paid the first fee, prompt the user
                 if (!this.feeOnePaid && this.info.setup_complete !== 1) {
-                    // Request the first part to be sent to Holger
+                    // Request the first part to be sent to Eonwarped
                     steem_keychain.requestSendToken(
                         user,
                         environment.SCOTBOT.FEE_ACCOUNT_1,

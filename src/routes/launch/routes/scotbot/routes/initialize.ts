@@ -71,7 +71,7 @@ export class Initialize {
     async multipleTransfer() {
         const transfers = [
             { symbol: environment.NATIVE_TOKEN, to: 'steemsc', quantity: '700.00', memo: 'pools-fee:BEGGARS' },
-            { symbol: environment.NATIVE_TOKEN, to: 'holger80', quantity: '200.00', memo: 'pools-fee:BEGGARS' },
+            { symbol: environment.NATIVE_TOKEN, to: 'eonwarped', quantity: '200.00', memo: 'pools-fee:BEGGARS' },
             { symbol: environment.NATIVE_TOKEN, to: 'beggars', quantity: '100.00', memo: 'pools-fee:BEGGARS' }
         ];
 
