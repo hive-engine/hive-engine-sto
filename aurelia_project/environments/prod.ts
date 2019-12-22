@@ -25,7 +25,7 @@ export const environment: Partial<EnvironmentInterface> = {
             CHANGE: '100.000'
         },
         PUBLIC_KEY: 'STM8YqKpQijsqjkkS2widNTsmNM3SrQe3xipEm2sfC4xMryvwhdBE',
-        FEE_ACCOUNT_1: 'holger80',
+        FEE_ACCOUNT_1: 'eonwarped',
         FEE_ACCOUNT_2: 'beggars'
     },
     NITROUS: {

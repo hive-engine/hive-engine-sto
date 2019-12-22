@@ -84,6 +84,7 @@ export class StoService {
      * 
      * @param username 
      */
+    
     async kycStatus(username: string) {
         const res = await this.http.fetch('kyc/status', {
             method: 'POST',
