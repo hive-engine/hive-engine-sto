@@ -8,7 +8,7 @@ export const environment: Partial<EnvironmentInterface> = {
 	MAINTENANCE_MODE: false,
 	CHAIN_ID: 'ssc-mainnet1',
     RPC_URL: 'https://api.steem-engine.com/rpc',
-    NODE_API_URL: 'https://node-api.steem-engine.com/v1/',
+    NODE_API_URL: 'https://us-central1-steem-engine-dex.cloudfunctions.net/api/',
     SCOT_API_URL: 'https://scot-api.steem-engine.com/',
     PRICE_API: 'https://postpromoter.net/api/prices',
 	ACCOUNTS_API_URL: 'https://api.steem-engine.com/accounts',
