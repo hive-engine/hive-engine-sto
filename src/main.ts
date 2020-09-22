@@ -98,7 +98,8 @@ export async function configure(aurelia: Aurelia) {
         }
 
         const i18n = aurelia.container.get(I18N);
-        return i18n.tr(propertyName);
+        const translation = i18n.tr(propertyName.toString());
+        return this.parser.parse(translation);
     };
 
     await aurelia.start();

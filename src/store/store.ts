@@ -2,7 +2,7 @@ import { Container } from 'aurelia-framework';
 import { localStorageMiddleware, Store, MiddlewarePlacement, rehydrateFromLocalStorage } from 'aurelia-store';
 import { State } from './state';
 
-const store: Store<State> = Container.instance.get(Store);
+const store: Store<State> = Container.instance.get(Store) as Store<State>;
 
 store.registerMiddleware(localStorageMiddleware, MiddlewarePlacement.After, { key: 'steem-engine__state' });
 
