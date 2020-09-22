@@ -67,3 +67,4 @@ node_modules/
 dist/
 /.vs
 /package-lock.json
+test/coverage-jest/
